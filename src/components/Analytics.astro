@@ -1,0 +1,19 @@
+---
+// GA4 for ServicesInMyCity ONLY. Measurement ID: G-YR9GML8439.
+// Do NOT reuse this ID on other EMG sites - each has its own GA4 property.
+// Read from env so the id is configurable per deploy.
+const GA_ID = import.meta.env.PUBLIC_GA4_MEASUREMENT_ID || 'G-YR9GML8439';
+---
+{GA_ID && (
+  <Fragment>
+    <script type="text/partytown" async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}></script>
+    <script is:inline define:vars={{ GA_ID }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', GA_ID, { anonymize_ip: true });
+      // Expose a tiny helper so islands can send GA4 events without re-reading the id.
+      window.__sicTrack = function(name, params){ try { gtag('event', name, params || {}); } catch(e){} };
+    </script>
+  </Fragment>
+)}
