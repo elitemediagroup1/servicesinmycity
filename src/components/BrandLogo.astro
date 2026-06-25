@@ -1,0 +1,45 @@
+---
+/**
+ * BrandLogo - ServicesInMyCity brand logo component
+ * Renders the appropriate logo variant with graceful fallback
+ * variant="light"  → white/reversed logo (for dark/navy backgrounds)
+ * variant="dark"   → full-color logo (for light backgrounds)
+ */
+import SafeImage from "./SafeImage.astro";
+
+interface Props {
+  variant?: "light" | "dark";
+  width?: number | string;
+  height?: number | string;
+  class?: string;
+}
+
+const {
+  variant = "light",
+  width = 160,
+  height = "auto",
+  class: className = "",
+} = Astro.props;
+
+const logoSrc =
+  variant === "dark"
+    ? "/assets/brand/logo-servicesinmycity.svg"
+    : "/assets/brand/logo-servicesinmycity-white.svg";
+
+const logoAlt = "ServicesInMyCity";
+---
+
+<SafeImage
+  src={logoSrc}
+  alt={logoAlt}
+  width={width}
+  height={height}
+  class={`brand-logo brand-logo--${variant} ${className}`.trim()}
+/>
+
+<style>
+  .brand-logo {
+    display: block;
+    max-width: 100%;
+  }
+</style>
