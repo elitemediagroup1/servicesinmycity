@@ -7,7 +7,11 @@ import type { Handler } from '@netlify/functions';
 
 const DEGRADE = "Rocco's taking a breather right now so we can keep the service reliable. Try again a little later.";
 
-// In-memory counters (Phase 1). Swap for Netlify Blobs/KV without changing the API.
+// In-memory counters (Phase 1). Swap for Netlify Blobs/KV without changing the API.h
+// TODO (Phase 2): Replace in-memory counters with Netlify Blobs (https://docs.netlify.com/functions/overview/#blobs).
+// Architecture: Store daily_spend by date key, session_hits/ip_hits by session/IP.
+// No API change needed; existing softLimit() logic remains identical.
+// Benefits: counters survive cold starts, enable multi-instance deployments, enable rate-limit dashboard visibility.
 const ipHits: Record<string, { n: number; day: string }> = {};
 const sessionHits: Record<string, { n: number; day: string }> = {};
 let spendDay = '';
