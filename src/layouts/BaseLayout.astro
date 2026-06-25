@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Analytics from '../components/Analytics.astro';
 import RoccoWidget from '../components/RoccoWidget.astro';
+import BrandLogo from '../components/BrandLogo.astro';
 
 interface Props {
   title: string;
@@ -29,10 +30,18 @@ const year = new Date().getFullYear();
   <body>
     <header class="site-header">
       <div class="container">
-        <a class="brand" href="/">Services<span>InMyCity</span></a>
-        <nav class="nav" aria-label="Primary">
+      <a class="brand" href="/" aria-label="ServicesInMyCity - Find trusted local repair pros">
+        <BrandLogo variant="light" width={160} height={48} />
+      </a><nav class="nav" aria-label="Primary">
           <a href="/services">Services</a>
           <a href="/areas/manahawkin">Areas</a>
+<!-- Asset metadata -->
+<link rel="icon" href="/assets/brand/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/assets/brand/apple-touch-icon.png" />
+<meta property="og:image" content="/assets/brand/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:type" content="image/png" />
           <a href="/how-it-works">How it works</a>
           <a href="/trust">Trust</a>
           <a href="/ask">Ask Rocco</a>
@@ -47,8 +56,7 @@ const year = new Date().getFullYear();
     <footer class="site-footer">
       <div class="container footer-grid">
         <div>
-          <strong>ServicesInMyCity</strong>
-          <p class="soft-note">Find. Connect. Fix. Serving the Jersey Shore launch area.</p>
+        <BrandLogo variant="dark" width={150} height={45} />          <p class="soft-note">Find. Connect. Fix. Serving the Jersey Shore launch area.</p>
         </div>
         <div>
           <p><a href="/services">Services</a></p>
