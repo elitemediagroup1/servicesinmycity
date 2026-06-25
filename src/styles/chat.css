@@ -28,3 +28,113 @@
   padding: 10px 12px; border: 1px solid #cbd2dc; border-radius: 8px; font: inherit; font-weight: 400; }
 .consent-row { display: flex; gap: 8px; align-items: flex-start; font-weight: 400; }
 .consent-row input { width: auto; margin-top: 4px; }
+
+
+/* ─── Sprint 4: Chat message layout ─────────────────────────────────────── */
+.rocco-chat__messages {
+  min-height: 280px;
+  max-height: 50vh;
+  overflow-y: auto;
+  border: 1px solid #E5E1D8;
+  border-radius: var(--radius);
+  padding: 16px;
+  background: #fff;
+  margin-bottom: 12px;
+  scroll-behavior: smooth;
+}
+
+.rocco-chat__empty {
+  color: var(--emg-stone);
+  font-style: italic;
+}
+
+.rocco-chat__msg {
+  margin: 0 0 16px;
+  max-width: 88%;
+}
+.rocco-chat__msg--user {
+  margin-left: auto;
+}
+.rocco-chat__msg--assistant {
+  margin-right: auto;
+}
+.rocco-chat__msg-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  opacity: 0.65;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.rocco-chat__msg--user .rocco-chat__msg-label { text-align: right; }
+.rocco-chat__msg--user p {
+  background: var(--emg-navy);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 12px 12px 2px 12px;
+  margin: 0;
+  white-space: pre-wrap;
+}
+.rocco-chat__msg--assistant p {
+  background: var(--emg-warm-gray, #f5f3ef);
+  color: var(--emg-navy);
+  padding: 10px 14px;
+  border-radius: 12px 12px 12px 2px;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+/* ─── Typing indicator (3-dot pulse) ─────────────────────────────────────── */
+.rocco-chat__typing {
+  display: flex;
+  flex-direction: column;
+}
+.rocco-chat__dots {
+  display: flex;
+  gap: 5px;
+  padding: 10px 14px;
+  background: var(--emg-warm-gray, #f5f3ef);
+  border-radius: 12px 12px 12px 2px;
+  width: fit-content;
+}
+.rocco-chat__dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--emg-navy, #1a2e4a);
+  opacity: 0.35;
+  animation: rocco-pulse 1.2s ease-in-out infinite;
+}
+.rocco-chat__dots span:nth-child(2) { animation-delay: 0.2s; }
+.rocco-chat__dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes rocco-pulse {
+  0%, 80%, 100% { opacity: 0.35; transform: scale(1); }
+  40% { opacity: 1; transform: scale(1.25); }
+}
+
+/* ─── Emergency banner ───────────────────────────────────────────────────── */
+.rocco-emergency-banner {
+  background: #fff3cd;
+  border: 2px solid #e8a000;
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #5a3a00;
+}
+.rocco-emergency-banner strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* ─── Form improvements ──────────────────────────────────────────────────── */
+.rocco-chat__form input:disabled {
+  background: #f5f5f5;
+  cursor: not-allowed;
+}
+.rocco-chat__form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
