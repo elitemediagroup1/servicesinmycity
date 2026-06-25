@@ -1,6 +1,7 @@
 ---
 // Lightweight branded area placeholder. Honest 'coming soon' copy; Rocco still available.
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SafeImage from "./SafeImage.astro";
 interface Props { town: string; }
 const { town } = Astro.props;
 ---
@@ -10,7 +11,14 @@ const { town } = Astro.props;
       <p class="soft-note"><a href="/areas">Areas</a> &rsaquo; {town}</p>
       <h1>Home services in {town}</h1>
       <p class="lede">Rocco is expanding across the Jersey Shore. Full {town} coverage is coming soon &mdash; you can still ask Rocco a general question now.</p>
-    </div>
+          <SafeImage
+        src={`/assets/areas/${town.toLowerCase().replace(/\s+/g, '-')}.jpg`}
+        alt={`Home services in ${town}`}
+        width={800}
+        height={400}
+        class="area-hero-img"
+      />
+</div>
   </section>
   <section class="container" style="padding:40px 20px 64px">
     <div class="disclaimer">
