@@ -5,7 +5,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import RoccoChatIsland from './RoccoChatIsland.tsx';
 import '../styles/chat.css';
-
+import SafeImage from "./SafeImage.astro";
 interface Props {
   service: string;        // slug, e.g. 'hvac'
   serviceLabel: string;   // display, e.g. 'HVAC'
@@ -24,7 +24,14 @@ const isHvac = service === 'hvac';
       <p class="soft-note"><a href="/services">Services</a> &rsaquo; {serviceLabel}{city ? ` \u203A ${city}` : ''}</p>
       <h1>{title}</h1>
       <p class="lede">{intro}</p>
-    </div>
+          <SafeImage
+        src={`/assets/services/${service}.jpg`}
+        alt={serviceLabel}
+        width={800}
+        height={450}
+        class="service-hero-img"
+      />
+</div>
   </section>
 
   <section class="container" style="padding:40px 20px">
