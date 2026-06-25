@@ -1,12 +1,20 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import SafeImage from "../../components/SafeImage.astro";
 ---
 <BaseLayout title="About Rocco" description="Meet Rocco the Repair Guy - 20+ years of fixing problems, building trust, and helping neighbors.">
   <section class="hero">
     <div class="container">
       <h1>Rocco, the Repair Guy</h1>
       <p class="lede">Fixing problems. Building trust. Helping neighbors.</p>
-    </div>
+        <SafeImage
+      src="/assets/rocco/rocco-card.png"
+      alt="Rocco, the Repair Guy"
+      width={280}
+      height={280}
+      class="rocco-about-img"
+    />
+</div>
   </section>
   <section class="container" style="padding:40px 20px 64px">
     <p>Rocco's been fixing, building, and problem-solving for over 20 years. He knows the right questions to ask, the scams to avoid, and how to help you get the job done right &mdash; the first time. He's your go-to guide for finding trusted local pros.</p>
