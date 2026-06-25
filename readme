@@ -1,1 +1,135 @@
 
+# ServicesInMyCity
+
+**The first production app on the EMG Loop platform.**
+
+Rocco is your friendly, honest local repair guide for the Jersey Shore. Built with Astro, React, and Anthropic Claude, with Netlify Functions handling the server-side AI and rate limiting.
+
+## Local Development
+
+### Prerequisites
+- Node.js 20+ (check `.nvmrc`)
+- npm 10+
+
+### Installation
+
+```bash
+# Clone the repo
+git clone https://github.com/elitemediagroup1/servicesinmycity.git
+cd servicesinmycity
+
+# Install dependencies (check package.json for pinned versions)
+npm install
+
+# Create a .env.local file from .env.example and fill in your secrets
+cp .env.example .env.local
+# Edit .env.local with your API keys (see section below)
+```
+
+### Running Locally
+
+```bash
+# Start dev server (Astro dev mode)
+npm run dev
+
+# Build for production (static output + Netlify functions)
+npm run build
+
+# Preview production build locally
+npm run preview
+```
+
+The dev server runs on `http://localhost:3000` by default.
+
+## Environment Variables
+
+**Never commit real secrets.** All sensitive values go in Netlify dashboard or your `.env.local` (not in Git).
+
+### Required for Full Functionality
+
+| Variable | Purpose | Example / Notes |
+|----------|---------|-----------------|
+| `ANTHROPIC_API_KEY` | Rocco AI (Claude) | Get from https://console.anthropic.com |
+| `ROCCO_MODEL` | Model for Rocco responses | Default: `claude-sonnet-4-20250514` (Sonnet-class, no Opus in prod) |
+| `ROCCO_MODEL_FALLBACK` | Fallback model if primary is unavailable | Default: `claude-haiku-4-20250514` |
+| `GOOGLE_MAPS_API_KEY` | Local discovery (Google Places Text Search) | Get from Google Cloud Console |
+| `SESSION_SECRET` | Session encryption (server-side only) | Any strong random string |
+| `DAILY_SPEND_CEILING_USD` | Max AI spend per day | Default: `25` |
+| `RATE_LIMIT_SESSION` | Requests per session per minute | Default: `30` |
+| `RATE_LIMIT_IP` | Requests per IP per minute | Default: `120` |
+| `ARS_HANDOFF_ENDPOINT` | A.J. Perri HVAC lead handoff | Leave empty in Phase 1; add URL when ready |
+| `PUBLIC_GA4_MEASUREMENT_ID` | Google Analytics 4 ID (public) | Default: `G-YR9GML8439` (ServicesInMyCity only) |
+
+### Security Notes
+
+- **Secrets are server-side only.** The browser never receives `ANTHROPIC_API_KEY` or `GOOGLE_MAPS_API_KEY`.
+- **GA4 ID is public** (`PUBLIC_` prefix) — it's safe and expected to be visible in client-side scripts.
+- In Netlify, set real values in **Settings > Environment variables**. Never set them in Git.
+
+## Deploy to Netlify
+
+### Checklist Before Merging to Main
+
+- [ ] All tests pass locally: `npm run build` completes without errors
+- [ ] GA4 is working (check Analytics in production)
+- [ ] Rocco AI is responding (test `/api/rocco` with valid API key)
+- [ ] Local discovery returns honest results (no fabricated listings)
+- [ ] ARS handoff stub is in place (no real leads sent unless endpoint configured)
+- [ ] Sitemap is generated (`/sitemap-index.xml` accessible)
+- [ ] Robots.txt is in place (`/robots.txt` blocks `/api/*`)
+- [ ] All environment variables are set in Netlify dashboard (not committed)
+
+### Deployment Steps
+
+1. **Merge to `main`** (PR must be approved)
+2. **Netlify auto-deploys** from the `main` branch
+3. **Verify in production:**
+   - Visit https://servicesinmycity.com
+   - Check DevTools > Network for GA4 requests
+   - Test `/ask` page (Rocco chat)
+   - Check Netlify Functions logs for errors
+
+### Rollback
+
+If something breaks:
+1. Revert the commit on `main`
+2. Netlify will re-deploy within seconds
+3. Check Functions logs: https://app.netlify.com/sites/[site-name]/functions
+
+## Known Caveats
+
+### Phase 1 (Current)
+
+1. **In-Memory Rate Limit Counters:** Reset on function cold start. Each deploy clears counters.
+   - **Mitigation:** Counters reset daily and per-session anyway; perfect for MVP.
+   - **Phase 2:** Replace with Netlify Blobs for persistence across cold starts.
+
+2. **ARS Handoff is Stubbed:** No real lead data is sent unless `ARS_HANDOFF_ENDPOINT` is configured in Netlify.
+   - **Mitigation:** Consent gate is in place; modal clearly explains data usage.
+   - **Testing:** Test flow works end-to-end; just doesn't actually forward anywhere yet.
+
+3. **Google Places Discovery Only:** Results are honest. No recommendations or rankings.
+   - **Behavior:** Empty results when no matches (no fabrication).
+   - **Scope:** Jersey Shore only (by design).
+
+4. **Model IDs May Need Updates:** Anthropic periodically deprecates older models.
+   - **Monitoring:** Watch Anthropic API status; update `ROCCO_MODEL` if needed.
+   - **Graceful Fallback:** If primary model is unavailable, system returns soft limit (honest "not available now").
+
+### Architecture Notes
+
+- **Static-first:** Astro generates static HTML + CSS; only Rocco chat island hydrates React.
+- **Secrets server-side:** Netlify Functions are the only gateway to Anthropic and Google APIs.
+- **Progressive enhancement:** Page works without JavaScript; chat is island-only enhancement.
+- **Session identity:** Anonymous; no personal data is stored long-term.
+- **Consent gate:** ARS handoff respects explicit user consent before any lead is forwarded.
+
+## Support
+
+- **Issues:** File in GitHub Issues with environment/steps to reproduce
+- **Security:** Do NOT file security issues publicly; email elitemediagroup1@example.com
+- **Questions:** See `build-bible/` directory for architectural decision records (ADRs)
+
+## License
+
+Proprietary — EMG Loop platform.
