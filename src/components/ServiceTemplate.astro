@@ -1,0 +1,67 @@
+---
+// Canonical service page template (10_SERVICE_PAGE_FRAMEWORK).
+// One framework generates every service page consistently. Honest copy only:
+// no fabricated coverage, recommendations, reviews, rankings, or availability.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import RoccoChatIsland from './RoccoChatIsland.tsx';
+import '../styles/chat.css';
+
+interface Props {
+  service: string;        // slug, e.g. 'hvac'
+  serviceLabel: string;   // display, e.g. 'HVAC'
+  city?: string;          // optional, e.g. 'Manahawkin'
+  intro: string;
+  status?: 'live' | 'coming-soon';
+  enableHvacIsland?: boolean;
+}
+const { service, serviceLabel, city, intro, status = 'live', enableHvacIsland = false } = Astro.props;
+const title = city ? `${serviceLabel} in ${city}` : serviceLabel;
+const isHvac = service === 'hvac';
+---
+<BaseLayout title={title} description={intro}>
+  <section class="hero">
+    <div class="container">
+      <p class="soft-note"><a href="/services">Services</a> &rsaquo; {serviceLabel}{city ? ` \u203A ${city}` : ''}</p>
+      <h1>{title}</h1>
+      <p class="lede">{intro}</p>
+    </div>
+  </section>
+
+  <section class="container" style="padding:40px 20px">
+    {status === 'coming-soon' ? (
+      <div class="disclaimer">
+        Rocco guidance for this service is coming soon. You can still ask Rocco a general question now.
+        <div style="margin-top:10px"><a class="btn btn-primary" href="/ask">Ask Rocco a question</a></div>
+      </div>
+    ) : (
+      <div class="grid">
+        <div class="card">
+          <h3>What Rocco can help with</h3>
+          <p>Rocco helps you understand the problem, ask the right questions, and avoid common traps. He equips you &mdash; he never diagnoses.</p>
+        </div>
+        <div class="card">
+          <h3>Finding local pros</h3>
+          <p>Rocco can surface nearby businesses returned from Google for your area. These are shown honestly as nearby options, not as ranked picks.</p>
+        </div>
+        <div class="card">
+          <h3>Before you spend money</h3>
+          <p>"Before somebody charges you five grand for nonsense, let's figure out what this actually is."</p>
+        </div>
+      </div>
+    )}
+  </section>
+
+  {(status === 'live') && (
+    <section class="container" style="padding:0 20px 48px">
+      <h2>Ask Rocco about {serviceLabel.toLowerCase()}</h2>
+      <RoccoChatIsland client:load service={service} city={city} />
+    </section>
+  )}
+
+  <section class="container" style="padding:0 20px 48px">
+    <p class="disclaimer">
+      Information here is educational, not professional advice. Rocco equips, he never diagnoses.
+      In an emergency &mdash; gas smell, sparking, flooding, or anything unsafe &mdash; call 911 or your local utility right away.
+    </p>
+  </section>
+</BaseLayout>
