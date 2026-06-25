@@ -1,0 +1,56 @@
+# ServicesInMyCity - Netlify configuration (see build-bible/14_NETLIFY_ARCHITECTURE.md)
+# Static-first Astro build. Functions are the ONLY egress to Anthropic and Google.
+# Secrets live in Netlify environment variables, never committed and never client-side.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Friendly /api/* routes mapped to Netlify Functions (see 15_API_SPECIFICATION.md).
+[[redirects]]
+  from = "/api/rocco"
+  to = "/.netlify/functions/rocco-chat"
+  status = 200
+
+[[redirects]]
+  from = "/api/local-search"
+  to = "/.netlify/functions/local-search"
+  status = 200
+
+[[redirects]]
+  from = "/api/session"
+  to = "/.netlify/functions/session"
+  status = 200
+
+[[redirects]]
+  from = "/api/consent"
+  to = "/.netlify/functions/consent"
+  status = 200
+
+[[redirects]]
+  from = "/api/loop-event"
+  to = "/.netlify/functions/loop-event"
+  status = 200
+
+[[redirects]]
+  from = "/api/ars-handoff"
+  to = "/.netlify/functions/ars-handoff"
+  status = 200
+
+[[redirects]]
+  from = "/api/health"
+  to = "/.netlify/functions/health"
+  status = 200
+
+# Baseline security headers. Full CSP/threat model lives in 21_SECURITY.md (TODO).
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
