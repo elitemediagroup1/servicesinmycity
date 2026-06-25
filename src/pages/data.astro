@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Your data" description="How ServicesInMyCity handles your data: anonymous sessions, consent gates, and a walled-off aggregate layer.">
+  <section class="hero">
+    <div class="container">
+      <h1>Your data, plainly</h1>
+      <p class="lede">We collect as little as possible, and we tell you the truth about it.</p>
+    </div>
+  </section>
+  <section class="container" style="padding:40px 20px 64px">
+    <h2>What we collect</h2>
+    <p>In Phase 1 there are no accounts. We use an anonymous session id so a conversation can continue while you're here. No email, no password, no profile.</p>
+    <h2>Consent is a gate, not a field</h2>
+    <p>Optional things &mdash; like remembering context during your session, or contributing anonymized signals to improve the platform &mdash; only happen if you say yes. Saying no never reduces the core help Rocco gives you.</p>
+    <h2>Individual vs aggregate</h2>
+    <p>Your individual data serves you. Any aggregate, anonymized intelligence that helps improve the platform is kept architecturally separate from your individual session. Personal-level data is not sold.</p>
+    <h2>Local business info</h2>
+    <p>Nearby businesses come from Google and are shown as nearby options &mdash; not as paid or ranked recommendations.</p>
+    <div class="disclaimer" style="margin-top:24px">
+      This page describes our intent and architecture. Formal terms live in <a href="/legal/privacy">Privacy</a> and <a href="/legal/terms">Terms</a>.
+    </div>
+  </section>
+</BaseLayout>
