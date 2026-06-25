@@ -1,0 +1,21 @@
+---
+// Lightweight branded area placeholder. Honest 'coming soon' copy; Rocco still available.
+import BaseLayout from '../layouts/BaseLayout.astro';
+interface Props { town: string; }
+const { town } = Astro.props;
+---
+<BaseLayout title={`Home services in ${town}`} description={`Rocco is expanding to ${town} on the Jersey Shore. Ask a general question now.`}>
+  <section class="hero">
+    <div class="container">
+      <p class="soft-note"><a href="/areas">Areas</a> &rsaquo; {town}</p>
+      <h1>Home services in {town}</h1>
+      <p class="lede">Rocco is expanding across the Jersey Shore. Full {town} coverage is coming soon &mdash; you can still ask Rocco a general question now.</p>
+    </div>
+  </section>
+  <section class="container" style="padding:40px 20px 64px">
+    <div class="disclaimer">
+      We're growing honestly and won't pretend to cover something we can't help with yet.
+      <div style="margin-top:10px"><a class="btn btn-primary" href="/ask">Ask Rocco a question</a></div>
+    </div>
+  </section>
+</BaseLayout>
