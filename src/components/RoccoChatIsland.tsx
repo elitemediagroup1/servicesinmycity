@@ -7,53 +7,108 @@ type Role = 'user' | 'assistant';
 interface Msg { role: Role; content: string; }
 
 interface Props {
-  service?: string;     // e.g. 'hvac' - enables ARS handoff offer on HVAC pages
-  city?: string;        // e.g. 'Manahawkin'
-  seedPrompt?: string;  // optional structured prompt to seed the conversation
+  service?: string;    // e.g. 'hvac' - enables ARS handoff offer on HVAC pages
+  city?: string;       // e.g. 'Manahawkin'
+  seedPrompt?: string; // optional structured prompt to seed the conversation
 }
 
 const DEGRADE_MSG =
   "Rocco's taking a breather right now so we can keep the service reliable. Try again a little later.";
 
+// GA4 (ServicesInMyCity only). Safe no-op if gtag is absent.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function track(name: string, params?: Record<string, unknown>) {
-  // GA4 (ServicesInMyCity only). Safe no-op if gtag is absent.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const w = window as any;
-  if (typeof w.__sicTrack === 'function') w.__sicTrack(name, params);
+  if (typeof w.__sicltrack === 'function') w.__sicltrack(name, params);
+}
+
+// ─── HVAC intent detection (Sprint 4) ────────────────────────────────────────
+// Semantic rather than pure keyword: detects intent around heating/cooling
+// whether or not the homeowner knows the word "HVAC".
+function detectHvacIntent(text: string): boolean {
+  const hvacPatterns = [
+    /\bhvac\b/i,
+    /\bheat(ing|er|s)?\b/i,
+    /\bfurnace\b/i,
+    /\bboiler\b/i,
+    /\bair\s*condition/i,
+    /\bac\b|\ba\.c\b/i,
+    /\bcool(ing|er)?\b/i,
+    /\bthermostat\b/i,
+    /\bheat\s*pump\b/i,
+    /\bduct(work|s)?\b/i,
+    /\bvents?\b.*\bair\b/i,
+    /\bno\s+(heat|air|cool)/i,
+    /\bhome\s+too\s+(hot|cold|warm)/i,
+    /\bunit\s+(not|won't|wont|stopped)\s+(work|run|heat|cool)/i,
+    /\bfilter\b.*\bair\b/i,
+  ];
+  return hvacPatterns.some(p => p.test(text));
+}
+
+// ─── Emergency detection (Sprint 4) ──────────────────────────────────────────
+// Client-side early detection for immediate UX response while server confirms.
+function detectEmergency(text: string): boolean {
+  const emergencyPatterns = [
+    /gas\s*(smell|leak|odor)/i,
+    /smell\s*(gas|like\s*gas)/i,
+    /sparking/i,
+    /burning\s*(smell|odor)/i,
+    /smoke.*electr|electr.*smoke/i,
+    /carbon\s*monoxide/i,
+    /\bco\s*alarm\b/i,
+    /flooding.*electr|electr.*flood/i,
+  ];
+  return emergencyPatterns.some(p => p.test(text));
 }
 
 export default function RoccoChatIsland({ service, city, seedPrompt }: Props) {
   const [messages, setMessages] = useState<Msg[]>([]);
-  const [input, setInput] = useState(seedPrompt || '');
+  const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [softLimited, setSoftLimited] = useState(false);
+  const [isHvac, setIsHvac] = useState(service === 'hvac');
   const [showArs, setShowArs] = useState(false);
+  const [emergency, setEmergency] = useState(false);
   const startedRef = useRef(false);
-  const logRef = useRef<HTMLDivElement>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
-  const isHvac = service === 'hvac';
-
+  // Auto-scroll to newest message.
   useEffect(() => {
-    if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, loading]);
 
-  function detectHvacIntent(text: string) {
-    if (!isHvac) return;
-    if (/(ac|a\/c|air condition|furnace|heat|hvac|thermostat|no cool|no heat)/i.test(text)) {
-      emitLoopEvent('hvac_intent_detected', { service, city });
-    }
+  function onArsRequest() {
+    emitLoopEvent('ars_handoff_requested', { service: 'hvac', city });
+    track('ars_handoff_requested', { service: 'hvac', city });
+    setShowArs(true);
   }
 
   async function send() {
     const text = input.trim();
     if (!text || loading) return;
 
+    // First message tracking.
     if (!startedRef.current) {
       startedRef.current = true;
       emitLoopEvent('chat_started', { service, city });
       track('chat_started', { service, city });
     }
-    detectHvacIntent(text);
+
+    // Client-side intent + emergency detection.
+    const hvacIntent = detectHvacIntent(text);
+    const isEmergencyMsg = detectEmergency(text);
+
+    if (hvacIntent && !isHvac) {
+      setIsHvac(true);
+      emitLoopEvent('hvac_intent_detected', { service, city });
+      track('hvac_intent_detected', { service, city });
+    }
+    if (isEmergencyMsg) {
+      setEmergency(true);
+      emitLoopEvent('emergency_detected' as any, { service, city, trigger: text.slice(0, 80) });
+      track('emergency_detected', { service, city });
+    }
 
     const next = [...messages, { role: 'user' as Role, content: text }];
     setMessages(next);
@@ -72,6 +127,7 @@ export default function RoccoChatIsland({ service, city, seedPrompt }: Props) {
           sessionId: getSessionId(),
         }),
       });
+
       const data = await res.json();
 
       if (data && data.soft_limit) {
@@ -79,12 +135,20 @@ export default function RoccoChatIsland({ service, city, seedPrompt }: Props) {
         setMessages([...next, { role: 'assistant', content: data.message || DEGRADE_MSG }]);
         return;
       }
+
       const reply = (data && data.data && data.data.reply && data.data.reply.content)
         ? data.data.reply.content
         : DEGRADE_MSG;
+
+      // Server-confirmed emergency signal.
+      if (data?.meta?.emergency) {
+        setEmergency(true);
+      }
+
       setMessages([...next, { role: 'assistant', content: reply }]);
       emitLoopEvent('rocco_response_generated', { service, city });
       track('rocco_response_generated', { service, city });
+
     } catch {
       // Graceful degradation: never a blank failure.
       setSoftLimited(true);
@@ -94,32 +158,53 @@ export default function RoccoChatIsland({ service, city, seedPrompt }: Props) {
     }
   }
 
-  function onArsRequest() {
-    emitLoopEvent('ars_handoff_requested', { service: 'hvac', city });
-    track('ars_handoff_requested', { service: 'hvac', city });
-    setShowArs(true);
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      send();
+    }
   }
 
   return (
     <div className="rocco-chat">
-      <div className="rocco-chat__log" ref={logRef} aria-live="polite">
+
+      {emergency && (
+        <div className="rocco-emergency-banner" role="alert">
+          <strong>🚨 If this is a gas leak, fire, or carbon monoxide emergency — stop and call 911 or your utility company right now.</strong>
+          {' '}Rocco will help you with next steps once you're safe.
+        </div>
+      )}
+
+      <div className="rocco-chat__messages" aria-live="polite" aria-label="Conversation with Rocco">
         {messages.length === 0 && (
-          <p className="soft-note">
-            No problem. Let's start with your city and what needs fixing.
+          <p className="soft-note rocco-chat__empty">
+            {city
+              ? `Hey — I'm Rocco, your local repair guide for ${city}. Tell me what's going on.`
+              : "Hey — I'm Rocco, your local repair guide. Tell me what's going on with your home."}
           </p>
         )}
         {messages.map((m, i) => (
-          <div key={i} className={`bubble bubble--${m.role}`}>
-            <strong>{m.role === 'user' ? 'You' : 'Rocco'}</strong>
+          <div key={i} className={`rocco-chat__msg rocco-chat__msg--${m.role}`}>
+            <span className="rocco-chat__msg-label">
+              {m.role === 'user' ? 'You' : 'Rocco'}
+            </span>
             <p>{m.content}</p>
           </div>
         ))}
-        {loading && <p className="soft-note">Rocco is thinking&hellip;</p>}
+        {loading && (
+          <div className="rocco-chat__msg rocco-chat__msg--assistant rocco-chat__typing" aria-label="Rocco is typing">
+            <span className="rocco-chat__msg-label">Rocco</span>
+            <span className="rocco-chat__dots">
+              <span /><span /><span />
+            </span>
+          </div>
+        )}
+        <div ref={bottomRef} />
       </div>
 
       {isHvac && (
         <div className="ars-offer disclaimer">
-          For HVAC in the Jersey Shore launch area, Rocco may connect you with a managed trusted partner.
+          For HVAC in the Jersey Shore launch area, Rocco can connect you with a trusted local partner.
           <div style={{ marginTop: 8 }}>
             <button className="btn btn-secondary" onClick={onArsRequest}>
               Connect me with a trusted HVAC partner
@@ -136,12 +221,14 @@ export default function RoccoChatIsland({ service, city, seedPrompt }: Props) {
         <input
           id="rocco-input"
           type="text"
-          placeholder="Type your message..."
+          placeholder={loading ? "Rocco is thinking…" : "Type your message…"}
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
           disabled={loading}
+          autoComplete="off"
         />
-        <button className="btn btn-primary" type="submit" disabled={loading}>
+        <button className="btn btn-primary" type="submit" disabled={loading || !input.trim()}>
           Send
         </button>
       </form>
