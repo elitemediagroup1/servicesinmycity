@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import RoccoChatIsland from '../components/RoccoChatIsland.tsx';
+import '../styles/chat.css';
+// Dedicated immersive conversation workspace (ADR-012). The widget is hidden here
+// because /ask IS the conversation surface.
+---
+<BaseLayout title="Ask Rocco" description="Talk to Rocco, your local repair guide. Ask anything about home repairs and finding trusted pros." showRoccoWidget={false}>
+  <section class="hero" style="padding:40px 0">
+    <div class="container">
+      <h1>Ask Rocco</h1>
+      <p class="lede">Tell Rocco your city and what needs fixing. He'll help you understand it and figure out your next step.</p>
+    </div>
+  </section>
+
+  <section class="container" style="padding:32px 20px 64px">
+    <RoccoChatIsland client:load />
+    <p class="disclaimer" style="margin-top:24px">
+      Rocco equips, he never diagnoses. Information here is educational, not professional advice.
+      In an emergency &mdash; gas smell, sparking, flooding, carbon monoxide &mdash; stop and call 911 or your utility right away.
+    </p>
+  </section>
+</BaseLayout>
