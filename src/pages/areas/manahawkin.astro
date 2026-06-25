@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RoccoChatIsland from '../../components/RoccoChatIsland.tsx';
+import '../../styles/chat.css';
+// Real area hub for Manahawkin (launch market, ADR-007).
+---
+<BaseLayout title="Home services in Manahawkin, NJ" description="Rocco helps Manahawkin homeowners find trusted local pros and get practical home-repair guidance.">
+  <section class="hero">
+    <div class="container">
+      <h1>Home services in Manahawkin</h1>
+      <p class="lede">Rocco is your local repair guide for Manahawkin and the surrounding Stafford / LBI area. Coastal homes have their own quirks &mdash; salt air, humidity, seasonal swings. Rocco helps you sort real problems from sales pitches.</p>
+    </div>
+  </section>
+
+  <section class="container" style="padding:40px 20px 0">
+    <h2>Popular here</h2>
+    <div class="grid">
+      <a class="card" href="/services/hvac">HVAC &mdash; heating &amp; cooling</a>
+      <a class="card" href="/services/plumbing">Plumbing</a>
+      <a class="card" href="/services/electrical">Electrical</a>
+      <a class="card" href="/services">All services &rarr;</a>
+    </div>
+  </section>
+
+  <section class="container" style="padding:32px 20px 16px">
+    <h2>Ask Rocco about your Manahawkin home</h2>
+    <RoccoChatIsland client:load city="Manahawkin" />
+  </section>
+
+  <section class="container" style="padding:8px 20px 56px">
+    <p class="disclaimer">
+      We're focused on the Jersey Shore launch area. If you're just outside it, Rocco will tell you honestly what he can and can't help with yet.
+      Information here is educational, not professional advice.
+    </p>
+  </section>
+</BaseLayout>
