@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+// Areas hub. Launch market only (ADR-007). Manahawkin is the built-out example.
+const towns = [
+  { slug: 'manahawkin', label: 'Manahawkin', status: 'live' },
+  { slug: 'stafford', label: 'Stafford', status: 'coming-soon' },
+  { slug: 'barnegat', label: 'Barnegat', status: 'coming-soon' },
+  { slug: 'long-beach-island', label: 'Long Beach Island', status: 'coming-soon' },
+  { slug: 'toms-river', label: 'Toms River', status: 'coming-soon' },
+  { slug: 'forked-river', label: 'Forked River', status: 'coming-soon' },
+  { slug: 'waretown', label: 'Waretown', status: 'coming-soon' },
+];
+---
+<BaseLayout title="Service areas" description="ServicesInMyCity serves the Jersey Shore launch area. See the towns Rocco covers.">
+  <section class="hero">
+    <div class="container">
+      <h1>Service areas</h1>
+      <p class="lede">We're starting on the Jersey Shore and growing honestly. If your town isn't here yet, Rocco will tell you straight.</p>
+    </div>
+  </section>
+  <section class="container" style="padding:40px 20px 64px">
+    <div class="grid">
+      {towns.map((t) => (
+        <a class="card" href={`/areas/${t.slug}`}>
+          <h3>{t.label}</h3>
+          <p class="soft-note">{t.status === 'live' ? 'Live' : 'Coming soon'}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
