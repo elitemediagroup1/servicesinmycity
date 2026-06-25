@@ -1,0 +1,76 @@
+---
+import '../styles/global.css';
+import Analytics from '../components/Analytics.astro';
+import RoccoWidget from '../components/RoccoWidget.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  showRoccoWidget?: boolean;
+}
+const { title, description = 'Find trusted local pros and get the job done right. Meet Rocco, your local repair guide.', showRoccoWidget = true } = Astro.props;
+const year = new Date().getFullYear();
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} | ServicesInMyCity</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <Analytics />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <a class="brand" href="/">Services<span>InMyCity</span></a>
+        <nav class="nav" aria-label="Primary">
+          <a href="/services">Services</a>
+          <a href="/areas/manahawkin">Areas</a>
+          <a href="/how-it-works">How it works</a>
+          <a href="/trust">Trust</a>
+          <a href="/ask">Ask Rocco</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <strong>ServicesInMyCity</strong>
+          <p class="soft-note">Find. Connect. Fix. Serving the Jersey Shore launch area.</p>
+        </div>
+        <div>
+          <p><a href="/services">Services</a></p>
+          <p><a href="/how-it-works">How it works</a></p>
+          <p><a href="/about/rocco">About Rocco</a></p>
+        </div>
+        <div>
+          <p><a href="/trust">Trust &amp; safety</a></p>
+          <p><a href="/data">Your data</a></p>
+          <p><a href="/legal/disclaimers">Disclaimers</a></p>
+        </div>
+        <div>
+          <p><a href="/legal/privacy">Privacy</a></p>
+          <p><a href="/legal/terms">Terms</a></p>
+        </div>
+      </div>
+      <div class="container" style="margin-top:24px">
+        <p class="soft-note">Rocco equips, he never diagnoses. Information here is educational, not professional advice. In an emergency, call 911 or your local utility.</p>
+        <p class="soft-note">&copy; {year} Elite Media Group. A product on the EMG Loop platform.</p>
+      </div>
+    </footer>
+
+    {showRoccoWidget && <RoccoWidget />}
+  </body>
+</html>
