@@ -2,9 +2,16 @@
 // Persistent floating 'Ask Rocco' widget (ADR-012). Appears on every page via
 // BaseLayout. Progressive enhancement (ADR-015): it is a plain link to /ask that
 // upgrades to an inline launcher. Primary content never depends on this JS.
+import SafeImage from "./SafeImage.astro";
 ---
 <a class="rocco-fab" href="/ask" aria-label="Ask Rocco, your local repair guide">
-  <span class="rocco-fab__dot" aria-hidden="true"></span>
+  <SafeImage
+    src="/assets/rocco/rocco-avatar.png"
+    alt="Rocco"
+    width={32}
+    height={32}
+    class="rocco-fab__avatar"
+  />
   Ask Rocco
 </a>
 
@@ -21,14 +28,22 @@
     color: #fff;
     text-decoration: none;
     font-weight: 700;
-    padding: 12px 18px;
+    padding: 10px 18px;
     border-radius: 999px;
     box-shadow: 0 6px 20px rgba(30,58,95,0.25);
   }
   .rocco-fab:hover { background: var(--sic-orange-ink); }
-  .rocco-fab__dot {
-    width: 10px; height: 10px; border-radius: 50%;
-    background: #fff; box-shadow: 0 0 0 4px rgba(255,255,255,0.35);
+  .rocco-fab__avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  /* fallback: SafeImage placeholder inherits border-radius */
+  .rocco-fab__avatar .image-fallback {
+    border-radius: 50%;
+    min-height: 32px;
   }
   @media print { .rocco-fab { display: none; } }
 </style>
