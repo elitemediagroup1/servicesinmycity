@@ -106,7 +106,7 @@ export default function RoccoChatIsland({ service, city, seedPrompt }: Props) {
     }
     if (isEmergencyMsg) {
       setEmergency(true);
-      emitLoopEvent('emergency_detected' as any, { service, city, trigger: text.slice(0, 80) });
+      emitLoopEvent('emergency_detected', { service, city, trigger: text.slice(0, 80) });
       track('emergency_detected', { service, city });
     }
 
