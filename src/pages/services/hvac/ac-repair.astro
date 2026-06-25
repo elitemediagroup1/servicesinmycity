@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import RoccoChatIsland from '../../../components/RoccoChatIsland.tsx';
+import '../../../styles/chat.css';
+// Deep service sub-page: AC repair. Follows the 10_SERVICE_PAGE_FRAMEWORK hierarchy
+// (intent H1, trust progression, Rocco insertion, honest local block, disclaimer).
+---
+<BaseLayout title="AC repair on the Jersey Shore" description="Air conditioning not cooling? Rocco helps you understand AC problems and find trusted local HVAC pros.">
+  <section class="hero">
+    <div class="container">
+      <p class="soft-note"><a href="/services">Services</a> &rsaquo; <a href="/services/hvac">HVAC</a> &rsaquo; AC repair</p>
+      <h1>AC repair on the Jersey Shore</h1>
+      <p class="lede">When the AC quits in July, you want a straight answer fast. Rocco helps you understand what might be going on and what to ask &mdash; before anyone quotes you a number.</p>
+    </div>
+  </section>
+
+  <section class="container" style="padding:40px 20px 0">
+    <div class="grid">
+      <div class="card">
+        <h3>Common AC complaints</h3>
+        <p>Not cooling, weak airflow, short cycling, strange noises, or a unit that won't turn on. Rocco helps you describe the symptom clearly so you're not guessing.</p>
+      </div>
+      <div class="card">
+        <h3>Questions worth asking</h3>
+        <p>What's the likely cause? Is this a repair or a replacement conversation? What's the all-in price, parts and labor? Rocco helps you walk in informed.</p>
+      </div>
+      <div class="card">
+        <h3>Stay safe</h3>
+        <p>Smell gas or see sparking? Stop and call 911 or your utility. Rocco equips you with understanding &mdash; he never diagnoses, and never replaces a licensed pro.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="container" style="padding:32px 20px 16px">
+    <h2>Ask Rocco about your AC</h2>
+    <RoccoChatIsland client:load service="hvac" />
+  </section>
+
+  <section class="container" style="padding:8px 20px 56px">
+    <p class="disclaimer">
+      Information here is educational, not professional advice. Rocco equips, he never diagnoses.
+      In an emergency &mdash; gas smell, sparking, flooding, carbon monoxide &mdash; call 911 or your utility right away.
+    </p>
+  </section>
+</BaseLayout>
