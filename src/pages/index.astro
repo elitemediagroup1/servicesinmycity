@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SafeImage from "../components/SafeImage.astro";
 ---
 <BaseLayout title="Find trusted local pros" description="Meet Rocco, your local repair guide. Find trusted local pros and get the job done right on the Jersey Shore.">
   <section class="hero">
@@ -10,7 +11,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <a class="btn btn-primary" href="/ask">Ask Rocco a question</a>
         <a class="btn btn-secondary" href="/services" style="margin-left:10px">Browse services</a>
       </div>
-    </div>
+        <SafeImage
+      src="/assets/rocco/rocco-hero.png"
+      alt="Rocco, your local repair guide"
+      width={320}
+      height={320}
+      class="rocco-hero-img"
+    />
+</div>
   </section>
 
   <section class="container" style="padding:48px 20px">
