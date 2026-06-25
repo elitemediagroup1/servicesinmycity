@@ -14,7 +14,10 @@ export type LoopEventType =
   | 'consent_shown'
   | 'consent_accepted'
   | 'hvac_intent_detected'
-  | 'ars_handoff_requested';
+  | 'ars_handoff_requested'
+  | 'emergency_detected'
+  | 'pro_referral_suggested'
+  | 'followup_completed';
 
 export interface LoopEvent {
   type: LoopEventType;
