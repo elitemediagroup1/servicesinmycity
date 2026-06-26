@@ -2,8 +2,8 @@
 /**
  * BrandLogo - ServicesInMyCity brand logo component
  * Renders the appropriate logo variant with graceful fallback
- * variant="light"  â white/reversed logo (for dark/navy backgrounds)
- * variant="dark"   â full-color logo (for light backgrounds)
+ * variant="light"  Ã¢ÂÂ white/reversed logo (for dark/navy backgrounds)
+ * variant="dark"   Ã¢ÂÂ full-color logo (for light backgrounds)
  */
 import SafeImage from "./SafeImage.astro";
 
@@ -46,7 +46,7 @@ const logoAlt = "ServicesInMyCity";
      When the logo sits on the dark footer, render the full-color PNG
      through a CSS filter so it reads as a clean white mark.
      Replace with a real reversed asset later. */
-  :global(footer) .brand-logo {
+  :global(footer .brand-logo) {
     filter: brightness(0) invert(1);
   }
 </style>
