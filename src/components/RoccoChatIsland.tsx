@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { emitLoopEvent } from '../lib/loop';
+import ArsHandoffModal from './ArsHandoffModal';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 type Role = 'user' | 'assistant';
@@ -193,6 +194,7 @@ interface Props {
 export default function RoccoChatIsland({ city = '', service = '' }: Props) {
   const sessionId = useRef(getSessionId()).current;
 
+  const [showHandoff, setShowHandoff] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 'welcome',
@@ -280,7 +282,7 @@ export default function RoccoChatIsland({ city = '', service = '' }: Props) {
         const errMsg: Message = {
           id: Date.now().toString() + '_err',
           role: 'assistant',
-          content: data.error ?? "I'm having a little trouble right now. Try again in a moment.",
+          content: "Rocco's taking a breather right now so we can keep the service reliable. Try again a little later.",
         };
         setMessages((prev) => [...prev, errMsg]);
         return;
@@ -317,7 +319,7 @@ export default function RoccoChatIsland({ city = '', service = '' }: Props) {
       const errMsg: Message = {
         id: Date.now().toString() + '_err',
         role: 'assistant',
-        content: "I'm having a little trouble right now. Try again in a moment.",
+        content: "Rocco's taking a breather right now so we can keep the service reliable. Try again a little later.",
       };
       setMessages((prev) => [...prev, errMsg]);
     } finally {
@@ -341,8 +343,14 @@ export default function RoccoChatIsland({ city = '', service = '' }: Props) {
     emitLoopEvent(helpful ? 'helpful_feedback' : 'not_helpful_feedback', { sessionId });
   };
 
+  const lastUserMessage = () =>
+    [...messages].reverse().find((m) => m.role === 'user')?.content ?? '';
+
   const handleARSConnect = () => {
-    emitLoopEvent('ars_handoff_requested', { sessionId, city, service });
+    // Open the consent-first handoff form. The modal owns consent + the
+    // ars_handoff_requested / consent_accepted events and the no-op /api/ars-handoff POST.
+    emitLoopEvent('consent_shown', { sessionId, context: 'ars_handoff', service });
+    setShowHandoff(true);
   };
 
   const handleReferralDeclined = () => {
@@ -479,6 +487,16 @@ export default function RoccoChatIsland({ city = '', service = '' }: Props) {
           )}
         </button>
       </form>
+
+      {showHandoff && (
+        <ArsHandoffModal
+          city={city}
+          service={service || 'hvac'}
+          issue={lastUserMessage()}
+          sessionId={sessionId}
+          onClose={() => setShowHandoff(false)}
+        />
+      )}
     </div>
   );
 }
