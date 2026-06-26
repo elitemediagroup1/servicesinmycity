@@ -4,17 +4,20 @@ import { emitLoopEvent } from '../lib/loop';
 
 interface Props {
   city?: string;
+  service?: string;
+  issue?: string;
+  sessionId?: string;
   onClose: () => void;
 }
 
 // ARS / A.J. Perri HVAC pilot handoff modal (consent-first, STUB).
 // Honest language. Collects intent + contact, but does NOT send real lead data
 // anywhere unless ARS_HANDOFF_ENDPOINT is configured server-side. Stubbed clearly.
-export default function ArsHandoffModal({ city, onClose }: Props) {
+export default function ArsHandoffModal({ city, service = 'hvac', issue = '', sessionId, onClose }: Props) {
   const [submitted, setSubmitted] = useState(false);
   const [consentGiven, setConsentGiven] = useState(false);
   const [form, setForm] = useState({
-    name: '', phone: '', zip: '', issue: '', contactMethod: 'phone',
+    name: '', phone: '', zip: '', issue: issue, contactMethod: 'phone',
   });
 
   function update(k: string, v: string) {
@@ -35,7 +38,7 @@ export default function ArsHandoffModal({ city, onClose }: Props) {
       await fetch('/api/ars-handoff', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, city, consent: true }),
+        body: JSON.stringify({ ...form, city, service, sessionId, consent: true }),
       });
     } catch {
       // Non-fatal. The stub never blocks the user.
