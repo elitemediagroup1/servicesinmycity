@@ -56,7 +56,14 @@ const year = new Date().getFullYear();
     <footer class="site-footer">
       <div class="container footer-grid">
         <div>
-        <BrandLogo variant="light" width={150} height={45} />          <p class="soft-note">Find. Connect. Fix. Serving the Jersey Shore launch area.</p>
+          <!-- Temporary text wordmark: no reversed/white logo asset yet.
+               The full-color PNG cannot render cleanly on the dark footer
+               (its background is not transparent). Swap in a real white
+               logo asset here when available. -->
+          <span style="display:inline-block;font-family:var(--font-display, system-ui, sans-serif);font-weight:800;font-size:1.25rem;letter-spacing:-0.01em;line-height:1;">
+            <span style="color:#FFFFFF;">Services</span><span style="color:var(--sic-orange, #F07A2B);">InMyCity</span>
+          </span>
+          <p class="soft-note">Find. Connect. Fix. Serving the Jersey Shore launch area.</p>
         </div>
         <div>
           <p><a href="/services">Services</a></p>
