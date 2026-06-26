@@ -23,8 +23,8 @@ const {
 
 const logoSrc =
   variant === "dark"
-    ? "/assets/brand/logo-servicesinmycity.svg"
-    : "/assets/brand/logo-servicesinmycity-white.svg";
+    ? "/assets/brand/logo-servicesinmycity.png"
+    : "/assets/brand/logo-servicesinmycity.png";
 
 const logoAlt = "ServicesInMyCity";
 ---
@@ -41,5 +41,12 @@ const logoAlt = "ServicesInMyCity";
   .brand-logo {
     display: block;
     max-width: 100%;
+  }
+  /* Temporary: no dedicated white/reversed logo yet.
+     The light variant (used on dark backgrounds like the footer)
+     renders the full-color PNG through a CSS filter so it reads as
+     a clean monochrome mark. Replace with a real reversed asset later. */
+  .brand-logo-light {
+    filter: brightness(0) invert(1);
   }
 </style>
