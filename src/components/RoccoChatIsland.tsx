@@ -170,11 +170,16 @@ function detectEmergency(text: string): boolean {
 
 // ─── Session ID ───────────────────────────────────────────────────────────────
 function getSessionId(): string {
+  if (typeof sessionStorage === 'undefined') {
+    return 'ssr_' + Math.random().toString(36).slice(2);
+  }
+
   let id = sessionStorage.getItem('rocco_session_id');
   if (!id) {
     id = 'sess_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
     sessionStorage.setItem('rocco_session_id', id);
   }
+
   return id;
 }
 
