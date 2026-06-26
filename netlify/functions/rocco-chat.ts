@@ -170,7 +170,7 @@ export const handler: Handler = async (event) => {
 
   // ââ Call Anthropic âââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
   const apiKey = process.env.ANTHROPIC_API_KEY;
-  const model = process.env.ROCCO_MODEL || 'claude-3-5-sonnet-20241022';
+  const model = process.env.ROCCO_MODEL || 'claude-sonnet-4-6';
   console.log('[rocco-chat] keyPresent:', Boolean(apiKey), 'model:', model);
   if (!apiKey) {
     return { statusCode: 500, body: JSON.stringify({ error: 'AI service is not configured.', code: 'missing_api_key' }) };
