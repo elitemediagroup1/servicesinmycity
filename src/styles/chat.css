@@ -1,140 +1,434 @@
-/* Rocco chat island + ARS handoff modal styles. */
-.rocco-chat { max-width: 720px; margin: 0 auto; }
-.rocco-chat__log {
-  min-height: 280px; max-height: 50vh; overflow-y: auto;
-  border: 1px solid #E5E1D8; border-radius: var(--radius);
-  padding: 16px; background: #fff; margin-bottom: 12px;
-}
-.bubble { margin: 0 0 12px; padding: 10px 14px; border-radius: 12px; max-width: 85%; }
-.bubble strong { display: block; font-size: 0.8rem; opacity: 0.7; margin-bottom: 2px; }
-.bubble p { margin: 0; white-space: pre-wrap; }
-.bubble--user { background: var(--emg-navy); color: #fff; margin-left: auto; }
-.bubble--assistant { background: var(--emg-warm-gray); color: var(--emg-navy); }
-.rocco-chat__form { display: flex; gap: 8px; }
-.rocco-chat__form input { flex: 1; padding: 12px 14px; border: 1px solid #cbd2dc;
-  border-radius: var(--radius); font: inherit; }
-.ars-offer { margin: 12px 0; }
-.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
-  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+/* ─── Rocco Chat — Sprint 5: Trust & Conversion ─────────────────────────────
+   Mobile-first. Accessible. XSS-safe markdown. Feedback UI. Emergency banner.
+   ──────────────────────────────────────────────────────────────────────────── */
 
-.modal-backdrop { position: fixed; inset: 0; background: rgba(30,58,95,0.55);
-  display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
-.modal { background: #fff; border-radius: var(--radius); padding: 24px; max-width: 520px;
-  width: 100%; max-height: 90vh; overflow-y: auto; position: relative; }
-.modal__close { position: absolute; top: 10px; right: 12px; border: 0; background: none;
-  font-size: 1.5rem; cursor: pointer; color: var(--emg-stone); }
-.modal label { display: block; margin: 12px 0; font-weight: 600; }
-.modal input, .modal textarea, .modal select { display: block; width: 100%; margin-top: 4px;
-  padding: 10px 12px; border: 1px solid #cbd2dc; border-radius: 8px; font: inherit; font-weight: 400; }
-.consent-row { display: flex; gap: 8px; align-items: flex-start; font-weight: 400; }
-.consent-row input { width: auto; margin-top: 4px; }
-
-
-/* ─── Sprint 4: Chat message layout ─────────────────────────────────────── */
-.rocco-chat__messages {
-  min-height: 280px;
-  max-height: 50vh;
-  overflow-y: auto;
-  border: 1px solid #E5E1D8;
-  border-radius: var(--radius);
-  padding: 16px;
+/* Layout */
+.rocco-chat {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 400px;
+  max-height: 70vh;
+  font-family: inherit;
+  font-size: 1rem;
+  position: relative;
   background: #fff;
-  margin-bottom: 12px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* ─── Emergency Banner ──────────────────────────────────────────────────────── */
+.rocco-emergency-banner {
+  background: #c0392b;
+  color: #fff;
+  padding: 10px 40px 10px 14px;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  position: relative;
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.rocco-emergency-banner strong {
+  display: block;
+  margin-bottom: 2px;
+}
+
+.rocco-emergency-banner__dismiss {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  line-height: 1;
+  /* Mobile: 44px tap target */
+  min-width: 36px;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rocco-emergency-banner__dismiss:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ─── Messages Area ─────────────────────────────────────────────────────────── */
+.rocco-chat__messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 14px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* Smooth momentum scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
   scroll-behavior: smooth;
 }
 
-.rocco-chat__empty {
-  color: var(--emg-stone);
-  font-style: italic;
-}
-
+/* ─── Message Rows ──────────────────────────────────────────────────────────── */
 .rocco-chat__msg {
-  margin: 0 0 16px;
-  max-width: 88%;
-}
-.rocco-chat__msg--user {
-  margin-left: auto;
-}
-.rocco-chat__msg--assistant {
-  margin-right: auto;
-}
-.rocco-chat__msg-label {
-  display: block;
-  font-size: 0.75rem;
-  font-weight: 600;
-  opacity: 0.65;
-  margin-bottom: 4px;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-.rocco-chat__msg--user .rocco-chat__msg-label { text-align: right; }
-.rocco-chat__msg--user p {
-  background: var(--emg-navy);
-  color: #fff;
-  padding: 10px 14px;
-  border-radius: 12px 12px 2px 12px;
-  margin: 0;
-  white-space: pre-wrap;
-}
-.rocco-chat__msg--assistant p {
-  background: var(--emg-warm-gray, #f5f3ef);
-  color: var(--emg-navy);
-  padding: 10px 14px;
-  border-radius: 12px 12px 12px 2px;
-  margin: 0;
-  white-space: pre-wrap;
-}
-
-/* ─── Typing indicator (3-dot pulse) ─────────────────────────────────────── */
-.rocco-chat__typing {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  max-width: 100%;
 }
-.rocco-chat__dots {
-  display: flex;
-  gap: 5px;
+
+.rocco-chat__msg--user {
+  align-items: flex-end;
+}
+
+/* ─── Bubbles ───────────────────────────────────────────────────────────────── */
+.rocco-chat__bubble {
   padding: 10px 14px;
-  background: var(--emg-warm-gray, #f5f3ef);
-  border-radius: 12px 12px 12px 2px;
-  width: fit-content;
-}
-.rocco-chat__dots span {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--emg-navy, #1a2e4a);
-  opacity: 0.35;
-  animation: rocco-pulse 1.2s ease-in-out infinite;
-}
-.rocco-chat__dots span:nth-child(2) { animation-delay: 0.2s; }
-.rocco-chat__dots span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes rocco-pulse {
-  0%, 80%, 100% { opacity: 0.35; transform: scale(1); }
-  40% { opacity: 1; transform: scale(1.25); }
-}
-
-/* ─── Emergency banner ───────────────────────────────────────────────────── */
-.rocco-emergency-banner {
-  background: #fff3cd;
-  border: 2px solid #e8a000;
-  border-radius: var(--radius);
-  padding: 12px 16px;
-  margin-bottom: 12px;
-  font-size: 0.95rem;
+  border-radius: 16px;
   line-height: 1.5;
-  color: #5a3a00;
-}
-.rocco-emergency-banner strong {
-  display: block;
-  margin-bottom: 4px;
+  font-size: 0.95rem;
+  /* Prevent horizontal overflow on mobile */
+  max-width: min(80%, 420px);
+  word-break: break-word;
+  hyphens: auto;
 }
 
-/* ─── Form improvements ──────────────────────────────────────────────────── */
-.rocco-chat__form input:disabled {
+.rocco-chat__msg--assistant .rocco-chat__bubble {
+  background: #f1f1f0;
+  color: #1a1a1a;
+  border-bottom-left-radius: 4px;
+}
+
+.rocco-chat__msg--user .rocco-chat__bubble {
+  background: #0071e3;
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+/* ─── Markdown Content ──────────────────────────────────────────────────────── */
+.rocco-chat__markdown {
+  display: inline;
+}
+
+.rocco-chat__markdown strong {
+  font-weight: 700;
+}
+
+/* Lists inside assistant bubbles */
+.rocco-chat__list {
+  margin: 6px 0 2px 0;
+  padding-left: 18px;
+}
+
+.rocco-chat__list li {
+  margin: 3px 0;
+  line-height: 1.4;
+}
+
+.rocco-chat__link {
+  color: #0071e3;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+/* ─── Typing Indicator ──────────────────────────────────────────────────────── */
+.rocco-chat__dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 20px;
+  padding: 2px 0;
+}
+
+.rocco-chat__dots span {
+  width: 7px;
+  height: 7px;
+  background: #888;
+  border-radius: 50%;
+  display: inline-block;
+  animation: rocco-dot-pulse 1.2s ease-in-out infinite;
+}
+
+.rocco-chat__dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.rocco-chat__dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes rocco-dot-pulse {
+  0%, 80%, 100% {
+    transform: scale(0.75);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ─── Feedback Row ──────────────────────────────────────────────────────────── */
+.rocco-chat__feedback {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 0 2px;
+}
+
+.rocco-chat__feedback-label {
+  font-size: 0.78rem;
+  color: #888;
+}
+
+.rocco-chat__feedback-btn {
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  color: #555;
+  transition: background 0.15s, border-color 0.15s;
+  /* Touch target */
+  min-height: 32px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rocco-chat__feedback-btn:hover:not(:disabled) {
   background: #f5f5f5;
+  border-color: #bbb;
+}
+
+.rocco-chat__feedback-btn--active {
+  background: #e8f4fd;
+  border-color: #0071e3;
+  color: #0071e3;
+}
+
+.rocco-chat__feedback-btn:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.rocco-chat__feedback-thanks {
+  font-size: 0.78rem;
+  color: #4a9e5c;
+  margin-left: 2px;
+}
+
+/* ─── HVAC CTA ──────────────────────────────────────────────────────────────── */
+.rocco-chat__hvac-cta {
+  background: #f0f7ff;
+  border: 1px solid #c5dfff;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 0.9rem;
+  color: #1a1a1a;
+}
+
+.rocco-chat__hvac-text {
+  margin: 0 0 8px 0;
+  font-weight: 500;
+}
+
+.rocco-chat__hvac-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.rocco-chat__hvac-btn {
+  background: #0071e3;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 7px 16px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  /* Mobile touch target */
+  min-height: 40px;
+  transition: background 0.15s;
+}
+
+.rocco-chat__hvac-btn:hover {
+  background: #005bb5;
+}
+
+.rocco-chat__hvac-decline {
+  background: none;
+  border: 1px solid #bbb;
+  border-radius: 20px;
+  padding: 7px 14px;
+  font-size: 0.88rem;
+  color: #666;
+  cursor: pointer;
+  min-height: 40px;
+  transition: background 0.15s;
+}
+
+.rocco-chat__hvac-decline:hover {
+  background: #f5f5f5;
+}
+
+/* ─── Input Form ────────────────────────────────────────────────────────────── */
+.rocco-chat__form {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 10px 12px;
+  border-top: 1px solid #e8e8e8;
+  background: #fafafa;
+  flex-shrink: 0;
+}
+
+.rocco-chat__input {
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 10px 16px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  line-height: 1.4;
+  resize: none;
+  background: #fff;
+  min-height: 44px;
+  max-height: 120px;
+  overflow-y: auto;
+  /* Prevent iOS zoom on focus (font-size >= 16px or below rule) */
+  font-size: max(16px, 0.95rem);
+  color: #1a1a1a;
+  transition: border-color 0.15s;
+  /* Prevent horizontal overflow */
+  width: 0;
+}
+
+.rocco-chat__input:focus {
+  outline: none;
+  border-color: #0071e3;
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.12);
+}
+
+.rocco-chat__input::placeholder {
+  color: #aaa;
+}
+
+.rocco-chat__input:disabled {
+  background: #f8f8f8;
+  color: #bbb;
+}
+
+.rocco-chat__send {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #0071e3;
+  color: #fff;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s, transform 0.1s;
+  /* Consistent touch target */
+  min-width: 44px;
+}
+
+.rocco-chat__send:hover:not(:disabled) {
+  background: #005bb5;
+}
+
+.rocco-chat__send:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.rocco-chat__send:disabled {
+  background: #ccc;
   cursor: not-allowed;
 }
-.rocco-chat__form button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+
+.rocco-chat__send-dots {
+  font-size: 1.4rem;
+  letter-spacing: -2px;
+  line-height: 1;
+}
+
+/* ─── Screen Reader Utility ─────────────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ─── Mobile Breakpoints ────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .rocco-chat {
+    max-height: 65vh;
+    border-radius: 8px;
+  }
+
+  .rocco-chat__bubble {
+    max-width: 90%;
+    font-size: 0.93rem;
+    padding: 9px 12px;
+  }
+
+  .rocco-chat__messages {
+    padding: 12px 10px 6px;
+    gap: 8px;
+  }
+
+  .rocco-chat__form {
+    padding: 8px 10px;
+  }
+
+  .rocco-chat__hvac-actions {
+    flex-direction: column;
+  }
+
+  .rocco-chat__hvac-btn,
+  .rocco-chat__hvac-decline {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* Keep keyboard from hiding messages on iOS */
+  .rocco-chat__messages {
+    min-height: 200px;
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .rocco-chat__dots span {
+    animation: none;
+    opacity: 0.6;
+  }
+
+  .rocco-chat__send {
+    transition: none;
+  }
+
+  .rocco-chat__messages {
+    scroll-behavior: auto;
+  }
 }

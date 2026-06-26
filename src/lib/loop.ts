@@ -17,7 +17,13 @@ export type LoopEventType =
   | 'ars_handoff_requested'
   | 'emergency_detected'
   | 'pro_referral_suggested'
-  | 'followup_completed';
+  | 'followup_completed'
+  | 'followup_question_asked'
+  | 'conversation_completed'
+  | 'conversation_abandoned'
+  | 'referral_declined'
+  | 'helpful_feedback'
+  | 'not_helpful_feedback';
 
 export interface LoopEvent {
   type: LoopEventType;
