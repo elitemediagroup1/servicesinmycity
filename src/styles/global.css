@@ -1,73 +1,274 @@
-/* ServicesInMyCity design tokens (07_DESIGN_SYSTEM, ADR-003).
-   Orange = product layer (Rocco/homeowner/trust). Navy = shared EMG foundation.
-   Platform Green (Loop) and Success Green (UI feedback) are SEPARATE tokens
-   and must never be identical. Teal = platform layer (developers recognize teal). */
+/* =============================================================================
+   EMG DESIGN SYSTEM — ServicesInMyCity (premium-ui-overhaul-v2)
+   Canonical source: build-bible/07_DESIGN_SYSTEM.md · ADR-003 / ADR-009
+   -----------------------------------------------------------------------------
+   Token architecture (theming-ready for Carl / Lucy / Coach siblings):
+     1. Primitive palette  -> raw values, never used directly by components
+     2. Semantic tokens     -> what components actually reference
+     3. Scales              -> spacing (4px base), radius, elevation, motion, type
+   Colour layers are STRICTLY separated (ADR-009):
+     Orange  = product / Rocco / homeowner.  Teal/Green = Loop platform (dev only).
+   Legacy aliases (--emg-navy, --sic-orange, .hero, .btn, .card ...) are preserved
+   so existing pages/components keep working with zero regressions.
+============================================================================= */
 
 :root {
+     /* --- 1. PRIMITIVE PALETTE ------------------------------------------------ */
   /* Shared EMG foundation */
-  --emg-navy: #1E3A5F;
-  --emg-white: #FFFFFF;
-  --emg-warm-gray: #F4F1EA;
-  --emg-stone: #6B7280;
-  --emg-tan: #D9B27C;
+  --navy-900: #14283F;
+     --navy-700: #1E3A5F;
+     --navy-500: #335277;
+     --white:    #FFFFFF;
+     --cream:    #F4F1EA;
+     --cream-50: #FBFAF6;
+     --stone-200:#E7E3DA;
+     --stone-400:#C9C3B6;
+     --gray-500: #6B7280;
+     --gray-700: #434A54;
 
-  /* ServicesInMyCity product layer */
-  --sic-orange: #F07A2B;
-  --sic-orange-ink: #B85A18;
+  /* ServicesInMyCity / Rocco product accent (orange family) */
+  --orange-600:#D9661F;
+     --orange-500:#F07A2B;
+     --orange-300:#F8A867;
+     --orange-100:#FDE8D6;
+     --orange-ink:#B85A18; /* AA-safe orange text on light */
 
-  /* EMG Loop platform layer (developer-facing, not user-facing) */
-  --loop-teal: #1AA6A6;
-  --loop-platform-green: #1F9E5A; /* Loop ONLY - never UI feedback */
+  /* Warm secondary (sparing) */
+  --tan-400:  #D9B27C;
 
-  /* UI feedback */
-  --success-green: #2E7D32; /* UI feedback ONLY - never Loop */
+  /* EMG Loop platform accent — NOT for homeowner decoration */
+  --teal-500: #1FB6B6;
+     --teal-700: #137B7B;
+     --green-500:#2FB572;
+
+  /* Functional / semantic meaning only */
+  --fn-success:#2FB572;
+     --fn-caution:#E6A700;
+     --fn-danger: #C8442B;
+     --fn-info:   #335277;
+
+  /* --- 2. SEMANTIC TOKENS (components use THESE) --------------------------- */
+  --color-bg-page:        var(--cream);
+     --color-bg-surface:     var(--white);
+     --color-bg-surface-alt: var(--cream-50);
+     --color-border:         var(--stone-200);
+     --color-border-strong:  var(--stone-400);
+
+  --text-primary:   var(--navy-700);
+     --text-secondary: var(--gray-500);
+     --text-on-dark:   var(--white);
+
+  --color-action:      var(--orange-500);
+     --color-action-hover:var(--orange-600);
+     --color-action-tint: var(--orange-100);
+     --color-rocco:       var(--orange-500);
+     --color-link:        var(--navy-700);
+
+  --color-success: var(--fn-success);
+     --color-caution: var(--fn-caution);
+     --color-danger:  var(--fn-danger);
+     --color-info:    var(--fn-info);
+
+  /* Platform tokens — internal/dev surfaces only (ADR-009) */
+  --color-platform:        var(--teal-500);
+     --color-platform-accent: var(--green-500);
+
+  /* --- 3. TYPOGRAPHY ------------------------------------------------------- */
+  --font-body:    'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+     --font-display: 'Manrope', var(--font-body);
+
+  --fs-display: clamp(2.5rem, 5.5vw, 3.25rem);
+     --fs-h1:      clamp(2rem, 4vw, 2.5rem);
+     --fs-h2:      clamp(1.5rem, 2.6vw, 1.875rem);
+     --fs-h3:      1.25rem;
+     --fs-body-lg: 1.125rem;
+     --fs-body:    1rem;
+     --fs-small:   0.875rem;
+     --fs-micro:   0.75rem;
+
+  --lh-tight: 1.12;
+     --lh-snug:  1.3;
+     --lh-body:  1.6;
+     --measure:  68ch;
+
+  /* --- 4. SPACING (4px base) ---------------------------------------------- */
+  --space-1: 4px;
+     --space-2: 8px;
+     --space-3: 12px;
+     --space-4: 16px;
+     --space-5: 24px;
+     --space-6: 32px;
+     --space-7: 48px;
+     --space-8: 64px;
+     --space-9: 96px;
+
+  /* --- 5. RADIUS ---------------------------------------------------------- */
+  --radius-sm:  6px;
+     --radius-md:  10px;
+     --radius-lg:  16px;
+     --radius-pill:999px;
+
+  /* --- 6. ELEVATION (soft, low — calm depth) ------------------------------ */
+  --shadow-1: 0 1px 2px rgba(20,40,63,0.04), 0 2px 8px rgba(20,40,63,0.06);
+     --shadow-2: 0 4px 12px rgba(20,40,63,0.08), 0 12px 32px rgba(20,40,63,0.10);
+     --shadow-focus: 0 0 0 3px rgba(240,122,43,0.35);
+
+  /* --- 7. MOTION ---------------------------------------------------------- */
+  --dur-micro:    120ms;
+  --dur-standard: 200ms;
+  --dur-entrance: 300ms;
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* --- 8. LAYOUT ---------------------------------------------------------- */
+  --container-reading: 720px;
+  --container-wide:    1120px;
+  --container-chat:    640px;
+
+  /* --- LEGACY ALIASES (do not remove — existing pages depend on these) ---- */
+  --emg-navy: var(--navy-700);
+  --emg-white: var(--white);
+  --emg-warm-gray: var(--cream);
+  --emg-stone: var(--gray-500);
+  --emg-tan: var(--tan-400);
+  --sic-orange: var(--orange-500);
+  --sic-orange-ink: var(--orange-ink);
+  --loop-teal: var(--teal-500);
+  --loop-platform-green: #1F9E5A;
+  --success-green: #2E7D32;
   --warning: #B45309;
-  --danger: #B91C1C;
-
-  /* Typography: Inter for UI/body, Manrope for display only */
-  --font-body: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  --font-display: 'Manrope', var(--font-body);
-
-  --radius: 12px;
-  --maxw: 1080px;
+  --danger: var(--fn-danger);
+  --radius: var(--radius-md);
+  --maxw: var(--container-wide);
 }
 
+/* =============================================================================
+   BASE / RESET
+============================================================================= */
 * { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
 body {
-  margin: 0;
-  font-family: var(--font-body);
-  color: var(--emg-navy);
-  background: var(--emg-white);
-  line-height: 1.6;
+     margin: 0;
+     font-family: var(--font-body);
+     font-size: var(--fs-body);
+     color: var(--text-primary);
+     background: var(--color-bg-page);
+     line-height: var(--lh-body);
+     -webkit-font-smoothing: antialiased;
+     text-rendering: optimizeLegibility;
 }
-h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; color: var(--emg-navy); }
-a { color: var(--sic-orange-ink); }
 
-.container { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
-.hero { background: var(--emg-warm-gray); padding: 64px 0; }
-.hero h1 { font-size: clamp(2rem, 5vw, 3.25rem); margin: 0 0 12px; }
-.lede { font-size: 1.15rem; color: var(--emg-stone); max-width: 60ch; }
+h1, h2, h3 { font-family: var(--font-display); line-height: var(--lh-tight); color: var(--text-primary); margin: 0 0 var(--space-4); letter-spacing: -0.015em; }
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); font-weight: 600; }
+p { margin: 0 0 var(--space-4); }
 
-.btn { display: inline-block; padding: 12px 20px; border-radius: var(--radius);
-  font-weight: 600; text-decoration: none; cursor: pointer; border: 0; }
-.btn-primary { background: var(--sic-orange); color: #fff; }
-.btn-primary:hover { background: var(--sic-orange-ink); }
-.btn-secondary { background: transparent; color: var(--emg-navy); border: 2px solid var(--emg-navy); }
+a { color: var(--color-link); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+     outline: none; box-shadow: var(--shadow-focus); border-radius: var(--radius-sm);
+}
 
-.card { border: 1px solid #E5E1D8; border-radius: var(--radius); padding: 20px; background: #fff; }
-.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+img { max-width: 100%; height: auto; display: block; }
 
-.site-header { border-bottom: 1px solid #E5E1D8; }
-.site-header .container { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; }
-.nav a { margin-left: 18px; text-decoration: none; color: var(--emg-navy); font-weight: 500; }
-.brand { font-family: var(--font-display); font-weight: 800; color: var(--emg-navy); text-decoration: none; }
-.brand span { color: var(--sic-orange); }
+/* =============================================================================
+   LAYOUT PRIMITIVES
+============================================================================= */
+.container { max-width: var(--container-wide); margin: 0 auto; padding: 0 var(--space-5); }
+.container-reading { max-width: var(--container-reading); margin: 0 auto; padding: 0 var(--space-5); }
+.section { padding: var(--space-8) 0; }
+.stack > * + * { margin-top: var(--space-4); }
+.eyebrow {
+     display: inline-block; font-size: var(--fs-small); font-weight: 600;
+     letter-spacing: 0.06em; text-transform: uppercase; color: var(--orange-ink);
+     margin-bottom: var(--space-3);
+}
 
-.site-footer { background: var(--emg-navy); color: #cdd6e2; margin-top: 64px; padding: 40px 0; }
-.site-footer a { color: #fff; }
-.footer-grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); }
+/* =============================================================================
+   HERO
+============================================================================= */
+.hero {
+     background:
+            radial-gradient(120% 120% at 100% 0%, var(--orange-100) 0%, transparent 45%),
+            linear-gradient(180deg, var(--cream-50) 0%, var(--cream) 100%);
+     padding: var(--space-9) 0;
+}
+.hero h1 { font-size: var(--fs-display); margin: 0 0 var(--space-4); max-width: 18ch; }
+.lede { font-size: var(--fs-body-lg); color: var(--text-secondary); max-width: 56ch; line-height: var(--lh-snug); }
 
-.disclaimer { background: var(--emg-warm-gray); border-left: 4px solid var(--sic-orange);
-  padding: 14px 16px; border-radius: 8px; font-size: 0.95rem; color: #4b5563; }
-.soft-note { color: var(--emg-stone); font-size: 0.95rem; }
+/* =============================================================================
+   BUTTONS
+============================================================================= */
+.btn {
+     display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+     padding: var(--space-3) var(--space-5); border-radius: var(--radius-pill);
+     font-family: var(--font-body); font-weight: 600; font-size: var(--fs-body);
+     text-decoration: none; cursor: pointer; border: 0;
+     transition: background var(--dur-standard) var(--ease-out),
+                      transform var(--dur-micro) var(--ease-out),
+                      box-shadow var(--dur-standard) var(--ease-out);
+}
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+.btn-primary { background: var(--color-action); color: var(--white); box-shadow: var(--shadow-1); }
+.btn-primary:hover { background: var(--color-action-hover); box-shadow: var(--shadow-2); }
+.btn-secondary { background: transparent; color: var(--text-primary); border: 1.5px solid var(--color-border-strong); }
+.btn-secondary:hover { border-color: var(--text-primary); background: var(--color-bg-surface); }
+.btn-lg { padding: var(--space-4) var(--space-6); font-size: var(--fs-body-lg); }
+
+/* =============================================================================
+   CARDS
+============================================================================= */
+.card {
+     border: 1px solid var(--color-border); border-radius: var(--radius-lg);
+     padding: var(--space-5); background: var(--color-bg-surface);
+     transition: transform var(--dur-standard) var(--ease-out),
+                      box-shadow var(--dur-standard) var(--ease-out),
+                      border-color var(--dur-standard) var(--ease-out);
+}
+a.card { display: block; text-decoration: none; color: var(--text-primary); font-weight: 600; }
+a.card:hover { transform: translateY(-3px); box-shadow: var(--shadow-2); border-color: var(--orange-300); }
+.card h3 { margin-top: 0; }
+
+.grid { display: grid; gap: var(--space-5); grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+
+/* =============================================================================
+   HEADER
+============================================================================= */
+.site-header { border-bottom: 1px solid var(--color-border); background: rgba(251,250,246,0.85); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 50; }
+.site-header .container { display: flex; align-items: center; justify-content: space-between; padding: var(--space-3) var(--space-5); }
+.nav a { margin-left: var(--space-5); text-decoration: none; color: var(--text-primary); font-weight: 500; font-size: var(--fs-small); transition: color var(--dur-micro) var(--ease-out); }
+.nav a:hover { color: var(--orange-ink); }
+.brand { font-family: var(--font-display); font-weight: 800; color: var(--text-primary); text-decoration: none; }
+.brand span { color: var(--color-action); }
+
+/* =============================================================================
+   FOOTER
+============================================================================= */
+.site-footer { background: var(--navy-900); color: #cdd6e2; margin-top: var(--space-9); padding: var(--space-8) 0; }
+.site-footer a { color: var(--white); text-decoration: none; }
+.site-footer a:hover { text-decoration: underline; }
+.footer-grid { display: grid; gap: var(--space-6); grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); }
+
+/* =============================================================================
+   UTILITY / CONTENT BLOCKS
+============================================================================= */
+.disclaimer {
+     background: var(--orange-100); border-left: 4px solid var(--color-action);
+     padding: var(--space-4) var(--space-5); border-radius: var(--radius-md);
+     font-size: var(--fs-small); color: var(--gray-700);
+}
+.soft-note { color: var(--text-secondary); font-size: var(--fs-small); }
+
+/* =============================================================================
+   MOTION PREFERENCES (WCAG 2.1 AA — 07 §9, doc 22)
+============================================================================= */
+@media (prefers-reduced-motion: reduce) {
+     html { scroll-behavior: auto; }
+     *, *::before, *::after {
+            animation-duration: 0.001ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.001ms !important;
+     }
+}
