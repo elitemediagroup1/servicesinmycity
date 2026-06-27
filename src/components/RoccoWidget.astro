@@ -1,10 +1,11 @@
 ---
 // Persistent floating 'Ask Rocco' widget (ADR-012). Appears on every page via
-// BaseLayout. Progressive enhancement (ADR-015): it is a plain link to /ask that
-// upgrades to an inline launcher. Primary content never depends on this JS.
+// BaseLayout. Lucy-style inline launcher: clicking opens the full Rocco chat in a
+// panel on the SAME page (no navigation). Falls back to /ask for no-JS users.
 import SafeImage from "./SafeImage.astro";
+import RoccoChatIsland from "./RoccoChatIsland.tsx";
 ---
-<a class="rocco-fab" href="/ask" aria-label="Ask Rocco, your local repair guide">
+<button class="rocco-fab" id="rocco-fab" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="rocco-panel" aria-label="Ask Rocco, your local repair guide">
   <SafeImage
     src="/assets/rocco/rocco-avatar.png"
     alt="Rocco"
@@ -13,7 +14,47 @@ import SafeImage from "./SafeImage.astro";
     class="rocco-fab__avatar"
   />
   Ask Rocco
-</a>
+</button>
+
+<noscript>
+  <a class="rocco-fab rocco-fab--noscript" href="/ask">Ask Rocco</a>
+</noscript>
+
+<div class="rocco-panel" id="rocco-panel" role="dialog" aria-modal="false" aria-label="Ask Rocco" hidden>
+  <div class="rocco-panel__header">
+    <span class="rocco-panel__title">Ask Rocco</span>
+    <button class="rocco-panel__close" id="rocco-panel-close" type="button" aria-label="Close chat">&times;</button>
+  </div>
+  <div class="rocco-panel__body">
+    <RoccoChatIsland client:load />
+  </div>
+</div>
+
+<script>
+  (function () {
+    var fab = document.getElementById('rocco-fab');
+    var panel = document.getElementById('rocco-panel');
+    var closeBtn = document.getElementById('rocco-panel-close');
+    if (!fab || !panel) return;
+    function open() {
+      panel.hidden = false;
+      requestAnimationFrame(function () { panel.classList.add('rocco-panel--open'); });
+      fab.setAttribute('aria-expanded', 'true');
+    }
+    function close() {
+      panel.classList.remove('rocco-panel--open');
+      fab.setAttribute('aria-expanded', 'false');
+      window.setTimeout(function () { panel.hidden = true; }, 200);
+    }
+    fab.addEventListener('click', function () {
+      if (panel.hidden) { open(); } else { close(); }
+    });
+    if (closeBtn) closeBtn.addEventListener('click', close);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !panel.hidden) close();
+    });
+  })();
+</script>
 
 <style>
   .rocco-fab {
@@ -29,6 +70,9 @@ import SafeImage from "./SafeImage.astro";
     text-decoration: none;
     font-weight: 700;
     padding: 10px 18px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
     border-radius: 999px;
     box-shadow: 0 6px 20px rgba(30,58,95,0.25);
   }
@@ -40,10 +84,46 @@ import SafeImage from "./SafeImage.astro";
     object-fit: cover;
     flex-shrink: 0;
   }
-  /* fallback: SafeImage placeholder inherits border-radius */
   .rocco-fab__avatar .image-fallback {
     border-radius: 50%;
     min-height: 32px;
   }
-  @media print { .rocco-fab { display: none; } }
+  .rocco-panel {
+    position: fixed;
+    right: 20px;
+    bottom: 84px;
+    z-index: 51;
+    width: min(420px, calc(100vw - 32px));
+    height: min(620px, calc(100vh - 120px));
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 12px 40px rgba(30,58,95,0.30);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .rocco-panel--open { opacity: 1; transform: translateY(0); }
+  .rocco-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: var(--sic-navy, #1e3a5f);
+    color: #fff;
+  }
+  .rocco-panel__title { font-weight: 700; }
+  .rocco-panel__close {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 4px;
+  }
+  .rocco-panel__body { flex: 1; min-height: 0; overflow: auto; }
+  @media print { .rocco-fab, .rocco-panel { display: none; } }
 </style>

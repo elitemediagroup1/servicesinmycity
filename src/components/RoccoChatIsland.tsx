@@ -9,6 +9,15 @@ interface Message {
   role: Role;
   content: string;
   showFeedback?: boolean;
+  places?: PlaceTile[];
+}
+
+interface PlaceTile {
+  name: string;
+  address: string;
+  rating?: number;
+  userRatingsTotal?: number;
+  placeId: string;
 }
 
 type FeedbackState = 'none' | 'helpful' | 'not_helpful';
@@ -314,6 +323,9 @@ export default function RoccoChatIsland({ city = '', service = '' }: Props) {
         return [...updated, roccoMsg];
       });
 
+      if (data.meta?.suggested_pro) {
+        searchLocalPros(text);
+      }
       emitLoopEvent('rocco_response_generated', { sessionId, length: data.message.length });
     } catch {
       const errMsg: Message = {
@@ -328,6 +340,38 @@ export default function RoccoChatIsland({ city = '', service = '' }: Props) {
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [input, loading, messages, conversationStarted, hvacDetected, sessionId, city, service]);
+
+  const searchLocalPros = useCallback(async (lastUserText: string) => {
+    try {
+      const q = (service ? service + ' ' : '') + 'repair service';
+      const res = await fetch('/api/local-search', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ query: q.trim(), city }),
+      });
+      if (!res.ok) return;
+      const json = await res.json();
+      const businesses = (json && json.data && json.data.businesses) || [];
+      if (!businesses.length) return;
+      const places: PlaceTile[] = businesses.slice(0, 3).map((b: any) => ({
+        name: b.name,
+        address: b.address,
+        rating: b.rating,
+        userRatingsTotal: b.userRatingsTotal,
+        placeId: b.placeId,
+      }));
+      const tilesMsg: Message = {
+        id: Date.now().toString() + '_places',
+        role: 'assistant',
+        content: city ? 'A few highly-rated local options near ' + city + ' you can look into:' : 'A few highly-rated local options you can look into:',
+        places,
+      };
+      setMessages((prev) => [...prev, tilesMsg]);
+      emitLoopEvent('local_pros_shown', { sessionId, count: places.length });
+    } catch {
+      // Discovery is non-critical; fail silently.
+    }
+  }, [city, service, sessionId]);
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -384,6 +428,30 @@ export default function RoccoChatIsland({ city = '', service = '' }: Props) {
                 : <span>{msg.content}</span>
               }
             </div>
+            {msg.places && msg.places.length > 0 && (
+              <div className="rocco-places" style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '8px' }}>
+                {msg.places.map((p) => (
+                  <a
+                    key={p.placeId}
+                    className="rocco-place-tile"
+                    href={'https://www.google.com/maps/place/?q=place_id:' + p.placeId}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ display: 'block', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '10px 12px', textDecoration: 'none', color: 'inherit', background: '#fff' }}
+                  >
+                    <div style={{ fontWeight: 600, color: '#1e3a5f' }}>{p.name}</div>
+                    <div style={{ fontSize: '13px', color: '#475569', marginTop: '2px' }}>{p.address}</div>
+                    {typeof p.rating === 'number' && (
+                      <div style={{ fontSize: '13px', color: '#475569', marginTop: '4px' }}>
+                        <span style={{ color: '#f07a2b' }}>★</span> {p.rating}
+                        {p.userRatingsTotal ? ' (' + p.userRatingsTotal + ')' : ''}
+                        <span style={{ color: '#f07a2b', marginLeft: '8px' }}>View on Google Maps →</span>
+                      </div>
+                    )}
+                  </a>
+                ))}
+              </div>
+            )}
             {msg.role === 'assistant' && msg.showFeedback && (
               <div className="rocco-chat__feedback" aria-label="Was this helpful?">
                 <span className="rocco-chat__feedback-label">Helpful?</span>
