@@ -2,224 +2,381 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SafeImage from "../components/SafeImage.astro";
 
-/* Service categories — copy only; imagery to be supplied (see asset placeholders).
-   No fabricated stats/counts/reviews (Build Bible invariant). */
+/* PHASE 2 — Homepage as a product experience. No fabricated stats/reviews.
+   Only real asset available is the Rocco headshot; the interactive house is
+   built in pure SVG/CSS so it is genuinely premium today, art-independent. */
+
 const services = [
-  { slug: 'hvac',       title: 'Heating & Cooling', blurb: 'Furnace, AC, heat pumps, no heat / no cool.' },
-  { slug: 'plumbing',   title: 'Plumbing',          blurb: 'Leaks, clogs, water heaters, low pressure.' },
-  { slug: 'electrical', title: 'Electrical',        blurb: 'Breakers, outlets, panels, flickering lights.' },
-  { slug: 'roofing',    title: 'Roofing',           blurb: 'Leaks, missing shingles, storm damage.' },
+  { slug: 'hvac',       label: 'Heating & Cooling', hint: 'No heat, no cool, weird noises' },
+  { slug: 'plumbing',   label: 'Plumbing',          hint: 'Leaks, clogs, water heaters' },
+  { slug: 'electrical', label: 'Electrical',        hint: 'Breakers, outlets, panels' },
+  { slug: 'roofing',    label: 'Roofing',           hint: 'Leaks, shingles, storm damage' },
 ];
 
-/* Interactive-house hotspots. Real illustrated house artwork is an ASSET TO BE
-   PROVIDED (see PHOTOGRAPHY/ILLUSTRATION PLAN). Until then this renders as an
-   accessible labelled grid that deep-links into Ask Rocco with context. */
-const houseSpots = [
-  'Roof','HVAC','Electrical','Kitchen','Bathroom','Garage',
-  'Foundation','Windows','Plumbing','Landscaping','Basement','Attic',
+/* House hotspots positioned over the SVG home (x/y are % within the stage).
+   Each deep-links into Ask Rocco with topic context. */
+const hotspots = [
+  { key: 'roof',        label: 'Roof',        x: 50, y: 10 },
+  { key: 'attic',       label: 'Attic',       x: 50, y: 25 },
+  { key: 'windows',     label: 'Windows',     x: 27, y: 50 },
+  { key: 'hvac',        label: 'HVAC',        x: 84, y: 64 },
+  { key: 'electrical',  label: 'Electrical',  x: 70, y: 46 },
+  { key: 'kitchen',     label: 'Kitchen',     x: 38, y: 62 },
+  { key: 'bathroom',    label: 'Bathroom',    x: 62, y: 62 },
+  { key: 'plumbing',    label: 'Plumbing',    x: 50, y: 76 },
+  { key: 'garage',      label: 'Garage',      x: 16, y: 72 },
+  { key: 'foundation',  label: 'Foundation',  x: 50, y: 92 },
+  { key: 'basement',    label: 'Basement',    x: 33, y: 88 },
+  { key: 'outside',     label: 'Outside',     x: 89, y: 88 },
+];
+
+const prompts = [
+  'My AC is blowing warm air',
+  'Brown stain on my ceiling',
+  'My breaker keeps tripping',
+  'Water pressure dropped',
 ];
 ---
-<BaseLayout title="Ask Rocco before you call anyone" description="Meet Rocco, your local repair guide. Understand the problem, know your options, and connect with a trusted pro only if you need one — on the Jersey Shore.">
+<BaseLayout title="The home guide that knows what&rsquo;s wrong" description="Meet Rocco, the AI guide for your home. Describe what&rsquo;s going on and understand it, price it, and know your next step before anyone touches it.">
 
-  <!-- ============================ HERO ============================ -->
-  <section class="hero home-hero">
-    <div class="container hero-grid">
-      <div class="hero-copy">
-        <span class="eyebrow">Your AI home repair guide</span>
-        <h1>Ask Rocco before you call anyone.</h1>
-        <p class="lede">Tell Rocco what's going on. He'll help you understand the problem, know a fair price range, and figure out your next step — and connect you with a trusted local pro only if you actually need one.</p>
-        <div class="hero-cta">
-          <a class="btn btn-primary btn-lg" href="/ask">Ask Rocco a question</a>
-          <a class="btn btn-secondary btn-lg" href="/how-it-works">See how it works</a>
-        </div>
-        <p class="soft-note hero-trust">Rocco works for you — not the contractor. He equips, he never diagnoses.</p>
+  <!-- ============================== HERO ============================== -->
+  <section class="hero2" aria-label="Ask Rocco">
+    <div class="hero2-aurora" aria-hidden="true"></div>
+    <div class="hero2-inner">
+      <p class="hero2-eyebrow reveal">The AI guide for your home</p>
+      <h1 class="hero2-title reveal">
+        Know what&rsquo;s wrong<br />
+        <span class="hero2-title-accent">before anyone touches it.</span>
+      </h1>
+      <p class="hero2-lede reveal">
+        Tell Rocco what&rsquo;s going on. He&rsquo;ll help you understand it, what a fair price looks like,
+        and your next move &mdash; a trusted local pro only if you actually need one.
+      </p>
+
+      <form class="askbar reveal" action="/ask" method="get" role="search" aria-label="Ask Rocco">
+        <span class="askbar-avatar" aria-hidden="true">
+          <SafeImage src="/assets/rocco/rocco-avatar.png" alt="Rocco" width={40} height={40} class="askbar-avatar-img" />
+        </span>
+        <input class="askbar-input" type="text" name="q" autocomplete="off"
+               placeholder="Describe what&rsquo;s happening in your home&hellip;" aria-label="Describe what is happening in your home" />
+        <button class="askbar-send" type="submit" aria-label="Ask Rocco">
+          <span class="askbar-send-label">Ask Rocco</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </form>
+
+      <div class="hero2-prompts reveal" aria-label="Examples">
+        {prompts.map((p) => (
+          <a class="prompt-chip" href={`/ask?q=${encodeURIComponent(p)}`}>{p}</a>
+        ))}
       </div>
-      <div class="hero-media">
-        <!-- ASSET PLACEHOLDER: replace with lifestyle Jersey Shore home + Rocco
-             composite when available. Currently uses existing Rocco headshot. -->
-        <div class="hero-media-frame">
-          <SafeImage
-            src="/assets/rocco/rocco-hero.png"
-            alt="Rocco, your local repair guide"
-            width={520}
-            height={620}
-            class="hero-rocco-img"
-          />
-          <div class="hero-chip">
-            <span class="hero-chip-dot" aria-hidden="true"></span>
-            Rocco is here to help
-          </div>
-        </div>
-      </div>
+
+      <p class="hero2-trust reveal">Rocco works for you &mdash; not the contractor. He equips, he never diagnoses.</p>
     </div>
   </section>
 
-  <!-- ====================== HOW IT WORKS ====================== -->
-  <section class="section">
-    <div class="container">
-      <h2 class="center-head">How Rocco helps, step by step</h2>
-      <ol class="steps">
-        <li class="step">
-          <span class="step-num">1</span>
-          <h3>Tell Rocco</h3>
-          <p>Describe what's wrong in plain words. No forms, no jargon.</p>
-        </li>
-        <li class="step">
-          <span class="step-num">2</span>
-          <h3>Understand it</h3>
-          <p>Rocco explains what's likely going on and what it depends on.</p>
-        </li>
-        <li class="step">
-          <span class="step-num">3</span>
-          <h3>Know your options</h3>
-          <p>Fair price ranges and the right questions to ask before you hire.</p>
-        </li>
-        <li class="step">
-          <span class="step-num">4</span>
-          <h3>Connect if needed</h3>
-          <p>Only if you want one, Rocco points you to trusted local pros.</p>
-        </li>
-      </ol>
+  <!-- ========================= THE HOUSE ========================= -->
+  <section class="house2" aria-labelledby="house2-title">
+    <div class="house2-head reveal">
+      <p class="section-eyebrow">Explore your home</p>
+      <h2 id="house2-title">Point at the problem.<br /><span class="muted-accent">Rocco takes it from there.</span></h2>
     </div>
-  </section>
 
-  <!-- =================== INTERACTIVE HOUSE =================== -->
-  <section class="section house-section">
-    <div class="container">
-      <div class="house-head">
-        <span class="eyebrow">Explore your home</span>
-        <h2 class="center-head">Tap any part of the home and Rocco already knows what you're asking about</h2>
-      </div>
-      <!-- ASSET PLACEHOLDER: signature illustrated cutaway house with clickable
-           hotspots. Awaiting illustration. Accessible labelled grid is the
-           progressive-enhancement fallback and deep-links into Ask Rocco. -->
-      <div class="house-grid" role="list" aria-label="Areas of the home">
-        {houseSpots.map((spot) => (
-          <a class="house-spot" role="listitem" href={`/ask?topic=${encodeURIComponent(spot)}`}>
-            <span class="house-spot-label">{spot}</span>
-            <span class="house-spot-cta" aria-hidden="true">Ask Rocco →</span>
+    <div class="stage reveal">
+      <!-- ASSET PLACEHOLDER: premium 3D illustrated home goes here.
+           This SVG is an intentional, on-brand interim that already feels
+           designed (not a broken image). Hotspots overlay it. -->
+      <svg class="stage-house" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <defs>
+          <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#FBFAF6"/><stop offset="1" stop-color="#EDE7DA"/>
+          </linearGradient>
+          <linearGradient id="roof" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#335277"/><stop offset="1" stop-color="#1E3A5F"/>
+          </linearGradient>
+          <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0" stop-color="#22405F"/><stop offset="1" stop-color="#16304C"/>
+          </linearGradient>
+        </defs>
+        <!-- ground -->
+        <rect x="0" y="84" width="100" height="16" fill="#16304C"/>
+        <!-- house body -->
+        <rect x="26" y="40" width="48" height="46" rx="1.5" fill="url(#wall)" stroke="#D8D0C0" stroke-width="0.4"/>
+        <!-- roof -->
+        <polygon points="22,42 50,18 78,42" fill="url(#roof)"/>
+        <!-- chimney -->
+        <rect x="64" y="26" width="5" height="10" fill="#28465F"/>
+        <!-- garage -->
+        <rect x="10" y="60" width="16" height="26" rx="1" fill="url(#wall)" stroke="#D8D0C0" stroke-width="0.4"/>
+        <rect x="12" y="64" width="12" height="22" rx="0.6" fill="#E2DACB"/>
+        <!-- door -->
+        <rect x="46" y="64" width="8" height="22" rx="0.6" fill="#C98A4B"/>
+        <!-- windows -->
+        <rect x="32" y="48" width="9" height="9" rx="0.6" fill="#BFD7E6"/>
+        <rect x="59" y="48" width="9" height="9" rx="0.6" fill="#BFD7E6"/>
+      </svg>
+
+      <div class="hotspots">
+        {hotspots.map((h) => (
+          <a class="hotspot" href={`/ask?topic=${encodeURIComponent(h.label)}`}
+             style={`left:${h.x}%; top:${h.y}%`} data-key={h.key} aria-label={`Ask Rocco about ${h.label}`}>
+            <span class="hotspot-dot" aria-hidden="true"></span>
+            <span class="hotspot-label">{h.label}</span>
           </a>
         ))}
       </div>
-      <p class="soft-note house-note">Illustrated interactive home coming soon — for now, pick an area to start.</p>
+    </div>
+    <p class="house2-note reveal">Tap any area to start &mdash; Rocco opens already knowing what you&rsquo;re asking about.</p>
+  </section>
+
+  <!-- ===================== THE JOURNEY ===================== -->
+  <section class="journey" aria-labelledby="journey-title">
+    <div class="journey-head reveal">
+      <p class="section-eyebrow">How it feels</p>
+      <h2 id="journey-title">From &ldquo;what is that?&rdquo; to handled.</h2>
+    </div>
+    <div class="journey-track">
+      <article class="jcard jcard--problem reveal">
+        <span class="jcard-step">01</span>
+        <h3>You notice something</h3>
+        <p>A noise, a leak, a smell, a number that doesn&rsquo;t add up. You don&rsquo;t know what it means yet.</p>
+        <div class="jcard-visual jcard-visual--problem" aria-hidden="true">
+          <span class="pulse-ring"></span><span class="pulse-core"></span>
+        </div>
+      </article>
+      <span class="journey-arrow" aria-hidden="true">
+        <svg width="40" height="16" viewBox="0 0 40 16" fill="none"><path d="M0 8h36M30 2l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <article class="jcard jcard--guide reveal">
+        <span class="jcard-step">02</span>
+        <h3>Rocco explains it</h3>
+        <p>Plain words. What&rsquo;s likely going on, what it depends on, and a fair price range &mdash; no fear, no upsell.</p>
+        <div class="jcard-visual jcard-visual--guide" aria-hidden="true">
+          <span class="chat-line w70"></span><span class="chat-line w90"></span><span class="chat-line w50"></span>
+        </div>
+      </article>
+      <span class="journey-arrow" aria-hidden="true">
+        <svg width="40" height="16" viewBox="0 0 40 16" fill="none"><path d="M0 8h36M30 2l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <article class="jcard jcard--pro reveal">
+        <span class="jcard-step">03</span>
+        <h3>A trusted pro, only if needed</h3>
+        <p>If it&rsquo;s a real job, Rocco points you to a vetted local pro. Earned, never bought.</p>
+        <div class="jcard-visual jcard-visual--pro" aria-hidden="true">
+          <span class="check-badge">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+      </article>
     </div>
   </section>
 
-  <!-- ===================== SERVICE CARDS ===================== -->
-  <section class="section">
-    <div class="container">
-      <h2 class="center-head">Popular services</h2>
-      <div class="grid service-grid">
-        {services.map((s) => (
-          <a class="card service-card" href={`/services/${s.slug}`}>
-            <!-- ASSET PLACEHOLDER: premium service photography goes here -->
-            <span class="service-thumb" aria-hidden="true"></span>
-            <span class="service-title">{s.title}</span>
-            <span class="service-blurb">{s.blurb}</span>
-            <span class="service-link">Ask Rocco →</span>
-          </a>
-        ))}
-      </div>
-      <p class="center-head services-all"><a href="/services">See all services →</a></p>
+  <!-- ===================== SERVICES ===================== -->
+  <section class="services2" aria-labelledby="services2-title">
+    <div class="services2-head reveal">
+      <p class="section-eyebrow">Wherever it hurts</p>
+      <h2 id="services2-title">Rocco knows your whole home.</h2>
+    </div>
+    <div class="services2-grid">
+      {services.map((s) => (
+        <a class="scard reveal" href={`/services/${s.slug}`}>
+          <span class="scard-glow" aria-hidden="true"></span>
+          <span class="scard-label">{s.label}</span>
+          <span class="scard-hint">{s.hint}</span>
+          <span class="scard-cta">Ask Rocco
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </a>
+      ))}
+    </div>
+    <p class="services2-all reveal"><a href="/services">See everything Rocco covers &rarr;</a></p>
+  </section>
+
+  <!-- ===================== ROCCO BAND ===================== -->
+  <section class="roccoband" aria-labelledby="roccoband-title">
+    <div class="roccoband-media reveal">
+      <SafeImage src="/assets/rocco/rocco-hero.png" alt="Rocco, your home guide" width={520} height={620} class="roccoband-img" />
+    </div>
+    <div class="roccoband-copy reveal">
+      <p class="section-eyebrow on-dark">Meet your guide</p>
+      <h2 id="roccoband-title">Rocco has your back &mdash; not your wallet.</h2>
+      <p class="roccoband-lede">Twenty years in the trades, distilled into a guide who explains, protects, and never pushes. He tells you when something&rsquo;s simple, when it&rsquo;s serious, and when he isn&rsquo;t sure.</p>
+      <a class="btn-ghost" href="/about/rocco">More about Rocco &rarr;</a>
     </div>
   </section>
 
-  <!-- ===================== TRUST STRIP ====================== -->
-  <section class="section trust-section">
-    <div class="container">
-      <div class="grid trust-grid">
-        <div class="trust-card">
-          <h3>We never sell your questions</h3>
-          <p>What you ask Rocco stays private. We don't auction your problem to the highest bidder.</p>
-        </div>
-        <div class="trust-card">
-          <h3>Advice comes before referrals</h3>
-          <p>You get understanding first. A pro only if you actually need one.</p>
-        </div>
-        <div class="trust-card">
-          <h3>Recommendations are earned</h3>
-          <p>Pros are never ranked by who pays us. Trust is the product.</p>
-        </div>
-        <div class="trust-card">
-          <h3>We tell you when we don't know</h3>
-          <p>Rocco is honest about uncertainty and tells you how to find out.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== CLOSING CTA ====================== -->
-  <section class="section closing">
-    <div class="container closing-inner">
-      <h2>Got something that needs fixing?</h2>
-      <p class="lede closing-lede">Start with a question. It's free, and Rocco gets straight to the point.</p>
-      <a class="btn btn-primary btn-lg" href="/ask">Ask Rocco a question</a>
-    </div>
-  </section>
-
-  <!-- ===================== AREA NOTE ====================== -->
-  <section class="container" style="padding:0 var(--space-5) var(--space-8)">
-    <div class="disclaimer">
-      Serving the Jersey Shore launch area — Stafford, Manahawkin, Barnegat, LBI, Toms River, Forked River, Waretown and more. If we can't help in your town yet, Rocco will tell you straight.
-    </div>
+  <!-- ===================== CLOSING ===================== -->
+  <section class="closing2 reveal" aria-labelledby="closing2-title">
+    <h2 id="closing2-title">Something feel off at home?</h2>
+    <p>Start with a question. It&rsquo;s free, and Rocco gets straight to the point.</p>
+    <a class="btn-xl" href="/ask">Ask Rocco a question</a>
+    <p class="closing2-area">Serving the Jersey Shore launch area &mdash; Stafford, Manahawkin, Barnegat, LBI, Toms River, Forked River, Waretown and more. If we can&rsquo;t help in your town yet, Rocco will tell you straight.</p>
   </section>
 
   <style>
-    .home-hero { padding-block: var(--space-9); }
-    .hero-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: var(--space-8); align-items: center; }
-    .hero-cta { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: var(--space-6) 0 var(--space-4); }
-    .hero-trust { margin: 0; }
-    .hero-media { display: flex; justify-content: center; }
-    .hero-media-frame { position: relative; width: min(100%, 460px); }
-        .hero-rocco-img { display: block; width: 100%; height: auto; max-height: 560px; object-fit: cover; object-position: center top; border-radius: var(--radius-lg); box-shadow: var(--shadow-2); }
-    .hero-chip { position: absolute; left: var(--space-4); bottom: var(--space-4); display: inline-flex; align-items: center; gap: var(--space-2); background: var(--color-bg-surface); color: var(--text-primary); font-size: var(--fs-small); font-weight: 600; padding: var(--space-2) var(--space-4); border-radius: var(--radius-pill); box-shadow: var(--shadow-1); }
-    .hero-chip-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-success); }
+    /* ===== Shared section primitives ===== */
+    .section-eyebrow { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--orange-ink); margin: 0 0 var(--space-4); }
+    .section-eyebrow.on-dark { color: var(--orange-300); }
+    .muted-accent { color: var(--gray-500); }
 
-    .center-head { text-align: center; max-width: 24ch; margin-inline: auto; }
-    .steps { list-style: none; padding: 0; margin: var(--space-7) 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-5); }
-    .step { background: var(--color-bg-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5); }
-    .step-num { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: var(--radius-pill); background: var(--color-action-tint); color: var(--orange-ink); font-family: var(--font-display); font-weight: 800; margin-bottom: var(--space-3); }
-    .step h3 { margin: 0 0 var(--space-2); }
-    .step p { margin: 0; color: var(--text-secondary); font-size: var(--fs-small); }
+    /* ===== Scroll reveal ===== */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); }
+    .reveal.is-in { opacity: 1; transform: none; }
 
-    .house-section { background: var(--color-bg-surface-alt); border-radius: var(--radius-lg); }
-    .house-head { margin-bottom: var(--space-6); text-align: center; }
-    .house-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); }
-    .house-spot { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-5); background: var(--color-bg-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); text-decoration: none; color: var(--text-primary); transition: transform var(--dur-standard) var(--ease-out), box-shadow var(--dur-standard) var(--ease-out), border-color var(--dur-standard) var(--ease-out); }
-    .house-spot:hover { transform: translateY(-3px); box-shadow: var(--shadow-2); border-color: var(--orange-300); }
-    .house-spot-label { font-family: var(--font-display); font-weight: 700; }
-    .house-spot-cta { font-size: var(--fs-small); color: var(--orange-ink); font-weight: 600; }
-    .house-note { text-align: center; margin-top: var(--space-5); }
+    /* ===== HERO ===== */
+    .hero2 { position: relative; overflow: hidden; padding: clamp(80px, 14vh, 180px) var(--space-5) clamp(64px, 10vh, 120px); text-align: center;
+      background: radial-gradient(120% 80% at 50% -10%, #fff 0%, var(--cream) 60%); }
+    .hero2-aurora { position: absolute; inset: -20% -10% auto -10%; height: 70%; z-index: 0; pointer-events: none; filter: blur(60px); opacity: 0.7;
+      background:
+        radial-gradient(40% 60% at 20% 30%, rgba(240,122,43,0.30), transparent 70%),
+        radial-gradient(40% 60% at 80% 20%, rgba(217,178,124,0.35), transparent 70%),
+        radial-gradient(50% 60% at 55% 60%, rgba(31,182,182,0.12), transparent 70%);
+      animation: drift 18s ease-in-out infinite alternate; }
+    @keyframes drift { from { transform: translate3d(-2%, -2%, 0) scale(1); } to { transform: translate3d(3%, 2%, 0) scale(1.08); } }
+    .hero2-inner { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; }
+    .hero2-eyebrow { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--orange-ink); margin: 0 0 var(--space-5); }
+    .hero2-title { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.03em; line-height: 1.04;
+      font-size: clamp(2.6rem, 7vw, 5.25rem); margin: 0 0 var(--space-5); color: var(--navy-900); }
+    .hero2-title-accent { color: var(--navy-500); }
+    .hero2-lede { font-size: clamp(1.1rem, 1.6vw, 1.375rem); color: var(--gray-700); max-width: 60ch; margin: 0 auto var(--space-7); line-height: 1.5; }
 
-    .service-grid { margin-top: var(--space-6); }
-    .service-card { display: flex; flex-direction: column; gap: var(--space-2); }
-    .service-thumb { display: block; aspect-ratio: 16/10; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--orange-100), var(--cream)); margin-bottom: var(--space-3); }
-    .service-title { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-h3); }
-    .service-blurb { color: var(--text-secondary); font-size: var(--fs-small); font-weight: 400; }
-    .service-link { color: var(--orange-ink); font-weight: 600; font-size: var(--fs-small); margin-top: var(--space-2); }
-    .services-all { margin-top: var(--space-6); }
-    .services-all a { color: var(--orange-ink); font-weight: 600; text-decoration: none; }
+    /* Ask-bar (ChatGPT-meets-Apple) */
+    .askbar { display: flex; align-items: center; gap: var(--space-3); width: min(100%, 660px); margin: 0 auto var(--space-5);
+      background: #fff; border: 1px solid var(--stone-200); border-radius: var(--radius-pill);
+      padding: 8px 8px 8px 10px; box-shadow: 0 10px 30px rgba(20,40,63,0.10), 0 2px 6px rgba(20,40,63,0.05);
+      transition: box-shadow var(--dur-standard) var(--ease-out), border-color var(--dur-standard) var(--ease-out); }
+    .askbar:focus-within { border-color: var(--orange-300); box-shadow: 0 14px 40px rgba(240,122,43,0.18), 0 2px 8px rgba(20,40,63,0.06); }
+    .askbar-avatar { flex: 0 0 auto; width: 40px; height: 40px; border-radius: 50%; overflow: hidden; background: var(--orange-100); box-shadow: 0 0 0 2px var(--orange-300); }
+    .askbar-avatar-img { width: 40px; height: 40px; object-fit: cover; object-position: center top; }
+    .askbar-input { flex: 1 1 auto; border: 0; outline: none; background: transparent; font: inherit; font-size: 1.05rem; color: var(--navy-700); padding: 6px 4px; min-width: 0; }
+    .askbar-input::placeholder { color: var(--gray-500); }
+    .askbar-send { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 8px; border: 0; cursor: pointer;
+      background: var(--orange-500); color: #fff; font-weight: 700; font-size: 0.98rem; border-radius: var(--radius-pill); padding: 12px 20px;
+      transition: background var(--dur-standard) var(--ease-out), transform var(--dur-micro) var(--ease-out); }
+    .askbar-send:hover { background: var(--orange-600); transform: translateY(-1px); }
 
-    .trust-grid { margin: 0; }
-    .trust-card { background: var(--color-bg-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5); }
-    .trust-card h3 { margin: 0 0 var(--space-2); }
-    .trust-card p { margin: 0; color: var(--text-secondary); font-size: var(--fs-small); }
+    .hero2-prompts { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2); max-width: 640px; margin: 0 auto var(--space-6); }
+    .prompt-chip { font-size: 0.9rem; color: var(--gray-700); text-decoration: none; background: rgba(255,255,255,0.7); border: 1px solid var(--stone-200);
+      padding: 8px 14px; border-radius: var(--radius-pill); transition: all var(--dur-standard) var(--ease-out); }
+    .prompt-chip:hover { border-color: var(--orange-300); color: var(--orange-ink); background: #fff; transform: translateY(-1px); }
+    .hero2-trust { font-size: 0.9rem; color: var(--gray-500); margin: 0; }
 
-    .closing { text-align: center; }
-    .closing-inner { background: var(--navy-700); color: var(--text-on-dark); border-radius: var(--radius-lg); padding: var(--space-8) var(--space-5); }
-    .closing-inner h2 { color: var(--text-on-dark); }
-    .closing-lede { color: #cdd6e2; margin-inline: auto; max-width: 48ch; margin-bottom: var(--space-6); }
+    /* ===== THE HOUSE ===== */
+    .house2 { background: radial-gradient(120% 100% at 50% 0%, #1E3A5F 0%, #14283F 70%); color: #fff; padding: clamp(72px, 10vh, 130px) var(--space-5); text-align: center; }
+    .house2-head h2 { color: #fff; font-size: clamp(2rem, 4.5vw, 3.25rem); letter-spacing: -0.02em; line-height: 1.08; }
+    .house2 .muted-accent { color: var(--orange-300); }
+    .stage { position: relative; width: min(100%, 820px); margin: var(--space-7) auto 0; aspect-ratio: 4 / 3; }
+    .stage-house { position: absolute; inset: 0; width: 100%; height: 100%; filter: drop-shadow(0 30px 60px rgba(0,0,0,0.45)); }
+    .hotspots { position: absolute; inset: 0; }
+    .hotspot { position: absolute; transform: translate(-50%, -50%); display: inline-flex; align-items: center; gap: 8px;
+      text-decoration: none; color: #fff; padding: 6px 6px 6px 6px; border-radius: var(--radius-pill); }
+    .hotspot-dot { position: relative; width: 16px; height: 16px; border-radius: 50%; background: var(--orange-500); box-shadow: 0 0 0 4px rgba(240,122,43,0.25); flex: 0 0 auto; }
+    .hotspot-dot::after { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 2px solid rgba(240,122,43,0.6); animation: ping 2.4s var(--ease-out) infinite; }
+    @keyframes ping { 0% { transform: scale(0.7); opacity: 0.9; } 80%,100% { transform: scale(1.8); opacity: 0; } }
+    .hotspot-label { font-size: 0.78rem; font-weight: 600; color: #fff; background: rgba(20,40,63,0.7); backdrop-filter: blur(4px);
+      padding: 4px 10px; border-radius: var(--radius-pill); white-space: nowrap; opacity: 0; transform: translateX(-4px);
+      transition: opacity var(--dur-standard) var(--ease-out), transform var(--dur-standard) var(--ease-out); }
+    .hotspot:hover .hotspot-label, .hotspot:focus-visible .hotspot-label { opacity: 1; transform: none; }
+    .hotspot:hover .hotspot-dot, .hotspot:focus-visible .hotspot-dot { background: var(--orange-300); box-shadow: 0 0 24px 6px rgba(240,122,43,0.7), 0 0 0 4px rgba(240,122,43,0.3); }
+    .house2-note { color: #aebcce; font-size: 0.95rem; margin: var(--space-7) auto 0; max-width: 50ch; }
 
-    @media (max-width: 900px) {
-      .hero-grid { grid-template-columns: 1fr; gap: var(--space-7); }
-      .hero-media { order: -1; }
-      .steps { grid-template-columns: repeat(2, 1fr); }
-      .house-grid { grid-template-columns: repeat(3, 1fr); }
+    /* ===== JOURNEY ===== */
+    .journey { padding: clamp(72px, 10vh, 130px) var(--space-5); max-width: 1180px; margin: 0 auto; text-align: center; }
+    .journey-head h2 { font-size: clamp(2rem, 4.5vw, 3.25rem); letter-spacing: -0.02em; }
+    .journey-track { display: flex; align-items: stretch; justify-content: center; gap: var(--space-4); margin-top: var(--space-8); }
+    .jcard { flex: 1 1 0; text-align: left; background: var(--cream-50); border: 1px solid var(--stone-200); border-radius: var(--radius-lg);
+      padding: var(--space-6); position: relative; overflow: hidden; min-height: 280px; transition: transform var(--dur-standard) var(--ease-out), box-shadow var(--dur-standard) var(--ease-out); }
+    .jcard:hover { transform: translateY(-4px); box-shadow: var(--shadow-2); }
+    .jcard-step { font-family: var(--font-display); font-weight: 800; font-size: 0.9rem; color: var(--orange-ink); letter-spacing: 0.1em; }
+    .jcard h3 { margin: var(--space-3) 0 var(--space-2); font-size: 1.3rem; }
+    .jcard p { color: var(--gray-700); margin: 0; font-size: 0.98rem; }
+    .jcard-visual { position: absolute; right: var(--space-5); bottom: var(--space-5); display: flex; align-items: center; gap: 6px; }
+    .pulse-core { width: 14px; height: 14px; border-radius: 50%; background: var(--orange-500); }
+    .pulse-ring { position: absolute; width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--orange-300); animation: ping 2.4s var(--ease-out) infinite; }
+    .jcard-visual--guide { flex-direction: column; align-items: flex-start; gap: 7px; right: var(--space-5); bottom: var(--space-6); }
+    .chat-line { height: 9px; border-radius: 6px; background: linear-gradient(90deg, var(--orange-300), var(--orange-100)); }
+    .chat-line.w70 { width: 84px; } .chat-line.w90 { width: 108px; } .chat-line.w50 { width: 60px; }
+    .check-badge { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(47,181,114,0.14); color: var(--fn-success); }
+    .journey-arrow { display: flex; align-items: center; color: var(--stone-400); flex: 0 0 auto; }
+
+    /* ===== SERVICES ===== */
+    .services2 { padding: clamp(64px, 9vh, 120px) var(--space-5); max-width: 1180px; margin: 0 auto; text-align: center; }
+    .services2-head h2 { font-size: clamp(2rem, 4.5vw, 3.25rem); letter-spacing: -0.02em; }
+    .services2-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); margin-top: var(--space-8); }
+    .scard { position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 6px;
+      background: #fff; border: 1px solid var(--stone-200); border-radius: var(--radius-lg); padding: var(--space-6) var(--space-5); min-height: 200px;
+      text-decoration: none; color: var(--navy-700); transition: transform var(--dur-standard) var(--ease-out), box-shadow var(--dur-standard) var(--ease-out), border-color var(--dur-standard) var(--ease-out); }
+    .scard-glow { position: absolute; inset: auto -30% -40% -30%; height: 70%; background: radial-gradient(60% 100% at 50% 100%, rgba(240,122,43,0.18), transparent 70%);
+      opacity: 0; transition: opacity var(--dur-standard) var(--ease-out); }
+    .scard:hover { transform: translateY(-5px); box-shadow: var(--shadow-2); border-color: var(--orange-300); }
+    .scard:hover .scard-glow { opacity: 1; }
+    .scard-label { font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; margin-top: auto; }
+    .scard-hint { color: var(--gray-500); font-size: 0.9rem; }
+    .scard-cta { display: inline-flex; align-items: center; gap: 6px; color: var(--orange-ink); font-weight: 700; font-size: 0.9rem; margin-top: var(--space-3); }
+    .services2-all { margin-top: var(--space-7); }
+    .services2-all a { color: var(--orange-ink); font-weight: 700; text-decoration: none; }
+
+    /* ===== ROCCO BAND ===== */
+    .roccoband { display: grid; grid-template-columns: 0.9fr 1.1fr; align-items: center; gap: clamp(32px, 5vw, 80px);
+      background: linear-gradient(120deg, #14283F 0%, #1E3A5F 100%); color: #fff; padding: clamp(56px, 8vh, 110px) clamp(24px, 6vw, 96px); }
+    .roccoband-media { display: flex; justify-content: center; }
+    .roccoband-img { width: min(100%, 420px); height: auto; max-height: 520px; object-fit: cover; object-position: center top;
+      border-radius: var(--radius-lg); box-shadow: 0 30px 60px rgba(0,0,0,0.4); }
+    .roccoband-copy h2 { color: #fff; font-size: clamp(1.9rem, 3.6vw, 2.75rem); letter-spacing: -0.02em; line-height: 1.1; }
+    .roccoband-lede { color: #cdd6e2; font-size: 1.1rem; line-height: 1.55; max-width: 50ch; margin-bottom: var(--space-6); }
+    .btn-ghost { display: inline-flex; align-items: center; gap: 6px; color: #fff; font-weight: 700; text-decoration: none;
+      border: 1.5px solid rgba(255,255,255,0.4); padding: 12px 22px; border-radius: var(--radius-pill); transition: all var(--dur-standard) var(--ease-out); }
+    .btn-ghost:hover { background: #fff; color: var(--navy-700); border-color: #fff; }
+
+    /* ===== CLOSING ===== */
+    .closing2 { text-align: center; padding: clamp(72px, 11vh, 150px) var(--space-5); max-width: 720px; margin: 0 auto; }
+    .closing2 h2 { font-size: clamp(2.2rem, 5vw, 3.5rem); letter-spacing: -0.025em; }
+    .closing2 > p { color: var(--gray-700); font-size: 1.15rem; margin-bottom: var(--space-6); }
+    .btn-xl { display: inline-flex; align-items: center; justify-content: center; background: var(--orange-500); color: #fff; font-weight: 700; font-size: 1.1rem;
+      padding: 18px 36px; border-radius: var(--radius-pill); text-decoration: none; box-shadow: 0 12px 30px rgba(240,122,43,0.3);
+      transition: background var(--dur-standard) var(--ease-out), transform var(--dur-micro) var(--ease-out); }
+    .btn-xl:hover { background: var(--orange-600); transform: translateY(-2px); }
+    .closing2-area { color: var(--gray-500); font-size: 0.9rem; margin-top: var(--space-7); }
+
+    /* ===== MOBILE (intentional, not stacked) ===== */
+    @media (max-width: 960px) {
+      .journey-track { flex-direction: column; align-items: stretch; }
+      .journey-arrow { transform: rotate(90deg); align-self: center; }
+      .services2-grid { grid-template-columns: repeat(2, 1fr); }
+      .roccoband { grid-template-columns: 1fr; text-align: center; }
+      .roccoband-copy { display: flex; flex-direction: column; align-items: center; }
+      .roccoband-lede { margin-inline: auto; }
     }
     @media (max-width: 560px) {
-      .steps { grid-template-columns: 1fr; }
-      .house-grid { grid-template-columns: repeat(2, 1fr); }
-      .hero-cta .btn { width: 100%; }
+      .hero2 { padding-top: 64px; }
+      .askbar { flex-wrap: wrap; border-radius: var(--radius-lg); padding: 10px; }
+      .askbar-input { width: 100%; order: 2; padding: 10px 6px; }
+      .askbar-send { order: 3; width: 100%; justify-content: center; }
+      .askbar-avatar { order: 1; }
+      .services2-grid { grid-template-columns: 1fr; }
+      .stage { aspect-ratio: 3 / 4; }
+      .hotspot-label { opacity: 1; transform: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero2-aurora, .hotspot-dot::after, .pulse-ring { animation: none !important; }
+      .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
     }
   </style>
+
+  <script is:inline>
+    (function () {
+      var els = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        els.forEach(function (el) { el.classList.add('is-in'); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      els.forEach(function (el) { io.observe(el); });
+    })();
+  </script>
 </BaseLayout>
