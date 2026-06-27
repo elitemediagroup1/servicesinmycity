@@ -1,57 +1,225 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SafeImage from "../components/SafeImage.astro";
+
+/* Service categories — copy only; imagery to be supplied (see asset placeholders).
+   No fabricated stats/counts/reviews (Build Bible invariant). */
+const services = [
+  { slug: 'hvac',       title: 'Heating & Cooling', blurb: 'Furnace, AC, heat pumps, no heat / no cool.' },
+  { slug: 'plumbing',   title: 'Plumbing',          blurb: 'Leaks, clogs, water heaters, low pressure.' },
+  { slug: 'electrical', title: 'Electrical',        blurb: 'Breakers, outlets, panels, flickering lights.' },
+  { slug: 'roofing',    title: 'Roofing',           blurb: 'Leaks, missing shingles, storm damage.' },
+];
+
+/* Interactive-house hotspots. Real illustrated house artwork is an ASSET TO BE
+   PROVIDED (see PHOTOGRAPHY/ILLUSTRATION PLAN). Until then this renders as an
+   accessible labelled grid that deep-links into Ask Rocco with context. */
+const houseSpots = [
+  'Roof','HVAC','Electrical','Kitchen','Bathroom','Garage',
+  'Foundation','Windows','Plumbing','Landscaping','Basement','Attic',
+];
 ---
-<BaseLayout title="Find trusted local pros" description="Meet Rocco, your local repair guide. Find trusted local pros and get the job done right on the Jersey Shore.">
-  <section class="hero">
+<BaseLayout title="Ask Rocco before you call anyone" description="Meet Rocco, your local repair guide. Understand the problem, know your options, and connect with a trusted pro only if you need one — on the Jersey Shore.">
+
+  <!-- ============================ HERO ============================ -->
+  <section class="hero home-hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Your AI home repair guide</span>
+        <h1>Ask Rocco before you call anyone.</h1>
+        <p class="lede">Tell Rocco what's going on. He'll help you understand the problem, know a fair price range, and figure out your next step — and connect you with a trusted local pro only if you actually need one.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary btn-lg" href="/ask">Ask Rocco a question</a>
+          <a class="btn btn-secondary btn-lg" href="/how-it-works">See how it works</a>
+        </div>
+        <p class="soft-note hero-trust">Rocco works for you — not the contractor. He equips, he never diagnoses.</p>
+      </div>
+      <div class="hero-media">
+        <!-- ASSET PLACEHOLDER: replace with lifestyle Jersey Shore home + Rocco
+             composite when available. Currently uses existing Rocco headshot. -->
+        <div class="hero-media-frame">
+          <SafeImage
+            src="/assets/rocco/rocco-hero.png"
+            alt="Rocco, your local repair guide"
+            width={520}
+            height={620}
+            class="hero-rocco-img"
+          />
+          <div class="hero-chip">
+            <span class="hero-chip-dot" aria-hidden="true"></span>
+            Rocco is here to help
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== HOW IT WORKS ====================== -->
+  <section class="section">
     <div class="container">
-      <h1>Meet Rocco. Your local repair guide.</h1>
-      <p class="lede">Rocco helps homeowners find trusted local repair pros, fast answers, and practical next steps &mdash; right in their city. Find. Connect. Fix.</p>
-      <div style="margin-top:20px">
-        <a class="btn btn-primary" href="/ask">Ask Rocco a question</a>
-        <a class="btn btn-secondary" href="/services" style="margin-left:10px">Browse services</a>
-      </div>
-        <SafeImage
-      src="/assets/rocco/rocco-hero.png"
-      alt="Rocco, your local repair guide"
-      width={320}
-      height={320}
-      class="rocco-hero-img"
-    />
-</div>
+      <h2 class="center-head">How Rocco helps, step by step</h2>
+      <ol class="steps">
+        <li class="step">
+          <span class="step-num">1</span>
+          <h3>Tell Rocco</h3>
+          <p>Describe what's wrong in plain words. No forms, no jargon.</p>
+        </li>
+        <li class="step">
+          <span class="step-num">2</span>
+          <h3>Understand it</h3>
+          <p>Rocco explains what's likely going on and what it depends on.</p>
+        </li>
+        <li class="step">
+          <span class="step-num">3</span>
+          <h3>Know your options</h3>
+          <p>Fair price ranges and the right questions to ask before you hire.</p>
+        </li>
+        <li class="step">
+          <span class="step-num">4</span>
+          <h3>Connect if needed</h3>
+          <p>Only if you want one, Rocco points you to trusted local pros.</p>
+        </li>
+      </ol>
+    </div>
   </section>
 
-  <section class="container" style="padding:48px 20px">
-    <div class="grid">
-      <div class="card">
-        <h3>Trusted local pros</h3>
-        <p>Rocco helps you find nearby businesses and ask the right questions before you hire.</p>
+  <!-- =================== INTERACTIVE HOUSE =================== -->
+  <section class="section house-section">
+    <div class="container">
+      <div class="house-head">
+        <span class="eyebrow">Explore your home</span>
+        <h2 class="center-head">Tap any part of the home and Rocco already knows what you're asking about</h2>
       </div>
-      <div class="card">
-        <h3>Fast home help</h3>
-        <p>Quick, plain-spoken answers when you need them &mdash; no runaround.</p>
+      <!-- ASSET PLACEHOLDER: signature illustrated cutaway house with clickable
+           hotspots. Awaiting illustration. Accessible labelled grid is the
+           progressive-enhancement fallback and deep-links into Ask Rocco. -->
+      <div class="house-grid" role="list" aria-label="Areas of the home">
+        {houseSpots.map((spot) => (
+          <a class="house-spot" role="listitem" href={`/ask?topic=${encodeURIComponent(spot)}`}>
+            <span class="house-spot-label">{spot}</span>
+            <span class="house-spot-cta" aria-hidden="true">Ask Rocco →</span>
+          </a>
+        ))}
       </div>
-      <div class="card">
-        <h3>Practical solutions</h3>
-        <p>Clear guidance and next steps you can actually use. Rocco equips you; he never diagnoses.</p>
+      <p class="soft-note house-note">Illustrated interactive home coming soon — for now, pick an area to start.</p>
+    </div>
+  </section>
+
+  <!-- ===================== SERVICE CARDS ===================== -->
+  <section class="section">
+    <div class="container">
+      <h2 class="center-head">Popular services</h2>
+      <div class="grid service-grid">
+        {services.map((s) => (
+          <a class="card service-card" href={`/services/${s.slug}`}>
+            <!-- ASSET PLACEHOLDER: premium service photography goes here -->
+            <span class="service-thumb" aria-hidden="true"></span>
+            <span class="service-title">{s.title}</span>
+            <span class="service-blurb">{s.blurb}</span>
+            <span class="service-link">Ask Rocco →</span>
+          </a>
+        ))}
+      </div>
+      <p class="center-head services-all"><a href="/services">See all services →</a></p>
+    </div>
+  </section>
+
+  <!-- ===================== TRUST STRIP ====================== -->
+  <section class="section trust-section">
+    <div class="container">
+      <div class="grid trust-grid">
+        <div class="trust-card">
+          <h3>We never sell your questions</h3>
+          <p>What you ask Rocco stays private. We don't auction your problem to the highest bidder.</p>
+        </div>
+        <div class="trust-card">
+          <h3>Advice comes before referrals</h3>
+          <p>You get understanding first. A pro only if you actually need one.</p>
+        </div>
+        <div class="trust-card">
+          <h3>Recommendations are earned</h3>
+          <p>Pros are never ranked by who pays us. Trust is the product.</p>
+        </div>
+        <div class="trust-card">
+          <h3>We tell you when we don't know</h3>
+          <p>Rocco is honest about uncertainty and tells you how to find out.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="container" style="padding:0 20px 48px">
-    <h2>Popular services</h2>
-    <div class="grid">
-      <a class="card" href="/services/hvac">HVAC &mdash; heating &amp; cooling</a>
-      <a class="card" href="/services/plumbing">Plumbing</a>
-      <a class="card" href="/services/electrical">Electrical</a>
-      <a class="card" href="/services">See all services &rarr;</a>
+  <!-- ===================== CLOSING CTA ====================== -->
+  <section class="section closing">
+    <div class="container closing-inner">
+      <h2>Got something that needs fixing?</h2>
+      <p class="lede closing-lede">Start with a question. It's free, and Rocco gets straight to the point.</p>
+      <a class="btn btn-primary btn-lg" href="/ask">Ask Rocco a question</a>
     </div>
   </section>
 
-  <section class="container" style="padding:0 20px 64px">
+  <!-- ===================== AREA NOTE ====================== -->
+  <section class="container" style="padding:0 var(--space-5) var(--space-8)">
     <div class="disclaimer">
-      Serving the Jersey Shore launch area &mdash; Stafford, Manahawkin, Barnegat, LBI, Toms River, Forked River, Waretown and more.
-      We're growing honestly: if we can't help in your town yet, Rocco will tell you straight.
+      Serving the Jersey Shore launch area — Stafford, Manahawkin, Barnegat, LBI, Toms River, Forked River, Waretown and more. If we can't help in your town yet, Rocco will tell you straight.
     </div>
   </section>
+
+  <style>
+    .home-hero { padding-block: var(--space-9); }
+    .hero-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: var(--space-8); align-items: center; }
+    .hero-cta { display: flex; flex-wrap: wrap; gap: var(--space-3); margin: var(--space-6) 0 var(--space-4); }
+    .hero-trust { margin: 0; }
+    .hero-media { display: flex; justify-content: center; }
+    .hero-media-frame { position: relative; width: min(100%, 460px); }
+    .hero-rocco-img { width: 100%; height: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow-2); object-fit: cover; }
+    .hero-chip { position: absolute; left: var(--space-4); bottom: var(--space-4); display: inline-flex; align-items: center; gap: var(--space-2); background: var(--color-bg-surface); color: var(--text-primary); font-size: var(--fs-small); font-weight: 600; padding: var(--space-2) var(--space-4); border-radius: var(--radius-pill); box-shadow: var(--shadow-1); }
+    .hero-chip-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-success); }
+
+    .center-head { text-align: center; max-width: 24ch; margin-inline: auto; }
+    .steps { list-style: none; padding: 0; margin: var(--space-7) 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-5); }
+    .step { background: var(--color-bg-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5); }
+    .step-num { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: var(--radius-pill); background: var(--color-action-tint); color: var(--orange-ink); font-family: var(--font-display); font-weight: 800; margin-bottom: var(--space-3); }
+    .step h3 { margin: 0 0 var(--space-2); }
+    .step p { margin: 0; color: var(--text-secondary); font-size: var(--fs-small); }
+
+    .house-section { background: var(--color-bg-surface-alt); border-radius: var(--radius-lg); }
+    .house-head { margin-bottom: var(--space-6); text-align: center; }
+    .house-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); }
+    .house-spot { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-5); background: var(--color-bg-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); text-decoration: none; color: var(--text-primary); transition: transform var(--dur-standard) var(--ease-out), box-shadow var(--dur-standard) var(--ease-out), border-color var(--dur-standard) var(--ease-out); }
+    .house-spot:hover { transform: translateY(-3px); box-shadow: var(--shadow-2); border-color: var(--orange-300); }
+    .house-spot-label { font-family: var(--font-display); font-weight: 700; }
+    .house-spot-cta { font-size: var(--fs-small); color: var(--orange-ink); font-weight: 600; }
+    .house-note { text-align: center; margin-top: var(--space-5); }
+
+    .service-grid { margin-top: var(--space-6); }
+    .service-card { display: flex; flex-direction: column; gap: var(--space-2); }
+    .service-thumb { display: block; aspect-ratio: 16/10; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--orange-100), var(--cream)); margin-bottom: var(--space-3); }
+    .service-title { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-h3); }
+    .service-blurb { color: var(--text-secondary); font-size: var(--fs-small); font-weight: 400; }
+    .service-link { color: var(--orange-ink); font-weight: 600; font-size: var(--fs-small); margin-top: var(--space-2); }
+    .services-all { margin-top: var(--space-6); }
+    .services-all a { color: var(--orange-ink); font-weight: 600; text-decoration: none; }
+
+    .trust-grid { margin: 0; }
+    .trust-card { background: var(--color-bg-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-5); }
+    .trust-card h3 { margin: 0 0 var(--space-2); }
+    .trust-card p { margin: 0; color: var(--text-secondary); font-size: var(--fs-small); }
+
+    .closing { text-align: center; }
+    .closing-inner { background: var(--navy-700); color: var(--text-on-dark); border-radius: var(--radius-lg); padding: var(--space-8) var(--space-5); }
+    .closing-inner h2 { color: var(--text-on-dark); }
+    .closing-lede { color: #cdd6e2; margin-inline: auto; max-width: 48ch; margin-bottom: var(--space-6); }
+
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; gap: var(--space-7); }
+      .hero-media { order: -1; }
+      .steps { grid-template-columns: repeat(2, 1fr); }
+      .house-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .steps { grid-template-columns: 1fr; }
+      .house-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero-cta .btn { width: 100%; }
+    }
+  </style>
 </BaseLayout>
