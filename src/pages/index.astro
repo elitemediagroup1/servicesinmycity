@@ -17,18 +17,18 @@ const services = [
 /* House hotspots positioned over the SVG home (x/y are % within the stage).
    Each deep-links into Ask Rocco with topic context. */
 const hotspots = [
-  { key: 'roof',       label: 'Roof',       x: 50, y: 10 },
-  { key: 'attic',      label: 'Attic',      x: 50, y: 25 },
-  { key: 'windows',    label: 'Windows',    x: 27, y: 50 },
-  { key: 'hvac',       label: 'HVAC',       x: 84, y: 64 },
-  { key: 'electrical', label: 'Electrical', x: 70, y: 46 },
-  { key: 'kitchen',    label: 'Kitchen',    x: 38, y: 62 },
-  { key: 'bathroom',   label: 'Bathroom',   x: 62, y: 62 },
-  { key: 'plumbing',   label: 'Plumbing',   x: 50, y: 76 },
-  { key: 'garage',     label: 'Garage',     x: 16, y: 72 },
-  { key: 'foundation', label: 'Foundation', x: 50, y: 92 },
-  { key: 'basement',   label: 'Basement',   x: 33, y: 88 },
-  { key: 'outside',    label: 'Outside',    x: 89, y: 88 },
+  { key: 'roof',        label: 'Roof',            x: 47.6, y: 30.5 },
+  { key: 'gutters',     label: 'Gutters',         x: 30.8, y: 39.3 },
+  { key: 'attic',       label: 'Attic',           x: 48.5, y: 31.5 },
+  { key: 'hvac',        label: 'HVAC',            x: 81.7, y: 65.9 },
+  { key: 'electrical',  label: 'Electrical Panel',x: 69.3, y: 57.3 },
+  { key: 'plumbing',    label: 'Plumbing',        x: 59.8, y: 60.0 },
+  { key: 'waterheater', label: 'Water Heater',    x: 24.3, y: 67.5 },
+  { key: 'crawlspace',  label: 'Crawlspace',      x: 47.5, y: 74.5 },
+  { key: 'foundation',  label: 'Foundation',      x: 36.7, y: 75.0 },
+  { key: 'garage',      label: 'Garage',          x: 24.8, y: 65.9 },
+  { key: 'kitchen',     label: 'Kitchen',         x: 37.7, y: 51.7 },
+  { key: 'bathroom',    label: 'Bathroom',        x: 53.8, y: 51.7 },
 ];
 
 const prompts = [
@@ -97,58 +97,77 @@ const prompts = [
       <!-- the home itself (breathes + parallax) -->
       <div class="home-wrap" data-depth="0.4">
         <span class="chimney-smoke" aria-hidden="true"><i></i><i></i><i></i></span>
-        <svg class="stage-house" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Illustrated home">
-          <defs>
-            <linearGradient id="wallG" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#FBFAF7"/>
-              <stop offset="1" stop-color="#ECE7DD"/>
-            </linearGradient>
-            <linearGradient id="roofG" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#22405F"/>
-              <stop offset="1" stop-color="#16304C"/>
-            </linearGradient>
-            <radialGradient id="winG" cx="0.5" cy="0.4" r="0.7">
-              <stop offset="0" stop-color="#FFE6B8"/>
-              <stop offset="1" stop-color="#F4A24B"/>
-            </radialGradient>
-            <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="0" dy="1.2" stdDeviation="1.4" flood-color="#16304C" flood-opacity="0.18"/>
-            </filter>
-          </defs>
-          <!-- ground shadow -->
-          <ellipse cx="50" cy="95" rx="40" ry="3.4" fill="#16304C" opacity="0.12"/>
-          <!-- body -->
-          <g filter="url(#soft)">
-            <rect x="20" y="40" width="60" height="48" rx="2.5" fill="url(#wallG)"/>
-            <!-- roof -->
-            <path d="M14 42 L50 14 L86 42 Z" fill="url(#roofG)"/>
-            <!-- chimney -->
-            <rect x="64" y="22" width="7" height="14" rx="1" fill="#22405F"/>
-            <!-- door -->
-            <rect x="45" y="64" width="10" height="24" rx="1.4" fill="#22405F"/>
-            <circle cx="53" cy="76" r="0.8" fill="#F4A24B"/>
-            <!-- porch light glow -->
-            <circle class="porch" cx="42" cy="62" r="1.4" fill="#F4A24B"/>
-            <!-- windows (glow + pulse) -->
-            <rect class="win" x="26" y="48" width="9" height="9" rx="1" fill="url(#winG)"/>
-            <rect class="win win-2" x="65" y="48" width="9" height="9" rx="1" fill="url(#winG)"/>
-            <rect class="win win-3" x="26" y="70" width="9" height="9" rx="1" fill="url(#winG)"/>
-            <rect class="win win-4" x="65" y="70" width="9" height="9" rx="1" fill="url(#winG)"/>
-            <!-- window frames -->
-            <g stroke="#22405F" stroke-width="0.6" opacity="0.5">
-              <line x1="30.5" y1="48" x2="30.5" y2="57"/><line x1="26" y1="52.5" x2="35" y2="52.5"/>
-              <line x1="69.5" y1="48" x2="69.5" y2="57"/><line x1="65" y1="52.5" x2="74" y2="52.5"/>
-              <line x1="30.5" y1="70" x2="30.5" y2="79"/><line x1="26" y1="74.5" x2="35" y2="74.5"/>
-              <line x1="69.5" y1="70" x2="69.5" y2="79"/><line x1="65" y1="74.5" x2="74" y2="74.5"/>
-            </g>
-          </g>
-        </svg>
+  <svg class="stage-house" viewBox="0 0 1200 820" preserveAspectRatio="xMidYMid meet" role="img" aria-label="An illustrated home at dusk with warmly lit windows">
+    <defs>
+      <linearGradient id="h-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14213d"/><stop offset=".40" stop-color="#22314f"/><stop offset=".66" stop-color="#5a4a64"/><stop offset=".82" stop-color="#b5707a"/><stop offset=".93" stop-color="#e2916b"/><stop offset="1" stop-color="#f0b079"/></linearGradient>
+      <radialGradient id="h-moon" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fbf3df" stop-opacity=".55"/><stop offset="1" stop-color="#fbf3df" stop-opacity="0"/></radialGradient>
+      <linearGradient id="h-ground" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b3d33"/><stop offset="1" stop-color="#14201a"/></linearGradient>
+      <linearGradient id="h-wallF" x1="0" y1="0" x2="1" y2=".3"><stop offset="0" stop-color="#d8c4a8"/><stop offset=".5" stop-color="#e7d7bd"/><stop offset="1" stop-color="#cdb89a"/></linearGradient>
+      <linearGradient id="h-wallS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a89274"/><stop offset="1" stop-color="#8a7459"/></linearGradient>
+      <linearGradient id="h-roofM" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#46414f"/><stop offset="1" stop-color="#322d39"/></linearGradient>
+      <linearGradient id="h-roofS" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2c2833"/><stop offset="1" stop-color="#201d27"/></linearGradient>
+      <radialGradient id="h-win" cx=".5" cy=".42" r=".75"><stop offset="0" stop-color="#fff0c2"/><stop offset=".5" stop-color="#ffce7d"/><stop offset="1" stop-color="#f6a94e"/></radialGradient>
+      <radialGradient id="h-spill" cx=".5" cy=".1" r=".9"><stop offset="0" stop-color="#ffcf85" stop-opacity=".5"/><stop offset=".5" stop-color="#ffcf85" stop-opacity=".1"/><stop offset="1" stop-color="#ffcf85" stop-opacity="0"/></radialGradient>
+      <radialGradient id="h-porch" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffe6a8" stop-opacity=".9"/><stop offset="1" stop-color="#ffe6a8" stop-opacity="0"/></radialGradient>
+      <radialGradient id="h-sys" cx=".5" cy=".5" r=".6"><stop offset="0" stop-color="#ffd98a" stop-opacity=".95"/><stop offset="1" stop-color="#ff9b45" stop-opacity=".35"/></radialGradient>
+      <pattern id="h-shingle" width="34" height="16" patternUnits="userSpaceOnUse"><path d="M0 15 L34 15" stroke="#000" stroke-opacity=".18" stroke-width="1.5"/><path d="M0 8 L17 8 M17 0 L17 8 M0 0 L0 8 M34 0 L34 8" stroke="#000" stroke-opacity=".10" stroke-width="1"/></pattern>
+      <filter id="h-soft" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="7"/></filter>
+      <filter id="h-soft2" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="3"/></filter>
+      <filter id="h-blur" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="10"/></filter>
+    </defs>
+    <!-- ENVIRONMENT: blue-hour dusk sky, moon, treeline, ground, warm light spill -->
+    <rect x="0" y="0" width="1200" height="640" fill="url(#h-sky)"/>
+    <g class="h-stars" fill="#fff" opacity=".5"><circle cx="120" cy="80" r="1.3"/><circle cx="300" cy="140" r="1"/><circle cx="520" cy="60" r="1.4"/><circle cx="760" cy="110" r="1"/><circle cx="1040" cy="70" r="1.3"/><circle cx="200" cy="200" r="1"/><circle cx="980" cy="180" r="1"/><circle cx="660" cy="160" r="1.1"/></g>
+    <circle cx="940" cy="160" r="150" fill="url(#h-moon)"/><circle cx="940" cy="160" r="40" fill="#f7efd8"/><circle cx="958" cy="150" r="40" fill="#22314f" opacity=".35"/>
+    <g class="h-clouds" fill="#1a2336" opacity=".9"><path d="M-20 560 Q60 470 140 560 Q200 500 270 560 Z"/><path d="M1000 560 Q1070 470 1150 560 Q1200 510 1230 560 Z"/></g>
+    <rect x="0" y="560" width="1200" height="260" fill="url(#h-ground)"/>
+    <ellipse cx="600" cy="690" rx="540" ry="66" fill="#000" opacity=".3" filter="url(#h-soft)"/>
+    <ellipse cx="560" cy="640" rx="420" ry="120" fill="url(#h-spill)"/>
+    <!-- =====================================================================
+         HOUSE BASE ART (Phase 1 hand-built SVG illustration).
+         REPLACEABLE: to swap in a commissioned raster/3D render later,
+         replace this entire <g id="house-base"> with a single
+         <image href="/art/home-render.webp" x=".." y=".." width=".." height=".."/>.
+         The #house-systems, #house-dim layers and the .hotspots overlay
+         stay reusable and keep the same /ask?topic={label} handoff.
+    ===================================================================== -->
+    <g id="house-base">
+      <path d="M770 318 L905 360 L905 612 L770 612 Z" fill="url(#h-wallS)"/>
+      <g stroke="#000" stroke-opacity=".08" stroke-width="2"><path d="M770 360 L905 398"/><path d="M770 400 L905 432"/><path d="M770 440 L905 466"/><path d="M770 480 L905 500"/><path d="M770 520 L905 534"/><path d="M770 560 L905 568"/></g>
+      <rect x="372" y="318" width="398" height="294" fill="url(#h-wallF)"/>
+      <g stroke="#000" stroke-opacity=".05" stroke-width="2"><path d="M372 360 H770"/><path d="M372 400 H770"/><path d="M372 440 H770"/><path d="M372 480 H770"/><path d="M372 520 H770"/><path d="M372 560 H770"/></g>
+      <rect x="214" y="438" width="166" height="174" fill="#d2be9f"/>
+      <g stroke="#000" stroke-opacity=".05" stroke-width="2"><path d="M214 470 H380"/><path d="M214 510 H380"/><path d="M214 550 H380"/></g>
+      <path d="M352 322 L571 182 L606 182 L790 322 Z" fill="url(#h-roofM)"/><path d="M352 322 L571 182 L606 182 L790 322 Z" fill="url(#h-shingle)"/>
+      <path d="M790 322 L606 182 L640 172 L912 360 L905 360 Z" fill="url(#h-roofS)"/>
+      <path d="M198 442 L297 388 L396 442 Z" fill="url(#h-roofM)"/><path d="M198 442 L297 388 L396 442 Z" fill="url(#h-shingle)"/>
+      <path d="M571 182 L606 182" stroke="#5a5462" stroke-width="3"/>
+      <rect x="346" y="320" width="450" height="9" rx="4" fill="#8a7a64"/><rect x="192" y="440" width="210" height="8" rx="4" fill="#7d6e58"/><rect x="760" y="329" width="7" height="283" fill="#8a7a64"/>
+      <rect x="648" y="206" width="44" height="96" fill="#6b554d"/><rect x="642" y="200" width="56" height="14" rx="2" fill="#7a6258"/><g stroke="#000" stroke-opacity=".12" stroke-width="1.5"><path d="M648 240 H692"/><path d="M648 272 H692"/></g>
+      <g class="h-winA"><rect x="406" y="370" width="92" height="108" rx="3" fill="url(#h-win)"/><rect x="414" y="378" width="76" height="92" fill="#fff4d2" opacity=".5"/><rect x="406" y="370" width="92" height="108" rx="3" fill="none" stroke="#6b5b44" stroke-width="6"/><line x1="452" y1="370" x2="452" y2="478" stroke="#6b5b44" stroke-width="4"/><line x1="406" y1="424" x2="498" y2="424" stroke="#6b5b44" stroke-width="4"/><rect x="400" y="478" width="104" height="7" rx="2" fill="#b3a081"/></g>
+      <g class="h-winB"><rect x="600" y="370" width="92" height="108" rx="3" fill="url(#h-win)"/><rect x="608" y="378" width="76" height="92" fill="#fff4d2" opacity=".5"/><rect x="600" y="370" width="92" height="108" rx="3" fill="none" stroke="#6b5b44" stroke-width="6"/><line x1="646" y1="370" x2="646" y2="478" stroke="#6b5b44" stroke-width="4"/><line x1="600" y1="424" x2="692" y2="424" stroke="#6b5b44" stroke-width="4"/><rect x="594" y="478" width="104" height="7" rx="2" fill="#b3a081"/></g>
+      <circle cx="556" cy="500" r="26" fill="url(#h-porch)"/><rect x="520" y="490" width="76" height="122" rx="4" fill="#4a3a30"/><rect x="520" y="490" width="76" height="122" rx="4" fill="none" stroke="#372a22" stroke-width="3"/><rect x="532" y="506" width="22" height="44" rx="2" fill="#5c4a3c"/><rect x="562" y="506" width="22" height="44" rx="2" fill="#5c4a3c"/><circle cx="585" cy="556" r="3.5" fill="#e7c06a"/>
+      <rect x="504" y="486" width="12" height="18" rx="2" fill="#3a2d24"/><circle class="h-porchlight" cx="510" cy="500" r="9" fill="#ffe6a8" filter="url(#h-soft2)"/><circle cx="510" cy="500" r="3.5" fill="#fffbe6"/>
+      <rect x="236" y="476" width="122" height="136" rx="3" fill="#bca884"/><rect x="236" y="476" width="122" height="136" rx="3" fill="none" stroke="#a08c68" stroke-width="3"/><g stroke="#9a8763" stroke-width="2"><line x1="236" y1="510" x2="358" y2="510"/><line x1="236" y1="544" x2="358" y2="544"/><line x1="236" y1="578" x2="358" y2="578"/><line x1="277" y1="476" x2="277" y2="612"/><line x1="317" y1="476" x2="317" y2="612"/></g>
+      <g><path d="M1010 612 Q1004 540 1012 470" stroke="#2a2018" stroke-width="14" fill="none"/><ellipse cx="1012" cy="430" rx="78" ry="70" fill="#1f3026"/><ellipse cx="960" cy="460" rx="56" ry="50" fill="#24382b"/><ellipse cx="1060" cy="458" rx="54" ry="48" fill="#1b2a21"/><ellipse cx="1012" cy="400" rx="56" ry="48" fill="#28402f"/></g>
+      <ellipse cx="150" cy="600" rx="80" ry="40" fill="#1d2c22"/><ellipse cx="200" cy="606" rx="60" ry="32" fill="#243a2c"/>
+      <path d="M540 612 L576 612 L640 720 L470 720 Z" fill="#caa86a" opacity=".22"/>
+      <g fill="#3c4c40" opacity=".55"><rect x="60" y="624" width="6" height="34"/><rect x="84" y="624" width="6" height="34"/><rect x="108" y="624" width="6" height="34"/><rect x="1100" y="624" width="6" height="34"/><rect x="1124" y="624" width="6" height="34"/><rect x="1148" y="624" width="6" height="34"/></g>
+    </g>
+    <!-- DIM LAYER: fades in to focus a single system on hover -->
+    <rect id="house-dim" x="0" y="0" width="1200" height="820" fill="#0a1322" opacity="0"/>
+    <!-- SYSTEM HIGHLIGHT LAYER: populated at runtime, illuminates the hovered system -->
+    <g id="house-systems"></g>
+    <!-- ATMOSPHERE: ambient particles + chimney smoke -->
+    <g class="h-particles" fill="#ffd98a" opacity=".5"><circle cx="430" cy="540" r="2"/><circle cx="660" cy="560" r="1.6"/><circle cx="540" cy="600" r="1.8"/><circle cx="350" cy="580" r="1.4"/><circle cx="720" cy="520" r="1.5"/></g>
+    <g class="h-smoke" fill="#c9d0db" opacity=".3" filter="url(#h-soft)"><circle cx="672" cy="180" r="13"/><circle cx="680" cy="148" r="17"/><circle cx="668" cy="112" r="21"/><circle cx="678" cy="78" r="24"/></g>
+  </svg>
       </div>
 
       <!-- interactive hotspots -->
       <div class="hotspots">
         {hotspots.map((h) => (
-          <a class="hotspot" href={`/ask?topic=${encodeURIComponent(h.label)}`}
+          <a class="hotspot" data-sys={h.key} href={`/ask?topic=${encodeURIComponent(h.label)}`}
              style={`left:${h.x}%;top:${h.y}%`} aria-label={`Ask Rocco about ${h.label}`}>
             <span class="hotspot-dot" aria-hidden="true"></span>
             <span class="hotspot-label">{h.label}</span>
@@ -386,6 +405,42 @@ const prompts = [
     *,*::before,*::after{animation:none !important;transition:none !important}
     .reveal{opacity:1 !important;transform:none !important}
   }
+
+  /* ============ HOUSE v2 — premium dusk illustration + system interaction ============ */
+  .stage{max-width:900px;aspect-ratio:1200/820}
+  .stage-house{width:100%;transform-origin:50% 88%}
+  /* environment motion */
+  .h-clouds{animation:hCloud 26s linear infinite}
+  @keyframes hCloud{from{transform:translateX(0)}to{transform:translateX(40px)}}
+  .h-smoke{transform-origin:675px 180px;animation:hSmoke 7s ease-in-out infinite}
+  @keyframes hSmoke{0%{opacity:.30;transform:translateY(0) scale(1)}50%{opacity:.18;transform:translateY(-10px) scale(1.06)}100%{opacity:.30;transform:translateY(0) scale(1)}}
+  .h-smoke circle{animation:hSmokeRise 7s ease-in-out infinite}
+  @keyframes hSmokeRise{0%{opacity:.05}40%{opacity:.35}100%{opacity:0}}
+  .h-particles circle{animation:hFloat 9s ease-in-out infinite}
+  .h-particles circle:nth-child(2){animation-delay:1.4s}
+  .h-particles circle:nth-child(3){animation-delay:2.8s}
+  .h-particles circle:nth-child(4){animation-delay:.7s}
+  .h-particles circle:nth-child(5){animation-delay:3.6s}
+  @keyframes hFloat{0%,100%{transform:translateY(0);opacity:.25}50%{transform:translateY(-12px);opacity:.6}}
+  .h-winA,.h-winB{transform-origin:center;animation:hWinPulse 5.5s ease-in-out infinite}
+  .h-winB{animation-delay:1.6s}
+  @keyframes hWinPulse{0%,100%{opacity:1}50%{opacity:.92}}
+  .h-porchlight{animation:hPorch 4s ease-in-out infinite}
+  @keyframes hPorch{0%,100%{opacity:.9}50%{opacity:.65}}
+  .h-stars circle{animation:hTwinkle 4s ease-in-out infinite}
+  .h-stars circle:nth-child(odd){animation-delay:1.5s}
+  @keyframes hTwinkle{0%,100%{opacity:.5}50%{opacity:.15}}
+  /* system focus: dim + glow transitions (driven by JS opacity) */
+  #house-dim{transition:opacity .5s ease;pointer-events:none}
+  #house-systems{pointer-events:none}
+  #house-systems > g{transition:opacity .45s ease}
+  /* hotspot dot refinement (works with existing .hotspot styles) */
+  .hotspot{width:26px;height:26px}
+  .hotspot:hover{z-index:5}
+  @media (prefers-reduced-motion: reduce){
+    .stage-house,.h-clouds,.h-smoke,.h-smoke circle,.h-particles circle,.h-winA,.h-winB,.h-porchlight,.h-stars circle{animation:none!important}
+    #house-dim,#house-systems > g{transition:none}
+  }
 </style>
 
 <script is:inline>
@@ -437,5 +492,57 @@ const prompts = [
         wrap.style.transform = 'translate3d(0,0,0)';
       });
     }
+  })();
+
+  // ===== House system focus: illuminate hovered system, dim the rest =====
+  (function(){
+    var stage = document.querySelector(".house2 .stage");
+    if(!stage) return;
+    var svg = stage.querySelector(".stage-house");
+    var sysWrap = stage.querySelector("#house-systems");
+    var dim = stage.querySelector("#house-dim");
+    if(!svg || !sysWrap || !dim) return;
+    var NS = "http://www.w3.org/2000/svg";
+    // Highlight shapes anchored to real geometry (viewBox 1200x820)
+    var SHAPES = {
+      roof:        '<path d="M352 322 L571 182 L606 182 L790 322 Z"/>',
+      gutters:     '<rect x="346" y="314" width="450" height="18" rx="7"/><rect x="192" y="436" width="210" height="14" rx="6"/>',
+      attic:       '<path d="M452 304 L571 230 L606 230 L706 304 Z"/>',
+      hvac:        '<rect x="948" y="498" width="66" height="84" rx="8"/>',
+      electrical:  '<rect x="806" y="426" width="52" height="86" rx="6"/>',
+      plumbing:    '<rect x="688" y="430" width="60" height="176" rx="8"/>',
+      waterheater: '<rect x="260" y="498" width="64" height="114" rx="10"/>',
+      crawlspace:  '<rect x="372" y="598" width="398" height="22" rx="5"/>',
+      foundation:  '<rect x="372" y="600" width="398" height="16" rx="3"/><rect x="214" y="598" width="166" height="16" rx="3"/>',
+      garage:      '<rect x="236" y="476" width="122" height="136" rx="4"/>',
+      kitchen:     '<rect x="406" y="370" width="92" height="108" rx="3"/>',
+      bathroom:    '<rect x="600" y="370" width="92" height="108" rx="3"/>'
+    };
+    Object.keys(SHAPES).forEach(function(k){
+      var g = document.createElementNS(NS,"g");
+      g.setAttribute("data-sys",k); g.setAttribute("opacity","0");
+      var raw = SHAPES[k];
+      var glow = raw.replace(/<path/g,'<path filter="url(#h-blur)" fill="url(#h-sys)"').replace(/<rect/g,'<rect filter="url(#h-blur)" fill="url(#h-sys)"');
+      var crisp = raw.replace(/<path/g,'<path fill="#fff1c9" opacity="0.5"').replace(/<rect/g,'<rect fill="#fff1c9" opacity="0.5"');
+      g.innerHTML = glow + crisp;
+      sysWrap.appendChild(g);
+    });
+    function activate(key){
+      dim.setAttribute("opacity","0.55");
+      sysWrap.querySelectorAll("g[data-sys]").forEach(function(g){
+        g.setAttribute("opacity", g.getAttribute("data-sys")===key ? "1" : "0");
+      });
+    }
+    function reset(){
+      dim.setAttribute("opacity","0");
+      sysWrap.querySelectorAll("g[data-sys]").forEach(function(g){ g.setAttribute("opacity","0"); });
+    }
+    stage.querySelectorAll(".hotspot").forEach(function(a){
+      var key = a.getAttribute("data-sys");
+      a.addEventListener("mouseenter", function(){ activate(key); });
+      a.addEventListener("mouseleave", reset);
+      a.addEventListener("focus", function(){ activate(key); });
+      a.addEventListener("blur", reset);
+    });
   })();
 </script>
