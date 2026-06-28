@@ -320,7 +320,7 @@ const prompts = [
   .path-step h3{margin:0 0 8px;font-size:18px;line-height:1.25;color:#0f1b33;font-weight:750;}
   .path-step p{margin:0;font-size:14.5px;line-height:1.55;color:#5a647c;}
   /* Chapter 2 - where is it happening */
-  .where-row{display:flex;flex-wrap:wrap;justify-content:center;gap:.7rem;margin:2.4rem auto 0;max-width:680px;}
+  .where-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem;margin:2.4rem auto 0;max-width:520px;}
 .where-link{display:flex;flex-direction:column;gap:.15rem;padding:.7rem 1.15rem;border-radius:14px;background:rgba(255,255,255,.72);border:1px solid rgba(15,27,51,.08);text-decoration:none;transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .4s,background .4s;}
 .where-link:hover,.where-link:focus-visible{transform:translateY(-2px);border-color:rgba(232,118,43,.5);background:#fff;}
 .where-link-label{font-size:1rem;font-weight:700;color:var(--emg-navy,#0f1b30);}
@@ -328,7 +328,7 @@ const prompts = [
   .ch-trust{background:#0f1b33;color:#fff;max-width:none;}
   .ch-trust .ch-title{color:#fff;}
   .ch-trust .ch-kicker{color:#ffb784;}
-  .trust-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;max-width:900px;margin:0 auto;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:22px;overflow:hidden;}
+  .trust-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;max-width:900px;margin:0 auto;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:22px;overflow:hidden;}
   .trust-principle{padding:34px 30px;background:#0f1b33;}
   .trust-principle h3{margin:0 0 12px;font-size:19px;font-weight:750;color:#fff;line-height:1.25;}
   .trust-principle p{margin:0;font-size:15px;line-height:1.6;color:rgba(255,255,255,.72);}
@@ -376,6 +376,7 @@ const prompts = [
 .path-steps li{position:relative;padding-left:2.4rem;font-size:1.04rem;line-height:1.55;color:#46536a;counter-increment:step;}
 .path-steps li::before{content:counter(step);position:absolute;left:0;top:.05em;width:1.6rem;height:1.6rem;border-radius:50%;background:rgba(232,118,43,.1);color:var(--emg-orange,#E8762B);font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
 .path-n{color:var(--emg-navy,#0f1b30);font-weight:700;}
+@media (max-width:600px){.trust-grid{grid-template-columns:1fr;}.where-row{grid-template-columns:1fr;max-width:340px;}}
 </style>
 
 <script is:inline>
