@@ -104,53 +104,33 @@ const prompts = [
     </div></section>
 
   <!-- =================== CHAPTER 1 · FROM CONFUSION TO CONFIDENCE =================== -->
-  <section class="chapter ch-path" aria-labelledby="path-title">
-    <div class="ch-head reveal">
-      <p class="ch-kicker">The journey</p>
-      <h2 id="path-title" class="ch-title">From &ldquo;something feels wrong&rdquo;<br /><span class="ch-title-soft">to &ldquo;I know exactly what to do.&rdquo;</span></h2>
-      <p class="ch-lede">You don&rsquo;t need the right words. You just need to start. Rocco walks the rest of the way with you.</p>
+    <section class="chapter ch-path" aria-labelledby="path-title">
+    <div class="ch-narrow reveal">
+      <h2 id="path-title" class="ch-title">It goes from “something feels wrong”<br /><span class="ch-soft">to “I know what to do” — in a few minutes.</span></h2>
+      <ol class="path-steps">
+        <li><span class="path-n">You notice it.</span> A stain, a sound, a smell. You say it in plain words.</li>
+        <li><span class="path-n">You understand it.</span> Rocco tells you what it likely is, what it tends to cost, and whether it can wait.</li>
+        <li><span class="path-n">You walk in prepared.</span> The right questions, in the right order. No more guessing.</li>
+        <li><span class="path-n">You decide.</span> If it can wait, he says so. If it needs a pro, he helps you find one you trust.</li>
+      </ol>
     </div>
-    <ol class="path-track" role="list">
-      <li class="path-step reveal">
-        <span class="path-feel">You notice it</span>
-        <h3>A stain. A sound. A smell.</h3>
-        <p>Describe what&rsquo;s happening in plain words. There&rsquo;s no wrong way to ask.</p>
-      </li>
-      <li class="path-step reveal">
-        <span class="path-feel">You understand it</span>
-        <h3>Rocco tells you what it likely is.</h3>
-        <p>What&rsquo;s probably going on, what it tends to cost, and whether it can wait. No panic, no upsell.</p>
-      </li>
-      <li class="path-step reveal">
-        <span class="path-feel">You know what to ask</span>
-        <h3>You walk in prepared.</h3>
-        <p>The right questions, in the right order. You stop guessing.</p>
-      </li>
-      <li class="path-step reveal">
-        <span class="path-feel">You decide</span>
-        <h3>You know when it&rsquo;s serious &mdash; and when it isn&rsquo;t.</h3>
-        <p>If it can wait, Rocco says so. If it needs a pro, he helps you find one you can trust.</p>
-      </li>
-    </ol>
   </section>
 
   <!-- =================== CHAPTER 2 · WHERE IS IT HAPPENING =================== -->
-  <section class="chapter ch-where" aria-labelledby="where-title">
-    <div class="ch-head reveal">
-      <p class="ch-kicker">Start anywhere</p>
-      <h2 id="where-title" class="ch-title">Where is it happening?</h2>
-      <p class="ch-lede">Every part of your home is a door into the same conversation. Pick the one that&rsquo;s on your mind.</p>
+    <section class="chapter ch-where" aria-labelledby="where-title">
+    <div class="ch-narrow reveal">
+      <p class="ch-kicker">Not sure where to start</p>
+      <h2 id="where-title" class="ch-title">Start with whatever’s on your mind.</h2>
+      <p class="ch-lede ch-lede-center">Every one of these opens the same calm conversation with Rocco. There’s no wrong door.</p>
+      <div class="where-row">
+        {services.map((sv) => (
+          <a class="where-link" href={`/ask?topic=${encodeURIComponent(sv.label.replace(/&amp;/g,"&"))}`}>
+            <span class="where-link-label" set:html={sv.label}></span>
+            <span class="where-link-hint">{sv.hint}</span>
+          </a>
+        ))}
+      </div>
     </div>
-    <div class="where-grid">
-      {services.map((s) => (
-        <a class="where-card reveal" href={`/ask?topic=${encodeURIComponent(s.label.replace(/&amp;/g, "&"))}`}>
-          <span class="where-label" set:html={s.label}></span>
-          <span class="where-hint">{s.hint}</span>
-          <span class="where-open">Tell Rocco &rarr;</span>
-        </a>
-      ))}
-    </div>
-    <p class="where-all reveal"><a href="/services">Or see everything Rocco can help with &rarr;</a></p>
   </section>
 
   <!-- =================== CHAPTER 3 · WHY YOU CAN TRUST THE ANSWER =================== -->
@@ -245,7 +225,6 @@ const prompts = [
   }
   /* ============ shared rhythm ============ */
   .eyebrow{font-size:.82rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--emg-orange,#E8762B);margin:0 0 .9rem}
-  .eyebrow-light{color:#F4A24B}
   .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
   .reveal.in{opacity:1;transform:none}
   :focus-visible{outline:3px solid #F4A24B;outline-offset:3px;border-radius:6px}
@@ -333,29 +312,19 @@ const prompts = [
   .ch-kicker{margin:0 0 14px;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#e8804e;}
   .ch-kicker-light{color:#ffb784;}
   .ch-title{margin:0;font-size:clamp(30px,4.6vw,52px);line-height:1.08;letter-spacing:-.02em;font-weight:800;color:#0f1b33;}
-  .ch-title-soft{color:#5a6b88;font-weight:700;}
   .ch-lede{margin:20px auto 0;max-width:600px;font-size:clamp(16px,2vw,19px);line-height:1.6;color:#54607a;}
   /* Chapter 1 - the path */
   .ch-path{background:linear-gradient(180deg,#fbfaf7 0%,#f4f1ea 100%);max-width:none;}
-  .path-track{list-style:none;margin:0 auto;padding:0;max-width:920px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:step;}
   .path-step{position:relative;padding:26px 22px;border-radius:20px;background:#fff;border:1px solid rgba(15,27,51,.07);box-shadow:0 18px 40px -28px rgba(15,27,51,.35);counter-increment:step;}
   .path-step::before{content:counter(step,decimal-leading-zero);display:block;margin-bottom:14px;font-size:13px;font-weight:800;letter-spacing:.1em;color:#c8b9a0;}
-  .path-feel{display:inline-block;margin-bottom:10px;font-size:12px;font-weight:700;letter-spacing:.04em;color:#e8804e;text-transform:uppercase;}
   .path-step h3{margin:0 0 8px;font-size:18px;line-height:1.25;color:#0f1b33;font-weight:750;}
   .path-step p{margin:0;font-size:14.5px;line-height:1.55;color:#5a647c;}
   /* Chapter 2 - where is it happening */
-  .where-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;max-width:920px;margin:0 auto;}
-  .where-card{position:relative;display:flex;flex-direction:column;gap:6px;padding:28px 24px;border-radius:20px;text-decoration:none;background:#0f1b33;color:#fff;overflow:hidden;isolation:isolate;transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s ease;}
-  .where-card::after{content:"";position:absolute;inset:0;z-index:-1;opacity:0;background:radial-gradient(120% 120% at 30% 0%,rgba(232,128,78,.55),transparent 60%);transition:opacity .4s ease;}
-  .where-card:hover,.where-card:focus-visible{transform:translateY(-4px);box-shadow:0 26px 50px -24px rgba(15,27,51,.6);}
-  .where-card:hover::after,.where-card:focus-visible::after{opacity:1;}
-  .where-label{font-size:19px;font-weight:750;letter-spacing:-.01em;}
-  .where-hint{font-size:14px;line-height:1.45;color:rgba(255,255,255,.66);}
-  .where-open{margin-top:10px;font-size:14px;font-weight:700;color:#ffb784;}
-  .where-all{text-align:center;margin:36px 0 0;}
-  .where-all a{color:#0f1b33;font-weight:650;text-decoration:none;border-bottom:1px solid rgba(15,27,51,.25);padding-bottom:2px;}
-  .where-all a:hover{border-color:#e8804e;color:#e8804e;}
-  /* Chapter 3 - trust principles */
+  .where-row{display:flex;flex-wrap:wrap;justify-content:center;gap:.7rem;margin:2.4rem auto 0;max-width:680px;}
+.where-link{display:flex;flex-direction:column;gap:.15rem;padding:.7rem 1.15rem;border-radius:14px;background:rgba(255,255,255,.72);border:1px solid rgba(15,27,51,.08);text-decoration:none;transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .4s,background .4s;}
+.where-link:hover,.where-link:focus-visible{transform:translateY(-2px);border-color:rgba(232,118,43,.5);background:#fff;}
+.where-link-label{font-size:1rem;font-weight:700;color:var(--emg-navy,#0f1b30);}
+.where-link-hint{font-size:.82rem;color:#6a7588;}  /* Chapter 3 - trust principles */
   .ch-trust{background:#0f1b33;color:#fff;max-width:none;}
   .ch-trust .ch-title{color:#fff;}
   .ch-trust .ch-kicker{color:#ffb784;}
@@ -387,20 +356,26 @@ const prompts = [
   .closing-area{margin:30px auto 0;max-width:560px;font-size:13.5px;line-height:1.6;color:#8a93a6;}
   .btn-xl{font-size:17px;padding:18px 34px;}
   @media (max-width:760px){
-    .path-track{grid-template-columns:1fr;}
     .rocco-inner{grid-template-columns:1fr;text-align:center;justify-items:center;}
     .rocco-copy p{margin-left:auto;margin-right:auto;}
     .chapter{padding:64px 22px;}
     .ch-head{margin-bottom:36px;}
-    .path-track{gap:14px;}
     .path-step{padding:22px 20px;}
-    .where-grid,.pilot-grid{gap:12px;}
-    .where-card{padding:22px 20px;min-height:108px;}
+    .pilot-grid{gap:12px;}
     .trust-principle{padding:26px 24px;}
     .rocco-inner{gap:26px;}
     .closing{padding:72px 22px;}
     .ch-lede,.closing-sub{max-width:34ch;}
   }
+
+/* journey as quiet progression (no cards) */
+.ch-narrow{max-width:760px;margin:0 auto;text-align:center;}
+.ch-lede-center{margin-left:auto;margin-right:auto;}
+.ch-soft{color:#5b6678;font-weight:600;}
+.path-steps{list-style:none;margin:2.6rem auto 0;padding:0;max-width:620px;text-align:left;display:grid;gap:1.15rem;counter-reset:step;}
+.path-steps li{position:relative;padding-left:2.4rem;font-size:1.04rem;line-height:1.55;color:#46536a;counter-increment:step;}
+.path-steps li::before{content:counter(step);position:absolute;left:0;top:.05em;width:1.6rem;height:1.6rem;border-radius:50%;background:rgba(232,118,43,.1);color:var(--emg-orange,#E8762B);font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.path-n{color:var(--emg-navy,#0f1b30);font-weight:700;}
 </style>
 
 <script is:inline>
