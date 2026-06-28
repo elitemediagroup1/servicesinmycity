@@ -42,76 +42,63 @@ const prompts = [
 
 <BaseLayout title="The home guide that knows what&rsquo;s wrong" description="ServicesInMyCity is the AI guide for your home. Ask Rocco what&rsquo;s wrong before anyone touches it &mdash; then connect with a trusted local pro.">
 
-  <!-- ===================== HERO ===================== -->
-  <section class="hero2" aria-label="Ask Rocco">
-    <div class="hero2-aurora" aria-hidden="true"></div>
-    <div class="hero2-grain" aria-hidden="true"></div>
-    <div class="hero2-inner">
-      <p class="hero2-eyebrow reveal">The AI guide for your home</p>
-      <h1 class="hero2-title reveal">
-        Know what&rsquo;s wrong with your home<br />
-        <span class="hero2-title-accent">before anyone touches it.</span>
-      </h1>
-      <p class="hero2-lede reveal">
-        Describe what&rsquo;s happening in plain words. Rocco helps you understand it,
-        what it might cost, and what to ask &mdash; then connects you with a trusted local pro.
-      </p>
+    <!-- ===================== THE OPENING (home is the hero) ===================== -->
+  <section class="opening" aria-label="Your home, and the guide who knows it">
+    <div class="opening-home">
+      <div class="stage reveal" id="stage" data-parallax>
+          <!-- ===================================================================
+                     THE LIVING HOME  —  EMG Experience System
+                     A real-time canvas environment. The home breathes, windows
+                     glow, smoke drifts. Hovering a hotspot reveals that system
+                     from the inside (X-Ray). The <canvas> is the base artwork and
+                     can later be swapped for a commissioned 3D/raster render
+                     WITHOUT touching the hotspot overlay or the Rocco handoff.
+                ==================================================================== -->
+          <div class="home-wrap" data-depth="0.4">
+            <canvas class="living-home" id="livingHome"
+                    role="img"
+                    aria-label="A warmly lit home at dusk. Hover a part of the home to look inside that system, then ask Rocco about it."></canvas>
+            <p class="living-home-readout" id="livingReadout" aria-live="polite"></p>
+          </div>
+    
+          <!-- interactive hotspots -->
+          <div class="hotspots">
+            {hotspots.map((h) => (
+              <a class="hotspot" data-sys={h.key} href={`/ask?topic=${encodeURIComponent(h.label)}`}
+                 style={`left:${h.x}%;top:${h.y}%`} aria-label={`Ask Rocco about ${h.label}`}>
+                <span class="hotspot-dot" aria-hidden="true"></span>
+                <span class="hotspot-label">{h.label}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+    </div>
 
+    <div class="opening-veil" aria-hidden="true"></div>
+
+    <div class="opening-fore">
+      <p class="opening-eyebrow reveal">Start by looking inside your own home</p>
+      <h1 class="opening-title reveal">Understand what’s wrong<br /><span class="opening-title-accent">before anyone touches it.</span></h1>
+      <p class="opening-lede reveal">Hover any part of your home to see inside it. Then tell Rocco what you’re noticing — in plain words.</p>
       <form class="askbar reveal" action="/ask" method="get" role="search">
-        <span class="askbar-rocco" aria-hidden="true">
-          <img src="/assets/rocco/rocco-headshot.png" alt="" width="40" height="40" />
-          <span class="askbar-pulse"></span>
-        </span>
-        <input class="askbar-input" type="text" name="q" autocomplete="off"
-          aria-label="Describe what is happening with your home"
-          placeholder="" data-greeting="1" />
-        <button class="askbar-go" type="submit">
-          Ask Rocco
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-      </form>
-
-      <div class="hero2-prompts reveal" aria-label="Examples">
-        {prompts.map((p) => (
-          <a class="chip" href={`/ask?q=${encodeURIComponent(p)}`}>{p}</a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== THE HOUSE ===================== -->
-  <section class="house2" aria-labelledby="house2-title">
-    <div class="house2-head reveal">
-      <h2 id="house2-title" class="house2-title">Point to where it hurts.</h2>
-      <p class="house2-sub">Every part of your home is a question Rocco can answer. Hover a spot &mdash; then ask.</p>
-    </div>
-
-    <div class="stage reveal" id="stage" data-parallax>
-      <!-- ===================================================================
-                 THE LIVING HOME  —  EMG Experience System
-                 A real-time canvas environment. The home breathes, windows
-                 glow, smoke drifts. Hovering a hotspot reveals that system
-                 from the inside (X-Ray). The <canvas> is the base artwork and
-                 can later be swapped for a commissioned 3D/raster render
-                 WITHOUT touching the hotspot overlay or the Rocco handoff.
-            ==================================================================== -->
-      <div class="home-wrap" data-depth="0.4">
-        <canvas class="living-home" id="livingHome"
-                role="img"
-                aria-label="A warmly lit home at dusk. Hover a part of the home to look inside that system, then ask Rocco about it."></canvas>
-        <p class="living-home-readout" id="livingReadout" aria-live="polite"></p>
-      </div>
-
-      <!-- interactive hotspots -->
-      <div class="hotspots">
-        {hotspots.map((h) => (
-          <a class="hotspot" data-sys={h.key} href={`/ask?topic=${encodeURIComponent(h.label)}`}
-             style={`left:${h.x}%;top:${h.y}%`} aria-label={`Ask Rocco about ${h.label}`}>
-            <span class="hotspot-dot" aria-hidden="true"></span>
-            <span class="hotspot-label">{h.label}</span>
-          </a>
-        ))}
-      </div>
+              <span class="askbar-rocco" aria-hidden="true">
+                <img src="/assets/rocco/rocco-headshot.png" alt="" width="40" height="40" />
+                <span class="askbar-pulse"></span>
+              </span>
+              <input class="askbar-input" type="text" name="q" autocomplete="off"
+                aria-label="Describe what is happening with your home"
+                placeholder="" data-greeting="1" />
+              <button class="askbar-go" type="submit">
+                Ask Rocco
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </form>
+      <div class="opening-prompts reveal" aria-label="Examples">
+              {prompts.map((p) => (
+                <a class="chip" href={`/ask?q=${encodeURIComponent(p)}`}>{p}</a>
+              ))}
+            </div>
+      <p class="opening-hint reveal" aria-hidden="true">Touch a part of the house above to look inside it</p>
     </div>
   </section>
 
@@ -263,19 +250,18 @@ const prompts = [
   :focus-visible{outline:3px solid #F4A24B;outline-offset:3px;border-radius:6px}
 
   /* ============ HERO ============ */
-  .hero2{position:relative;overflow:hidden;text-align:center;padding:clamp(5rem,11vw,9rem) 1.4rem clamp(3.5rem,7vw,6rem);background:linear-gradient(180deg,#FBF8F2 0%,#F6F1E8 100%)}
-  .hero2-aurora{position:absolute;inset:-30% -10% auto -10%;height:80%;background:
-    radial-gradient(40% 60% at 25% 30%,rgba(244,162,75,.30),transparent 70%),
-    radial-gradient(45% 55% at 78% 20%,rgba(34,64,95,.18),transparent 70%),
-    radial-gradient(40% 50% at 60% 65%,rgba(58,160,160,.16),transparent 70%);
-    filter:blur(20px);animation:auroraDrift 22s ease-in-out infinite alternate}
-  @keyframes auroraDrift{0%{transform:translate3d(0,0,0) scale(1)}100%{transform:translate3d(2.5%,2%,0) scale(1.08)}}
-  .hero2-grain{position:absolute;inset:0;opacity:.5;pointer-events:none;mix-blend-mode:soft-light;background-image:radial-gradient(rgba(0,0,0,.18) .5px,transparent .5px);background-size:3px 3px}
-  .hero2-inner{position:relative;max-width:980px;margin:0 auto}
-  .hero2-eyebrow{font-size:.84rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--emg-orange,#E8762B);margin:0 0 1.2rem}
-  .hero2-title{font-size:clamp(2.8rem,7vw,5.6rem);line-height:1.02;letter-spacing:-.025em;font-weight:800;color:#16304C;margin:0 0 1.4rem}
-  .hero2-title-accent{color:var(--emg-orange,#E8762B)}
-  .hero2-lede{font-size:clamp(1.1rem,2.2vw,1.45rem);line-height:1.55;color:#42546A;max-width:720px;margin:0 auto 2.6rem}
+  /* ===================== THE OPENING ===================== */
+.opening{position:relative;isolation:isolate;min-height:clamp(620px,92vh,940px);display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;padding:0 clamp(20px,5vw,64px) clamp(40px,7vh,88px);}
+.opening-home{position:absolute;inset:0;z-index:0;}
+.opening-home .stage{position:absolute;inset:0;width:100%;height:100%;margin:0;border:0;border-radius:0;max-width:none;aspect-ratio:auto;box-shadow:none;}
+.opening-veil{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(247,243,236,0) 0%,rgba(247,243,236,0) 38%,rgba(247,243,236,.46) 70%,rgba(247,243,236,.86) 100%);}
+.opening-fore{position:relative;z-index:2;width:100%;max-width:860px;margin:0 auto;text-align:center;}
+.opening-eyebrow{font-size:.8rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--emg-orange,#E8762B);margin:0 0 1rem;}
+.opening-title{font-size:clamp(2.6rem,6.4vw,5rem);line-height:1.02;letter-spacing:-.02em;font-weight:700;color:var(--emg-navy,#0f1b30);margin:0 0 1.1rem;}
+.opening-title-accent{color:var(--emg-orange,#E8762B);}
+.opening-lede{font-size:clamp(1.05rem,2vw,1.3rem);line-height:1.5;color:#3a4658;max-width:34ch;margin:0 auto 1.9rem;}
+.opening-hint{font-size:.82rem;letter-spacing:.04em;color:#7a8699;margin:1.4rem 0 0;}
+@media (max-width:640px){.opening{justify-content:flex-end;min-height:clamp(560px,86vh,800px);}.opening-lede{margin-bottom:1.4rem;}}
 
   /* ask bar with living Rocco */
   .askbar{display:flex;align-items:center;gap:.5rem;max-width:680px;margin:0 auto;background:#fff;border:1px solid rgba(22,48,76,.10);border-radius:999px;padding:.5rem .5rem .5rem .55rem;box-shadow:0 24px 60px -28px rgba(22,48,76,.45),0 2px 8px rgba(22,48,76,.06);transition:box-shadow .4s ease,transform .4s ease,border-color .4s ease}
@@ -293,15 +279,10 @@ const prompts = [
   .askbar-go:hover{transform:translateY(-1px) scale(1.02);box-shadow:0 12px 26px -10px rgba(232,118,43,.6);background:#F4882F}
   .askbar-go svg{transition:transform .25s}
   .askbar-go:hover svg{transform:translateX(3px)}
-  .hero2-prompts{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin-top:1.6rem}
+  .opening-prompts{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin-top:1.6rem}
   .chip{font-size:.92rem;color:#42546A;background:rgba(255,255,255,.7);border:1px solid rgba(22,48,76,.10);padding:.5rem .95rem;border-radius:999px;text-decoration:none;transition:all .25s cubic-bezier(.2,.7,.2,1)}
   .chip:hover{color:#16304C;background:#fff;border-color:rgba(244,162,75,.6);transform:translateY(-2px);box-shadow:0 10px 22px -12px rgba(22,48,76,.35)}
 
-  /* ============ THE HOUSE ============ */
-  .house2{padding:clamp(4rem,9vw,8rem) 1.4rem;background:#16304C;color:#fff;text-align:center;position:relative;overflow:hidden}
-  .house2-head{max-width:760px;margin:0 auto clamp(2rem,5vw,3.5rem)}
-  .house2-title{font-size:clamp(2.2rem,5.5vw,4rem);line-height:1.05;letter-spacing:-.02em;font-weight:800;margin:0 0 1rem}
-  .house2-sub{font-size:clamp(1rem,2vw,1.25rem);color:#A9BBD0;margin:0}
   .stage{position:relative;max-width:760px;margin:0 auto;aspect-ratio:1/.84;border-radius:28px;background:linear-gradient(180deg,#2B4A6E 0%,#15314E 100%)}
   .stage{box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 40px 90px -40px rgba(0,0,0,.6);overflow:hidden}
 
@@ -455,12 +436,12 @@ const prompts = [
     hvac:'hvac',
     foundation:'struct', crawlspace:'struct', garage:'struct'
   };
-  var LABEL = {
-    roof:'Attic & roof - heat rising through insulation',
-    plumb:'Plumbing - water lines running through the home',
-    elec:'Electrical - wiring feeding the panel',
-    hvac:'HVAC - conditioned air moving through ducts',
-    struct:'Foundation - what the home stands on'
+    var LABEL = {
+    roof:'This is your roof and attic — your home’s first shield against weather.',
+    plumb:'These are the water lines — where water travels in, and where it leaves.',
+    elec:'This is the wiring and panel — the quiet system powering everything.',
+    hvac:'This is your heating and cooling — how warm and cool air reach each room.',
+    struct:'This is the foundation — the ground everything else rests on.'
   };
   var readout = document.getElementById('livingReadout');
   function setXray(key){
