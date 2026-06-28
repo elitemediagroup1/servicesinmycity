@@ -114,80 +114,129 @@ const prompts = [
     </div>
   </section>
 
-  <!-- ===================== JOURNEY (a moment) ===================== -->
-  <section class="journey" aria-labelledby="journey-title">
-    <div class="journey-head reveal">
-      <p class="eyebrow">How it feels</p>
-      <h2 id="journey-title" class="journey-title">From &ldquo;what is that noise?&rdquo;<br />to a pro you trust.</h2>
+  <!-- =================== CHAPTER 1 · FROM CONFUSION TO CONFIDENCE =================== -->
+  <section class="chapter ch-path" aria-labelledby="path-title">
+    <div class="ch-head reveal">
+      <p class="ch-kicker">The journey</p>
+      <h2 id="path-title" class="ch-title">From &ldquo;something feels wrong&rdquo;<br /><span class="ch-title-soft">to &ldquo;I know exactly what to do.&rdquo;</span></h2>
+      <p class="ch-lede">You don&rsquo;t need the right words. You just need to start. Rocco walks the rest of the way with you.</p>
     </div>
-    <div class="journey-track">
-      <div class="jstep reveal">
-        <span class="jstep-num">01</span>
-        <h3>You notice something</h3>
-        <p>A stain, a sound, a smell. You don&rsquo;t need the right words &mdash; just describe it.</p>
-      </div>
-      <span class="journey-arrow" aria-hidden="true">
-        <svg width="44" height="16" viewBox="0 0 44 16" fill="none"><path d="M0 8h40M34 2l8 6-8 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </span>
-      <div class="jstep reveal">
-        <span class="jstep-num">02</span>
-        <h3>Rocco helps you understand</h3>
-        <p>What it likely is, what it tends to cost, and the right questions to ask. No pressure, no upsell.</p>
-      </div>
-      <span class="journey-arrow" aria-hidden="true">
-        <svg width="44" height="16" viewBox="0 0 44 16" fill="none"><path d="M0 8h40M34 2l8 6-8 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </span>
-      <div class="jstep reveal">
-        <span class="jstep-num">03</span>
-        <h3>You meet a trusted local pro</h3>
-        <p>When you&rsquo;re ready, Rocco connects you with a vetted professional near you &mdash; on your terms.</p>
-      </div>
-    </div>
+    <ol class="path-track" role="list">
+      <li class="path-step reveal">
+        <span class="path-feel">You notice it</span>
+        <h3>A stain. A sound. A smell.</h3>
+        <p>Describe what&rsquo;s happening in plain words. There&rsquo;s no wrong way to ask.</p>
+      </li>
+      <li class="path-step reveal">
+        <span class="path-feel">You understand it</span>
+        <h3>Rocco tells you what it likely is.</h3>
+        <p>What&rsquo;s probably going on, what it tends to cost, and whether it can wait. No panic, no upsell.</p>
+      </li>
+      <li class="path-step reveal">
+        <span class="path-feel">You know what to ask</span>
+        <h3>You walk in prepared.</h3>
+        <p>The right questions, the right order, the things a good pro should say. You&rsquo;re no longer guessing.</p>
+      </li>
+      <li class="path-step reveal">
+        <span class="path-feel">You decide</span>
+        <h3>You know when it&rsquo;s serious &mdash; and when it isn&rsquo;t.</h3>
+        <p>If it can wait, Rocco says so. If it needs a pro, he helps you find one you can trust.</p>
+      </li>
+    </ol>
   </section>
 
-  <!-- ===================== SERVICES ===================== -->
-  <section class="services2" aria-labelledby="services2-title">
-    <div class="services2-head reveal">
-      <p class="eyebrow">Where Rocco helps</p>
-      <h2 id="services2-title" class="services2-title">Starting with the things that go wrong most.</h2>
+  <!-- =================== CHAPTER 2 · WHERE IS IT HAPPENING =================== -->
+  <section class="chapter ch-where" aria-labelledby="where-title">
+    <div class="ch-head reveal">
+      <p class="ch-kicker">Start anywhere</p>
+      <h2 id="where-title" class="ch-title">Where is it happening?</h2>
+      <p class="ch-lede">Every part of your home is a door into the same conversation. Pick the one that&rsquo;s on your mind.</p>
     </div>
-    <div class="services2-grid">
+    <div class="where-grid">
       {services.map((s) => (
-        <a class="scard reveal" href={`/services/${s.slug}`}>
-          <span class="scard-glow" aria-hidden="true"></span>
-          <span class="scard-icon" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 13l5 5L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
-          <h3 class="scard-title" set:html={s.label}></h3>
-          <p class="scard-hint">{s.hint}</p>
-          <span class="scard-go">Ask Rocco &rarr;</span>
+        <a class="where-card reveal" href={`/ask?topic=${encodeURIComponent(s.label.replace(/&amp;/g, "&"))}`}>
+          <span class="where-label" set:html={s.label}></span>
+          <span class="where-hint">{s.hint}</span>
+          <span class="where-open">Tell Rocco &rarr;</span>
         </a>
       ))}
     </div>
-    <p class="services2-all reveal"><a href="/services">See everything Rocco can help with &rarr;</a></p>
+    <p class="where-all reveal"><a href="/services">Or see everything Rocco can help you make sense of &rarr;</a></p>
   </section>
 
-  <!-- ===================== ROCCO BAND ===================== -->
-  <section class="roccoband" aria-labelledby="roccoband-title">
-    <div class="roccoband-inner reveal">
-      <div class="roccoband-portrait" aria-hidden="true">
+  <!-- =================== CHAPTER 3 · WHY YOU CAN TRUST THE ANSWER =================== -->
+  <section class="chapter ch-trust" aria-labelledby="trust-title">
+    <div class="ch-head reveal">
+      <p class="ch-kicker">Why you can trust the answer</p>
+      <h2 id="trust-title" class="ch-title">An answer that&rsquo;s on your side.</h2>
+    </div>
+    <div class="trust-grid">
+      <article class="trust-principle reveal">
+        <h3>Rocco equips, never diagnoses</h3>
+        <p>He helps you understand what&rsquo;s likely happening &mdash; then a qualified pro confirms it in person. He arms you with questions, not verdicts.</p>
+      </article>
+      <article class="trust-principle reveal">
+        <h3>Advice before referral</h3>
+        <p>You get the full picture first. Connecting with a pro is something you choose when you&rsquo;re ready &mdash; never a wall you have to get past.</p>
+      </article>
+      <article class="trust-principle reveal">
+        <h3>No pay-to-rank</h3>
+        <p>No one buys a better recommendation. Rocco has nothing to sell you, so his only job is to be right.</p>
+      </article>
+      <article class="trust-principle reveal">
+        <h3>Honest about uncertainty</h3>
+        <p>When something needs eyes on it, Rocco says so plainly. &ldquo;I&rsquo;m not sure&rdquo; is an answer he&rsquo;s willing to give.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- =================== CHAPTER 4 · ROCCO, THE GUIDE BESIDE YOU =================== -->
+  <section class="chapter ch-rocco" aria-labelledby="rocco-title">
+    <div class="rocco-inner reveal">
+      <div class="rocco-portrait" aria-hidden="true">
         <img src="/assets/rocco/rocco-headshot.png" alt="" width="200" height="200" />
-        <span class="roccoband-ring"></span>
+        <span class="rocco-ring"></span>
       </div>
-      <div class="roccoband-copy">
-        <p class="eyebrow eyebrow-light">Meet Rocco</p>
-        <h2 id="roccoband-title">He works for you &mdash; not the contractor.</h2>
-        <p>Rocco doesn&rsquo;t sell you anything. He helps you understand your home, so you walk into every repair informed, calm, and in control.</p>
-        <a class="btn-light" href="/ask">Start a conversation</a>
+      <div class="rocco-copy">
+        <p class="ch-kicker ch-kicker-light">The guide beside you</p>
+        <h2 id="rocco-title">Rocco has seen this before.</h2>
+        <p>Think of the most level-headed person you know about homes &mdash; the one who&rsquo;s calm when you&rsquo;re not, who explains things without making you feel small, who tells you the truth even when it&rsquo;s &ldquo;this can wait.&rdquo;</p>
+        <p class="rocco-quiet">That&rsquo;s who Rocco is. He works for you, not the contractor. He has nothing to sell and no reason to rush you.</p>
+        <a class="btn-light" href="/ask">Talk it through with Rocco</a>
       </div>
     </div>
   </section>
 
-  <!-- ===================== CLOSING ===================== -->
-  <section class="closing2 reveal" aria-labelledby="closing2-title">
-    <h2 id="closing2-title" class="closing2-title">Your home has a guide now.</h2>
-    <a class="btn-primary btn-xl" href="/ask">Ask Rocco a question</a>
-    <p class="closing2-area">Serving the Jersey Shore launch area &mdash; Stafford, Manahawkin, Barnegat, LBI, Toms River, Forked River, Waretown and more. If we can&rsquo;t help in your town yet, Rocco will tell you straight.</p>
+  <!-- =================== CHAPTER 5 · THE HVAC PILOT, HONESTLY =================== -->
+  <section class="chapter ch-pilot" aria-labelledby="pilot-title">
+    <div class="ch-head reveal">
+      <p class="ch-kicker">Where help is live today</p>
+      <h2 id="pilot-title" class="ch-title">Heating &amp; cooling, on the Jersey Shore.</h2>
+      <p class="ch-lede">We&rsquo;re starting where we can do it right: HVAC, in our launch towns. When you want a real person, here&rsquo;s exactly how that works.</p>
+    </div>
+    <div class="pilot-grid">
+      <article class="pilot-fact reveal">
+        <h3>One managed partner</h3>
+        <p>Not a marketplace of strangers bidding for your job. A single trusted heating &amp; cooling partner we stand behind.</p>
+      </article>
+      <article class="pilot-fact reveal">
+        <h3>Only with your say-so</h3>
+        <p>Rocco never hands off your details quietly. A pro hears from you only after you ask to be connected.</p>
+      </article>
+      <article class="pilot-fact reveal">
+        <h3>No invented rankings</h3>
+        <p>No &ldquo;top-rated near you&rdquo; theater. We&rsquo;ll tell you plainly what this pilot is &mdash; and what it isn&rsquo;t yet.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- =================== CLOSING · RELIEF, NOT A PITCH =================== -->
+  <section class="closing reveal" aria-labelledby="closing-title">
+    <p class="closing-kicker">Whenever you&rsquo;re ready</p>
+    <h2 id="closing-title" class="closing-title">Start with what&rsquo;s happening.</h2>
+    <p class="closing-sub">No account. No pressure. Just tell Rocco what you&rsquo;re noticing, and take it one calm step at a time.</p>
+    <a class="btn-primary btn-xl" href="/ask">Tell Rocco what&rsquo;s going on</a>
+    <p class="closing-area">Live now across the Jersey Shore launch area &mdash; Stafford, Manahawkin, Barnegat, LBI, Toms River, Forked River, Waretown and nearby. Not in your town yet? Rocco will tell you straight.</p>
   </section>
 
 </BaseLayout>
@@ -389,6 +438,75 @@ const prompts = [
   @media (prefers-reduced-motion: reduce){
     .stage-house,.h-clouds,.h-smoke,.h-smoke circle,.h-particles circle,.h-winA,.h-winB,.h-porchlight,.h-stars circle{animation:none!important}
     #house-dim,#house-systems > g{transition:none}
+  }
+
+  /* ===================================================================
+     EMG EXPERIENCE SYSTEM — the homepage as one continuous journey.
+     Chapters, not marketing blocks. Navy = safety, amber = home,
+     orange = Rocco/help, teal = platform/system only.
+     =================================================================== */
+  .chapter{max-width:1080px;margin:0 auto;padding:clamp(72px,11vw,150px) 24px;}
+  .ch-head{max-width:760px;margin:0 auto clamp(40px,6vw,72px);text-align:center;}
+  .ch-kicker{margin:0 0 14px;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#e8804e;}
+  .ch-kicker-light{color:#ffb784;}
+  .ch-title{margin:0;font-size:clamp(30px,4.6vw,52px);line-height:1.08;letter-spacing:-.02em;font-weight:800;color:#0f1b33;}
+  .ch-title-soft{color:#5a6b88;font-weight:700;}
+  .ch-lede{margin:20px auto 0;max-width:600px;font-size:clamp(16px,2vw,19px);line-height:1.6;color:#54607a;}
+  /* Chapter 1 - the path */
+  .ch-path{background:linear-gradient(180deg,#fbfaf7 0%,#f4f1ea 100%);max-width:none;}
+  .path-track{list-style:none;margin:0 auto;padding:0;max-width:920px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:step;}
+  .path-step{position:relative;padding:26px 22px;border-radius:20px;background:#fff;border:1px solid rgba(15,27,51,.07);box-shadow:0 18px 40px -28px rgba(15,27,51,.35);counter-increment:step;}
+  .path-step::before{content:counter(step,decimal-leading-zero);display:block;margin-bottom:14px;font-size:13px;font-weight:800;letter-spacing:.1em;color:#c8b9a0;}
+  .path-feel{display:inline-block;margin-bottom:10px;font-size:12px;font-weight:700;letter-spacing:.04em;color:#e8804e;text-transform:uppercase;}
+  .path-step h3{margin:0 0 8px;font-size:18px;line-height:1.25;color:#0f1b33;font-weight:750;}
+  .path-step p{margin:0;font-size:14.5px;line-height:1.55;color:#5a647c;}
+  /* Chapter 2 - where is it happening */
+  .where-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;max-width:920px;margin:0 auto;}
+  .where-card{position:relative;display:flex;flex-direction:column;gap:6px;padding:28px 24px;border-radius:20px;text-decoration:none;background:#0f1b33;color:#fff;overflow:hidden;isolation:isolate;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s ease;}
+  .where-card::after{content:"";position:absolute;inset:0;z-index:-1;opacity:0;background:radial-gradient(120% 120% at 30% 0%,rgba(232,128,78,.55),transparent 60%);transition:opacity .4s ease;}
+  .where-card:hover,.where-card:focus-visible{transform:translateY(-4px);box-shadow:0 26px 50px -24px rgba(15,27,51,.6);}
+  .where-card:hover::after,.where-card:focus-visible::after{opacity:1;}
+  .where-label{font-size:19px;font-weight:750;letter-spacing:-.01em;}
+  .where-hint{font-size:14px;line-height:1.45;color:rgba(255,255,255,.66);}
+  .where-open{margin-top:10px;font-size:14px;font-weight:700;color:#ffb784;}
+  .where-all{text-align:center;margin:36px 0 0;}
+  .where-all a{color:#0f1b33;font-weight:650;text-decoration:none;border-bottom:1px solid rgba(15,27,51,.25);padding-bottom:2px;}
+  .where-all a:hover{border-color:#e8804e;color:#e8804e;}
+  /* Chapter 3 - trust principles */
+  .ch-trust{background:#0f1b33;color:#fff;max-width:none;}
+  .ch-trust .ch-title{color:#fff;}
+  .ch-trust .ch-kicker{color:#ffb784;}
+  .trust-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;max-width:900px;margin:0 auto;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:22px;overflow:hidden;}
+  .trust-principle{padding:34px 30px;background:#0f1b33;}
+  .trust-principle h3{margin:0 0 12px;font-size:19px;font-weight:750;color:#fff;line-height:1.25;}
+  .trust-principle p{margin:0;font-size:15px;line-height:1.6;color:rgba(255,255,255,.72);}
+  /* Chapter 4 - Rocco */
+  .ch-rocco{max-width:none;background:linear-gradient(180deg,#fff6ef 0%,#fdeee2 100%);}
+  .rocco-inner{display:grid;grid-template-columns:auto 1fr;gap:clamp(28px,5vw,64px);align-items:center;max-width:920px;margin:0 auto;}
+  .rocco-portrait{position:relative;width:200px;height:200px;flex:none;}
+  .rocco-portrait img{position:relative;z-index:1;width:200px;height:200px;border-radius:50%;object-fit:cover;box-shadow:0 24px 50px -22px rgba(120,60,20,.5);}
+  .rocco-ring{position:absolute;inset:-12px;border-radius:50%;border:1.5px solid rgba(232,128,78,.4);}
+  .rocco-copy h2{margin:6px 0 16px;font-size:clamp(26px,3.6vw,40px);line-height:1.1;letter-spacing:-.02em;color:#3a2415;font-weight:800;}
+  .rocco-copy p{margin:0 0 14px;font-size:16.5px;line-height:1.62;color:#6b513c;max-width:560px;}
+  .rocco-quiet{color:#8a6a50;}
+  .btn-light{display:inline-block;margin-top:10px;padding:14px 26px;border-radius:999px;background:#e8804e;color:#fff;font-weight:700;text-decoration:none;box-shadow:0 16px 32px -16px rgba(232,128,78,.7);transition:transform .25s ease;}
+  .btn-light:hover{transform:translateY(-2px);}
+  /* Chapter 5 - HVAC pilot */
+  .pilot-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;max-width:900px;margin:0 auto;}
+  .pilot-fact{padding:30px 26px;border-radius:20px;background:#fbfaf7;border:1px solid rgba(15,27,51,.08);}
+  .pilot-fact h3{margin:0 0 10px;font-size:18px;font-weight:750;color:#0f1b33;}
+  .pilot-fact p{margin:0;font-size:14.5px;line-height:1.55;color:#5a647c;}
+  /* Closing - relief */
+  .closing{max-width:none;text-align:center;padding:clamp(80px,12vw,160px) 24px;background:linear-gradient(180deg,#f4f1ea 0%,#fff 100%);}
+  .closing-kicker{margin:0 0 14px;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#e8804e;}
+  .closing-title{margin:0;font-size:clamp(32px,5.2vw,60px);line-height:1.05;letter-spacing:-.025em;font-weight:850;color:#0f1b33;}
+  .closing-sub{margin:18px auto 32px;max-width:520px;font-size:17px;line-height:1.6;color:#54607a;}
+  .closing-area{margin:30px auto 0;max-width:560px;font-size:13.5px;line-height:1.6;color:#8a93a6;}
+  .btn-xl{font-size:17px;padding:18px 34px;}
+  @media (max-width:760px){
+    .path-track{grid-template-columns:1fr;}
+    .rocco-inner{grid-template-columns:1fr;text-align:center;justify-items:center;}
+    .rocco-copy p{margin-left:auto;margin-right:auto;}
   }
 </style>
 
