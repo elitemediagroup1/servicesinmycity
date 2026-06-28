@@ -82,8 +82,7 @@ const prompts = [
     </div>
 
     <div class="opening-base">
-      <p class="opening-lede reveal">Hover any part of your home to look inside it — then tell Rocco what you’re noticing.</p>
-      <form class="askbar reveal" action="/ask" method="get" role="search">
+<form class="askbar reveal" action="/ask" method="get" role="search">
                     <span class="askbar-rocco" aria-hidden="true">
                       <img src="/assets/rocco/rocco-headshot.png" alt="" width="40" height="40" />
                       <span class="askbar-pulse"></span>
@@ -96,6 +95,7 @@ const prompts = [
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     </button>
                   </form>
+      <p class="opening-hint reveal">Or hover any part of your home above to look inside it.</p>
       <div class="opening-prompts reveal" aria-label="Examples">
                     {prompts.map((p) => (
                       <a class="chip" href={`/ask?q=${encodeURIComponent(p)}`}>{p}</a>
@@ -262,8 +262,8 @@ const prompts = [
 .opening-eyebrow{font-size:.78rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#ffd9a8;margin:0 0 1rem;}
 .opening-title{font-size:clamp(2.4rem,5.6vw,4.4rem);line-height:1.04;letter-spacing:-.02em;font-weight:700;color:#fbf7f0;margin:0;text-shadow:0 1px 30px rgba(8,14,28,.45);}
 .opening-title-accent{color:var(--emg-orange,#E8762B);}
-.opening-lede{font-size:clamp(1.02rem,1.9vw,1.22rem);line-height:1.5;color:#3a4658;max-width:36ch;margin:0 auto 1.5rem;}
-@media (max-width:640px){.opening{min-height:clamp(580px,90vh,820px);}.opening-lede{margin-bottom:1.1rem;}}
+.opening-hint{font-size:.84rem;letter-spacing:.01em;color:#5b6678;margin:.95rem auto 0;}
+@media (max-width:640px){.opening{min-height:clamp(580px,90vh,820px);}}
 
   /* ask bar with living Rocco */
   .askbar{display:flex;align-items:center;gap:.5rem;max-width:680px;margin:0 auto;background:#fff;border:1px solid rgba(22,48,76,.10);border-radius:999px;padding:.5rem .5rem .5rem .55rem;box-shadow:0 24px 60px -28px rgba(22,48,76,.45),0 2px 8px rgba(22,48,76,.06);transition:box-shadow .4s ease,transform .4s ease,border-color .4s ease}
@@ -527,31 +527,31 @@ const prompts = [
       ctx.fillStyle='rgba(10,14,26,'+(0.58*a)+')';ctx.fillRect(0,0,W,H);
       var fg=ctx.createRadialGradient(cx,hy+hh*0.5,0,cx,hy+hh*0.5,hw*0.9);fg.addColorStop(0,'rgba(255,224,178,'+(0.10*a)+')');fg.addColorStop(1,'rgba(255,224,178,0)');ctx.fillStyle=fg;ctx.fillRect(0,0,W,H);
       if(xrayKey==='roof'){
-        var ag=ctx.createLinearGradient(0,hy-hh*0.55,0,hy);ag.addColorStop(0,'rgba(120,180,255,0)');ag.addColorStop(1,'rgba(120,180,255,'+(0.20*a)+')');
+        var ag=ctx.createLinearGradient(0,hy-hh*0.55,0,hy);ag.addColorStop(0,'rgba(255,201,138,0)');ag.addColorStop(1,'rgba(255,201,138,'+(0.20*a)+')');
         ctx.fillStyle=ag;ctx.beginPath();ctx.moveTo(hx-10,hy+4);ctx.lineTo(cx,hy-hh*0.5);ctx.lineTo(hx+hw+10,hy+4);ctx.closePath();ctx.fill();
         ctx.fillStyle='rgba(255,210,140,'+(0.5*a)+')';
         for(var b=0;b<6;b++){var bx=hx+30+b*(hw-60)/6;ctx.beginPath();ctx.ellipse(bx,hy-6,(hw-60)/14,7,0,0,7);ctx.fill();}
-        ctx.strokeStyle='rgba(120,190,255,'+(0.6*a)+')';ctx.lineWidth=2;
+        ctx.strokeStyle='rgba(255,208,150,'+(0.6*a)+')';ctx.lineWidth=2;
         for(var c=0;c<4;c++){var ttx=hx+hw*0.25+c*hw*0.17;ctx.beginPath();
           for(var yv=0;yv<hh*0.5;yv+=4){var off=Math.sin((yv*0.06)+t*0.002+c)*6;ctx.lineTo(ttx+off,hy-yv);}ctx.stroke();}
       } else if(xrayKey==='plumb'){
-        ctx.strokeStyle='rgba(90,200,255,'+(0.8*a)+')';ctx.lineWidth=3;ctx.lineCap='round';
+        ctx.strokeStyle='rgba(244,214,160,'+(0.8*a)+')';ctx.lineWidth=3;ctx.lineCap='round';
         ctx.beginPath();ctx.moveTo(hx+hw*0.2,baseY-6);ctx.lineTo(hx+hw*0.2,hy+hh*0.4);ctx.lineTo(hx+hw*0.75,hy+hh*0.4);ctx.lineTo(hx+hw*0.75,baseY-6);ctx.stroke();
         var fl=(t*0.12)%(hw*0.55);
-        ctx.fillStyle='rgba(150,225,255,'+a+')';ctx.beginPath();ctx.arc(hx+hw*0.2+fl,hy+hh*0.4,4,0,7);ctx.fill();
+        ctx.fillStyle='rgba(250,224,176,'+a+')';ctx.beginPath();ctx.arc(hx+hw*0.2+fl,hy+hh*0.4,4,0,7);ctx.fill();
       } else if(xrayKey==='elec'){
         ctx.strokeStyle='rgba(255,210,90,'+(0.85*a)+')';ctx.lineWidth=2;
         for(var w=0;w<3;w++){ctx.beginPath();ctx.moveTo(hx+hw*0.7,hy+hh*0.55);
           for(var yv2=0;yv2<hh*0.4;yv2+=6){ctx.lineTo(hx+hw*0.7+Math.sin(yv2*0.3+w*2+t*0.004)*8,hy+hh*0.55-yv2);}ctx.stroke();}
         ctx.fillStyle='rgba(255,230,120,'+(0.9*a)+')';ctx.fillRect(hx+hw*0.66,hy+hh*0.5,16,22);
       } else if(xrayKey==='hvac'){
-        ctx.strokeStyle='rgba(120,255,220,'+(0.7*a)+')';ctx.lineWidth=10;ctx.lineCap='round';
+        ctx.strokeStyle='rgba(255,206,150,'+(0.7*a)+')';ctx.lineWidth=10;ctx.lineCap='round';
         ctx.beginPath();ctx.moveTo(hx+hw*0.85,baseY-hh*0.3);ctx.lineTo(hx+hw*0.3,baseY-hh*0.3);ctx.lineTo(hx+hw*0.3,baseY-hh*0.6);ctx.stroke();
-        for(var d=0;d<5;d++){var dp=((t*0.05+d*40)% (hw*0.55));ctx.fillStyle='rgba(180,255,235,'+(a*(1-dp/(hw*0.55)))+')';
+        for(var d=0;d<5;d++){var dp=((t*0.05+d*40)% (hw*0.55));ctx.fillStyle='rgba(255,220,176,'+(a*(1-dp/(hw*0.55)))+')';
           ctx.beginPath();ctx.arc(hx+hw*0.85-dp,baseY-hh*0.3,4,0,7);ctx.fill();}
       } else if(xrayKey==='struct'){
-        ctx.fillStyle='rgba(150,170,200,'+(0.35*a)+')';ctx.fillRect(hx-6,baseY-4,hw+12,22);
-        ctx.strokeStyle='rgba(180,200,230,'+(0.7*a)+')';ctx.lineWidth=2;ctx.strokeRect(hx-6,baseY-4,hw+12,22);
+        ctx.fillStyle='rgba(214,198,172,'+(0.35*a)+')';ctx.fillRect(hx-6,baseY-4,hw+12,22);
+        ctx.strokeStyle='rgba(228,212,186,'+(0.7*a)+')';ctx.lineWidth=2;ctx.strokeRect(hx-6,baseY-4,hw+12,22);
       }
     }
     if(!reduce || xray>0.01) raf=requestAnimationFrame(ndraw);
