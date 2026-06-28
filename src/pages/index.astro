@@ -1,11 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SafeImage from "../components/SafeImage.astro";
 
-/* PHASE 2.5 - Polish pass. Homepage as a living product experience.
-   No fabricated stats/reviews. Only real asset is the Rocco headshot;
-   the interactive house is pure SVG/CSS so it is premium and art-independent.
-   Backend (functions, sessions, consent, ARS, Rocco intelligence) untouched. */
+/* EMG EXPERIENCE SYSTEM — the homepage is the product.
+   One continuous journey: notice → understand → prepare → decide → (help).
+   The Living Home hero is a real-time <canvas> engine; its base art can be
+   swapped for a commissioned 3D/render later without touching the hotspot
+   overlay or the Rocco handoff. No fabricated stats, reviews, or rankings.
+   Only real asset is the Rocco headshot. Backend untouched. */
 
 const services = [
   { slug: 'hvac',       label: 'Heating &amp; Cooling', hint: 'No heat, no cool, weird noises' },
@@ -250,7 +251,7 @@ const prompts = [
     color:#fff;background:rgba(10,16,30,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
     border:1px solid rgba(255,255,255,.12);opacity:0;transition:opacity .35s ease;pointer-events:none;white-space:nowrap;}
   .living-home-readout.is-on{opacity:1;}
-  .stage.xray-active .hotspot:not(.is-active) .hotspot-dot{opacity:.35;}
+  .stage.xray-active .hotspot:not(.is-active) .hotspot-dot{opacity:.1;transition:opacity .5s cubic-bezier(.2,.7,.2,1);}
   @media (prefers-reduced-motion: reduce){
     .living-home{/* engine pauses motion; static frame still drawn */}
   }
