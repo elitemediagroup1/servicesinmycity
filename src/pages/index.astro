@@ -1,57 +1,600 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SafeImage from "../components/SafeImage.astro";
+
+/* EMG EXPERIENCE SYSTEM — the homepage is the product.
+   One continuous journey: notice → understand → prepare → decide → (help).
+   The Living Home hero is a real-time <canvas> engine; its base art can be
+   swapped for a commissioned 3D/render later without touching the hotspot
+   overlay or the Rocco handoff. No fabricated stats, reviews, or rankings.
+   Only real asset is the Rocco headshot. Backend untouched. */
+
+const services = [
+  { slug: 'hvac',       label: 'Heating &amp; Cooling', hint: 'No heat, no cool, weird noises' },
+  { slug: 'plumbing',   label: 'Plumbing',              hint: 'Leaks, clogs, water heaters' },
+  { slug: 'electrical', label: 'Electrical',            hint: 'Breakers, outlets, panels' },
+  { slug: 'roofing',    label: 'Roofing',               hint: 'Leaks, shingles, storm damage' },
+];
+
+/* House hotspots positioned over the SVG home (x/y are % within the stage).
+   Each deep-links into Ask Rocco with topic context. */
+const hotspots = [
+  { key: 'roof',        label: 'Roof',            x: 47.6, y: 30.5 },
+  { key: 'gutters',     label: 'Gutters',         x: 30.8, y: 39.3 },
+  { key: 'attic',       label: 'Attic',           x: 48.5, y: 31.5 },
+  { key: 'hvac',        label: 'HVAC',            x: 81.7, y: 65.9 },
+  { key: 'electrical',  label: 'Electrical Panel',x: 69.3, y: 57.3 },
+  { key: 'plumbing',    label: 'Plumbing',        x: 59.8, y: 60.0 },
+  { key: 'waterheater', label: 'Water Heater',    x: 24.3, y: 67.5 },
+  { key: 'crawlspace',  label: 'Crawlspace',      x: 47.5, y: 74.5 },
+  { key: 'foundation',  label: 'Foundation',      x: 36.7, y: 75.0 },
+  { key: 'garage',      label: 'Garage',          x: 24.8, y: 65.9 },
+  { key: 'kitchen',     label: 'Kitchen',         x: 37.7, y: 51.7 },
+  { key: 'bathroom',    label: 'Bathroom',        x: 53.8, y: 51.7 },
+];
+
+const prompts = [
+  'My AC is blowing warm air',
+  'Brown stain on my ceiling',
+  'My breaker keeps tripping',
+  'Water pressure dropped',
+];
 ---
-<BaseLayout title="Find trusted local pros" description="Meet Rocco, your local repair guide. Find trusted local pros and get the job done right on the Jersey Shore.">
-  <section class="hero">
-    <div class="container">
-      <h1>Meet Rocco. Your local repair guide.</h1>
-      <p class="lede">Rocco helps homeowners find trusted local repair pros, fast answers, and practical next steps &mdash; right in their city. Find. Connect. Fix.</p>
-      <div style="margin-top:20px">
-        <a class="btn btn-primary" href="/ask">Ask Rocco a question</a>
-        <a class="btn btn-secondary" href="/services" style="margin-left:10px">Browse services</a>
-      </div>
-        <SafeImage
-      src="/assets/rocco/rocco-hero.png"
-      alt="Rocco, your local repair guide"
-      width={320}
-      height={320}
-      class="rocco-hero-img"
-    />
-</div>
+
+<BaseLayout title="The home guide that knows what&rsquo;s wrong" description="ServicesInMyCity is the AI guide for your home. Ask Rocco what&rsquo;s wrong before anyone touches it &mdash; then connect with a trusted local pro.">
+
+    <!-- ===================== THE OPENING (home is the hero) ===================== -->
+  <section class="opening" aria-label="Your home, and the guide who knows it">
+    <div class="opening-home">
+      <div class="stage reveal" id="stage" data-parallax>
+          <!-- ===================================================================
+                     THE LIVING HOME  —  EMG Experience System
+                     A real-time canvas environment. The home breathes, windows
+                     glow, smoke drifts. Hovering a hotspot reveals that system
+                     from the inside (X-Ray). The <canvas> is the base artwork and
+                     can later be swapped for a commissioned 3D/raster render
+                     WITHOUT touching the hotspot overlay or the Rocco handoff.
+                ==================================================================== -->
+          <div class="home-wrap" data-depth="0.4">
+            <canvas class="living-home" id="livingHome"
+                    role="img"
+                    aria-label="A warmly lit home at dusk. Hover a part of the home to look inside that system, then ask Rocco about it."></canvas>
+            <p class="living-home-readout" id="livingReadout" aria-live="polite"></p>
+          </div>
+    
+          <!-- interactive hotspots -->
+          <div class="hotspots">
+            {hotspots.map((h) => (
+              <a class="hotspot" data-sys={h.key} href={`/ask?topic=${encodeURIComponent(h.label)}`}
+                 style={`left:${h.x}%;top:${h.y}%`} aria-label={`Ask Rocco about ${h.label}`}>
+                <span class="hotspot-dot" aria-hidden="true"></span>
+                <span class="hotspot-label">{h.label}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+    </div>
+
+        <div class="opening-scrim" aria-hidden="true"></div>
+
+    <div class="opening-top">
+      <p class="opening-eyebrow reveal">Your home, understood</p>
+      <h1 class="opening-title reveal">Know what’s wrong<br /><span class="opening-title-accent">before anyone touches it.</span></h1>
+    </div>
+
+    <div class="opening-base">
+<form class="askbar reveal" action="/ask" method="get" role="search">
+                    <span class="askbar-rocco" aria-hidden="true">
+                      <img src="/assets/rocco/rocco-headshot.png" alt="" width="40" height="40" />
+                      <span class="askbar-pulse"></span>
+                    </span>
+                    <input class="askbar-input" type="text" name="q" autocomplete="off"
+                      aria-label="Describe what is happening with your home"
+                      placeholder="" data-greeting="1" />
+                    <button class="askbar-go" type="submit">
+                      Ask Rocco
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                  </form>
+      <p class="opening-hint reveal">Or hover any part of your home above to look inside it.</p>
+      <div class="opening-prompts reveal" aria-label="Examples">
+                    {prompts.map((p) => (
+                      <a class="chip" href={`/ask?q=${encodeURIComponent(p)}`}>{p}</a>
+                    ))}
+                  </div>
+    </div></section>
+
+  <!-- =================== CHAPTER 1 · FROM CONFUSION TO CONFIDENCE =================== -->
+    <section class="chapter ch-path" aria-labelledby="path-title">
+    <div class="ch-narrow reveal">
+      <h2 id="path-title" class="ch-title">It goes from “something feels wrong”<br /><span class="ch-soft">to “I know what to do” — in a few minutes.</span></h2>
+      <ol class="path-steps">
+        <li><span class="path-n">You notice it.</span> A stain, a sound, a smell. You say it in plain words.</li>
+        <li><span class="path-n">You understand it.</span> Rocco tells you what it likely is, what it tends to cost, and whether it can wait.</li>
+        <li><span class="path-n">You walk in prepared.</span> The right questions, in the right order. No more guessing.</li>
+        <li><span class="path-n">You decide.</span> If it can wait, he says so. If it needs a pro, he helps you find one you trust.</li>
+      </ol>
+    </div>
   </section>
 
-  <section class="container" style="padding:48px 20px">
-    <div class="grid">
-      <div class="card">
-        <h3>Trusted local pros</h3>
-        <p>Rocco helps you find nearby businesses and ask the right questions before you hire.</p>
-      </div>
-      <div class="card">
-        <h3>Fast home help</h3>
-        <p>Quick, plain-spoken answers when you need them &mdash; no runaround.</p>
-      </div>
-      <div class="card">
-        <h3>Practical solutions</h3>
-        <p>Clear guidance and next steps you can actually use. Rocco equips you; he never diagnoses.</p>
+  <!-- =================== CHAPTER 2 · WHERE IS IT HAPPENING =================== -->
+    <section class="chapter ch-where" aria-labelledby="where-title">
+    <div class="ch-narrow reveal">
+      <p class="ch-kicker">Not sure where to start</p>
+      <h2 id="where-title" class="ch-title">Start with whatever’s on your mind.</h2>
+      <p class="ch-lede ch-lede-center">Every one of these opens the same calm conversation with Rocco. There’s no wrong door.</p>
+      <div class="where-row">
+        {services.map((sv) => (
+          <a class="where-link" href={`/ask?topic=${encodeURIComponent(sv.label.replace(/&amp;/g,"&"))}`}>
+            <span class="where-link-label" set:html={sv.label}></span>
+            <span class="where-link-hint">{sv.hint}</span>
+          </a>
+        ))}
       </div>
     </div>
   </section>
 
-  <section class="container" style="padding:0 20px 48px">
-    <h2>Popular services</h2>
-    <div class="grid">
-      <a class="card" href="/services/hvac">HVAC &mdash; heating &amp; cooling</a>
-      <a class="card" href="/services/plumbing">Plumbing</a>
-      <a class="card" href="/services/electrical">Electrical</a>
-      <a class="card" href="/services">See all services &rarr;</a>
+  <!-- =================== CHAPTER 3 · WHY YOU CAN TRUST THE ANSWER =================== -->
+  <section class="chapter ch-trust" aria-labelledby="trust-title">
+    <div class="ch-head reveal">
+      <p class="ch-kicker">Why you can trust the answer</p>
+      <h2 id="trust-title" class="ch-title">An answer that&rsquo;s on your side.</h2>
+    </div>
+    <div class="trust-grid">
+      <article class="trust-principle reveal">
+        <h3>Rocco equips, never diagnoses</h3>
+        <p>He helps you understand what&rsquo;s likely happening &mdash; then a qualified pro confirms it in person. He arms you with questions, not verdicts.</p>
+      </article>
+      <article class="trust-principle reveal">
+        <h3>Advice before referral</h3>
+        <p>You get the full picture first. Connecting with a pro is something you choose when you&rsquo;re ready &mdash; never a wall you have to get past.</p>
+      </article>
+      <article class="trust-principle reveal">
+        <h3>No pay-to-rank</h3>
+        <p>No one buys a better recommendation. Rocco has nothing to sell you, so his only job is to be right.</p>
+      </article>
+      <article class="trust-principle reveal">
+        <h3>Honest about uncertainty</h3>
+        <p>When something needs eyes on it, Rocco says so plainly. &ldquo;I&rsquo;m not sure&rdquo; is an answer he&rsquo;s willing to give.</p>
+      </article>
     </div>
   </section>
 
-  <section class="container" style="padding:0 20px 64px">
-    <div class="disclaimer">
-      Serving the Jersey Shore launch area &mdash; Stafford, Manahawkin, Barnegat, LBI, Toms River, Forked River, Waretown and more.
-      We're growing honestly: if we can't help in your town yet, Rocco will tell you straight.
+  <!-- =================== CHAPTER 4 · ROCCO, THE GUIDE BESIDE YOU =================== -->
+  <section class="chapter ch-rocco" aria-labelledby="rocco-title">
+    <div class="rocco-inner reveal">
+      <div class="rocco-portrait" aria-hidden="true">
+        <img src="/assets/rocco/rocco-headshot.png" alt="" width="200" height="200" />
+        <span class="rocco-ring"></span>
+      </div>
+      <div class="rocco-copy">
+        <p class="ch-kicker ch-kicker-light">The guide beside you</p>
+        <h2 id="rocco-title">Rocco has seen this before.</h2>
+        <p>Think of the most level-headed person you know about homes. Calm when you&rsquo;re not. Explains things without making you feel small. Tells you the truth &mdash; even when the truth is &ldquo;this can wait.&rdquo;</p>
+        <p class="rocco-quiet">That&rsquo;s who Rocco is. He works for you, not the contractor. He has nothing to sell and no reason to rush you.</p>
+        <a class="btn-light" href="/ask">Talk it through with Rocco</a>
+      </div>
     </div>
   </section>
+
+  <!-- =================== CHAPTER 5 · THE HVAC PILOT, HONESTLY =================== -->
+  <section class="chapter ch-pilot" aria-labelledby="pilot-title">
+    <div class="ch-head reveal">
+      <p class="ch-kicker">Where help is live today</p>
+      <h2 id="pilot-title" class="ch-title">Heating &amp; cooling, on the Jersey Shore.</h2>
+      <p class="ch-lede">We&rsquo;re starting with HVAC, in our launch towns. When you want a real person, here&rsquo;s how that works.</p>
+    </div>
+    <div class="pilot-grid">
+      <article class="pilot-fact reveal">
+        <h3>One managed partner</h3>
+        <p>Not a marketplace of strangers bidding for your job. A single trusted heating &amp; cooling partner we stand behind.</p>
+      </article>
+      <article class="pilot-fact reveal">
+        <h3>Only with your say-so</h3>
+        <p>Rocco never hands off your details quietly. A pro hears from you only after you ask to be connected.</p>
+      </article>
+      <article class="pilot-fact reveal">
+        <h3>No invented rankings</h3>
+        <p>No &ldquo;top-rated near you&rdquo; theater. We&rsquo;ll tell you plainly what this pilot is &mdash; and what it isn&rsquo;t yet.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- =================== CLOSING · RELIEF, NOT A PITCH =================== -->
+  <section class="closing reveal" aria-labelledby="closing-title">
+    <p class="closing-kicker">Whenever you&rsquo;re ready</p>
+    <h2 id="closing-title" class="closing-title">Start with what&rsquo;s happening.</h2>
+    <p class="closing-sub">No account. No pressure. Just tell Rocco what you&rsquo;re noticing, and take it one calm step at a time.</p>
+    <a class="btn-primary btn-xl" href="/ask">Tell Rocco what&rsquo;s going on</a>
+    <p class="closing-area">Live now across the Jersey Shore launch area &mdash; Stafford, Manahawkin, Barnegat, LBI, Toms River, Forked River, Waretown and nearby. Not in your town yet? Rocco will tell you straight.</p>
+  </section>
+
 </BaseLayout>
+
+<style>
+  /* ===== THE LIVING HOME (canvas environment) ===== */
+  .home-wrap{position:absolute;inset:0;}
+  .living-home{position:absolute;inset:0;width:100%;height:100%;display:block;border-radius:inherit;}
+  .living-home-readout{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);
+    margin:0;padding:6px 14px;border-radius:999px;font-size:13px;font-weight:600;letter-spacing:.01em;
+    color:#fff;background:rgba(10,16,30,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    border:1px solid rgba(255,255,255,.12);opacity:0;transition:opacity .35s ease;pointer-events:none;white-space:nowrap;}
+  .living-home-readout.is-on{opacity:1;}
+  .stage.xray-active .hotspot:not(.is-active) .hotspot-dot{opacity:.1;transition:opacity .5s cubic-bezier(.2,.7,.2,1);}
+  @media (prefers-reduced-motion: reduce){
+    .living-home{/* engine pauses motion; static frame still drawn */}
+  }
+  /* ============ shared rhythm ============ */
+  .eyebrow{font-size:.82rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--emg-orange,#E8762B);margin:0 0 .9rem}
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  :focus-visible{outline:3px solid #F4A24B;outline-offset:3px;border-radius:6px}
+
+  /* ============ HERO ============ */
+  /* ===================== THE OPENING ===================== */
+.opening{position:relative;isolation:isolate;min-height:clamp(640px,94vh,960px);display:grid;grid-template-rows:auto 1fr auto;overflow:hidden;padding:clamp(40px,7vh,96px) clamp(20px,5vw,64px) clamp(28px,5vh,56px);}
+.opening-home{position:absolute;inset:0;z-index:0;}
+.opening-home .stage{position:absolute;inset:0;width:100%;height:100%;margin:0;border:0;border-radius:0;max-width:none;aspect-ratio:auto;box-shadow:none;}
+/* scrims guarantee text legibility over the living canvas */
+.opening-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(8,14,28,.46) 0%,rgba(8,14,28,.12) 26%,rgba(8,14,28,0) 44%,rgba(247,243,236,0) 60%,rgba(247,243,236,.5) 84%,rgba(247,243,236,.9) 100%);}
+.opening-top{position:relative;z-index:2;text-align:center;}
+.opening-base{position:relative;z-index:2;width:100%;max-width:680px;margin:0 auto;text-align:center;align-self:end;}
+.opening-eyebrow{font-size:.78rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#ffd9a8;margin:0 0 1rem;}
+.opening-title{font-size:clamp(2.4rem,5.6vw,4.4rem);line-height:1.04;letter-spacing:-.02em;font-weight:700;color:#fbf7f0;margin:0;text-shadow:0 1px 30px rgba(8,14,28,.45);}
+.opening-title-accent{color:var(--emg-orange,#E8762B);}
+.opening-hint{font-size:.84rem;letter-spacing:.01em;color:#5b6678;margin:.95rem auto 0;}
+@media (max-width:640px){.opening{min-height:clamp(580px,90vh,820px);}}
+
+  /* ask bar with living Rocco */
+  .askbar{display:flex;align-items:center;gap:.5rem;max-width:680px;margin:0 auto;background:#fff;border:1px solid rgba(22,48,76,.10);border-radius:999px;padding:.5rem .5rem .5rem .55rem;box-shadow:0 24px 60px -28px rgba(22,48,76,.45),0 2px 8px rgba(22,48,76,.06);transition:box-shadow .4s ease,transform .4s ease,border-color .4s ease}
+  .askbar:focus-within{box-shadow:0 30px 70px -26px rgba(232,118,43,.5),0 0 0 4px rgba(244,162,75,.18);border-color:rgba(244,162,75,.55);transform:translateY(-2px)}
+  .askbar-rocco{position:relative;flex:0 0 auto;width:40px;height:40px}
+  .askbar-rocco img{width:40px;height:40px;border-radius:50%;object-fit:cover;animation:roccoFloat 5s ease-in-out infinite}
+  @keyframes roccoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+  .askbar-pulse{position:absolute;right:1px;bottom:1px;width:10px;height:10px;border-radius:50%;background:#3AA0A0;box-shadow:0 0 0 2px #fff}
+  .askbar-pulse::after{content:"";position:absolute;inset:0;border-radius:50%;background:#3AA0A0;animation:livePulse 2.4s ease-out infinite}
+  @keyframes livePulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(2.8);opacity:0}}
+  .askbar-input{flex:1;border:0;background:transparent;font-size:1.05rem;color:#16304C;padding:.5rem .4rem}
+  .askbar-input:focus{outline:none}
+  .askbar-input::placeholder{color:#8696A8}
+  .askbar-go{flex:0 0 auto;display:inline-flex;align-items:center;gap:.4rem;border:0;cursor:pointer;background:var(--emg-orange,#E8762B);color:#fff;font-weight:700;font-size:1rem;padding:.7rem 1.2rem;border-radius:999px;transition:transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s,background .25s}
+  .askbar-go:hover{transform:translateY(-1px) scale(1.02);box-shadow:0 12px 26px -10px rgba(232,118,43,.6);background:#F4882F}
+  .askbar-go svg{transition:transform .25s}
+  .askbar-go:hover svg{transform:translateX(3px)}
+  .opening-prompts{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin-top:1.6rem}
+  .chip{font-size:.92rem;color:#42546A;background:rgba(255,255,255,.7);border:1px solid rgba(22,48,76,.10);padding:.5rem .95rem;border-radius:999px;text-decoration:none;transition:all .25s cubic-bezier(.2,.7,.2,1)}
+  .chip:hover{color:#16304C;background:#fff;border-color:rgba(244,162,75,.6);transform:translateY(-2px);box-shadow:0 10px 22px -12px rgba(22,48,76,.35)}
+
+  .stage{position:relative;max-width:760px;margin:0 auto;aspect-ratio:1/.84;border-radius:28px;background:linear-gradient(180deg,#2B4A6E 0%,#15314E 100%)}
+  .stage{box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 40px 90px -40px rgba(0,0,0,.6);overflow:hidden}
+
+  /* hotspots */
+  .hotspots{position:absolute;inset:0}
+  .hotspot{position:absolute;transform:translate(-50%,-50%);text-decoration:none}
+  .hotspot-dot{display:block;width:16px;height:16px;border-radius:50%;background:var(--emg-orange,#E8762B);box-shadow:0 0 0 0 rgba(232,118,43,.55);transition:transform .3s cubic-bezier(.2,.7,.2,1);animation:dotPulse 2.6s ease-out infinite}
+  @keyframes dotPulse{0%{box-shadow:0 0 0 0 rgba(232,118,43,.5)}70%{box-shadow:0 0 0 12px rgba(232,118,43,0)}100%{box-shadow:0 0 0 0 rgba(232,118,43,0)}}
+  .hotspot-label{position:absolute;left:50%;bottom:calc(100% + 9px);transform:translateX(-50%) translateY(6px);white-space:nowrap;background:#fff;color:#16304C;font-size:.8rem;font-weight:700;padding:.32rem .7rem;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;box-shadow:0 8px 20px -8px rgba(0,0,0,.5)}
+  .hotspot:hover .hotspot-dot,.hotspot:focus-visible .hotspot-dot{transform:scale(1.45)}
+  .hotspot:hover .hotspot-label,.hotspot:focus-visible .hotspot-label{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* ============ BUTTONS ============ */
+  .btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--emg-orange,#E8762B);color:#fff;font-weight:700;text-decoration:none;border-radius:999px;padding:1rem 2rem;transition:transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s,background .25s}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 20px 40px -16px rgba(232,118,43,.6);background:#F4882F}
+  .btn-xl{font-size:1.2rem;padding:1.15rem 2.6rem}
+  .btn-light{display:inline-flex;align-items:center;background:#fff;color:#16304C;font-weight:700;text-decoration:none;border-radius:999px;padding:.9rem 1.8rem;transition:transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s}
+  .btn-light:hover{transform:translateY(-2px);box-shadow:0 18px 34px -16px rgba(0,0,0,.5)}
+
+  /* ============ MOBILE ============ */
+  @media(max-width:640px){
+    .askbar{flex-wrap:wrap;border-radius:24px;padding:.7rem}
+    .askbar-input{flex:1 1 100%;order:2;padding:.6rem .4rem}
+    .askbar-go{flex:1 1 100%;order:3;justify-content:center}
+    .askbar-rocco{order:1}
+    .hotspot-label{font-size:.72rem;padding:.26rem .55rem}
+  }
+
+  /* ============ REDUCED MOTION ============ */
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none !important;transition:none !important}
+    .reveal{opacity:1 !important;transform:none !important}
+  }
+
+  /* hotspot dot refinement (works with existing .hotspot styles) */
+  .hotspot{width:26px;height:26px}
+  .hotspot:hover{z-index:5}
+
+  /* ===================================================================
+     EMG EXPERIENCE SYSTEM — the homepage as one continuous journey.
+     Chapters, not marketing blocks. Navy = safety, amber = home,
+     orange = Rocco/help, teal = platform/system only.
+     =================================================================== */
+  .chapter{max-width:1080px;margin:0 auto;padding:clamp(72px,11vw,150px) 24px;}
+  .ch-head{max-width:760px;margin:0 auto clamp(40px,6vw,72px);text-align:center;}
+  .ch-kicker{margin:0 0 14px;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#e8804e;}
+  .ch-kicker-light{color:#ffb784;}
+  .ch-title{margin:0;font-size:clamp(30px,4.6vw,52px);line-height:1.08;letter-spacing:-.02em;font-weight:800;color:#0f1b33;}
+  .ch-lede{margin:20px auto 0;max-width:600px;font-size:clamp(16px,2vw,19px);line-height:1.6;color:#54607a;}
+  /* Chapter 1 - the path */
+  .ch-path{background:linear-gradient(180deg,#fbfaf7 0%,#f4f1ea 100%);max-width:none;}
+  .path-step{position:relative;padding:26px 22px;border-radius:20px;background:#fff;border:1px solid rgba(15,27,51,.07);box-shadow:0 18px 40px -28px rgba(15,27,51,.35);counter-increment:step;}
+  .path-step::before{content:counter(step,decimal-leading-zero);display:block;margin-bottom:14px;font-size:13px;font-weight:800;letter-spacing:.1em;color:#c8b9a0;}
+  .path-step h3{margin:0 0 8px;font-size:18px;line-height:1.25;color:#0f1b33;font-weight:750;}
+  .path-step p{margin:0;font-size:14.5px;line-height:1.55;color:#5a647c;}
+  /* Chapter 2 - where is it happening */
+  .where-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem;margin:2.4rem auto 0;max-width:520px;}
+.where-link{display:flex;flex-direction:column;gap:.15rem;padding:.7rem 1.15rem;border-radius:14px;background:rgba(255,255,255,.72);border:1px solid rgba(15,27,51,.08);text-decoration:none;transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .4s,background .4s;}
+.where-link:hover,.where-link:focus-visible{transform:translateY(-2px);border-color:rgba(232,118,43,.5);background:#fff;}
+.where-link-label{font-size:1rem;font-weight:700;color:var(--emg-navy,#0f1b30);}
+.where-link-hint{font-size:.82rem;color:#6a7588;}  /* Chapter 3 - trust principles */
+  .ch-trust{background:#0f1b33;color:#fff;max-width:none;}
+  .ch-trust .ch-title{color:#fff;}
+  .ch-trust .ch-kicker{color:#ffb784;}
+  .trust-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;max-width:900px;margin:0 auto;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);border-radius:22px;overflow:hidden;}
+  .trust-principle{padding:34px 30px;background:#0f1b33;}
+  .trust-principle h3{margin:0 0 12px;font-size:19px;font-weight:750;color:#fff;line-height:1.25;}
+  .trust-principle p{margin:0;font-size:15px;line-height:1.6;color:rgba(255,255,255,.72);}
+  /* Chapter 4 - Rocco */
+  .ch-rocco{max-width:none;background:linear-gradient(180deg,#fff6ef 0%,#fdeee2 100%);}
+  .rocco-inner{display:grid;grid-template-columns:auto 1fr;gap:clamp(28px,5vw,64px);align-items:center;max-width:920px;margin:0 auto;}
+  .rocco-portrait{position:relative;width:200px;height:200px;flex:none;}
+  .rocco-portrait img{position:relative;z-index:1;width:200px;height:200px;border-radius:50%;object-fit:cover;box-shadow:0 24px 50px -22px rgba(120,60,20,.5);}
+  .rocco-ring{position:absolute;inset:-12px;border-radius:50%;border:1.5px solid rgba(232,128,78,.4);}
+  .rocco-copy h2{margin:6px 0 16px;font-size:clamp(26px,3.6vw,40px);line-height:1.1;letter-spacing:-.02em;color:#3a2415;font-weight:800;}
+  .rocco-copy p{margin:0 0 14px;font-size:16.5px;line-height:1.62;color:#6b513c;max-width:560px;}
+  .rocco-quiet{color:#8a6a50;}
+  .btn-light{display:inline-block;margin-top:10px;padding:14px 26px;border-radius:999px;background:#e8804e;color:#fff;font-weight:700;text-decoration:none;box-shadow:0 16px 32px -16px rgba(232,128,78,.7);transition:transform .25s ease;}
+  .btn-light:hover{transform:translateY(-2px);}
+  /* Chapter 5 - HVAC pilot */
+  .pilot-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;max-width:900px;margin:0 auto;}
+  .pilot-fact{padding:30px 26px;border-radius:20px;background:#fbfaf7;border:1px solid rgba(15,27,51,.08);}
+  .pilot-fact h3{margin:0 0 10px;font-size:18px;font-weight:750;color:#0f1b33;}
+  .pilot-fact p{margin:0;font-size:14.5px;line-height:1.55;color:#5a647c;}
+  /* Closing - relief */
+  .closing{max-width:none;text-align:center;padding:clamp(80px,12vw,160px) 24px;background:linear-gradient(180deg,#f4f1ea 0%,#fff 100%);}
+  .closing-kicker{margin:0 0 14px;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#e8804e;}
+  .closing-title{margin:0;font-size:clamp(32px,5.2vw,60px);line-height:1.05;letter-spacing:-.025em;font-weight:850;color:#0f1b33;}
+  .closing-sub{margin:18px auto 32px;max-width:520px;font-size:17px;line-height:1.6;color:#54607a;}
+  .closing-area{margin:30px auto 0;max-width:560px;font-size:13.5px;line-height:1.6;color:#8a93a6;}
+  .btn-xl{font-size:17px;padding:18px 34px;}
+  @media (max-width:760px){
+    .rocco-inner{grid-template-columns:1fr;text-align:center;justify-items:center;}
+    .rocco-copy p{margin-left:auto;margin-right:auto;}
+    .chapter{padding:64px 22px;}
+    .ch-head{margin-bottom:36px;}
+    .path-step{padding:22px 20px;}
+    .pilot-grid{gap:12px;}
+    .trust-principle{padding:26px 24px;}
+    .rocco-inner{gap:26px;}
+    .closing{padding:72px 22px;}
+    .ch-lede,.closing-sub{max-width:34ch;}
+  }
+
+/* journey as quiet progression (no cards) */
+.ch-narrow{max-width:760px;margin:0 auto;text-align:center;}
+.ch-lede-center{margin-left:auto;margin-right:auto;}
+.ch-soft{color:#5b6678;font-weight:600;}
+.path-steps{list-style:none;margin:2.6rem auto 0;padding:0;max-width:620px;text-align:left;display:grid;gap:1.15rem;counter-reset:step;}
+.path-steps li{position:relative;padding-left:2.4rem;font-size:1.04rem;line-height:1.55;color:#46536a;counter-increment:step;}
+.path-steps li::before{content:counter(step);position:absolute;left:0;top:.05em;width:1.6rem;height:1.6rem;border-radius:50%;background:rgba(232,118,43,.1);color:var(--emg-orange,#E8762B);font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.path-n{color:var(--emg-navy,#0f1b30);font-weight:700;}
+@media (max-width:600px){.trust-grid{grid-template-columns:1fr;}.where-row{grid-template-columns:1fr;max-width:340px;}}
+</style>
+
+<script is:inline>
+/* ============================================================
+   THE LIVING HOME ENGINE  -  EMG Experience System
+   Real-time canvas. Base artwork is procedural and replaceable
+   by a commissioned render later. Hotspots drive X-Ray reveals.
+   Backend (functions/sessions/consent/ARS/Rocco) untouched.
+   ============================================================ */
+(function(){
+  var cv = document.getElementById('livingHome');
+  var stage = document.getElementById('stage');
+  if(!cv || !stage) return;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ctx = cv.getContext('2d');
+  var DPR = Math.min(window.devicePixelRatio || 1, 2);
+  var W=0, H=0, cx=0, baseY=0, hw=0, hh=0, hx=0, hy=0;
+  function resize(){
+    var r = stage.getBoundingClientRect();
+    W = r.width; H = r.height;
+    cv.width = Math.max(1, Math.round(W*DPR));
+    cv.height = Math.max(1, Math.round(H*DPR));
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    cx = W*0.5; baseY = H*0.82; hw = W*0.42; hh = H*0.30; hx = cx-hw/2; hy = baseY-hh;
+  }
+  resize();
+  window.addEventListener('resize', resize, {passive:true});
+
+  /* ---- X-Ray state, driven by hotspots ---- */
+  var xray = 0, xrayTarget = 0, xrayKey = null;
+  var SYS = {
+    roof:'roof', attic:'roof', gutters:'roof',
+    plumbing:'plumb', waterheater:'plumb', bathroom:'plumb', kitchen:'plumb',
+    electrical:'elec',
+    hvac:'hvac',
+    foundation:'struct', crawlspace:'struct', garage:'struct'
+  };
+    var LABEL = {
+    roof:'This is your roof and attic — your home’s first shield against weather.',
+    plumb:'These are the water lines — where water travels in, and where it leaves.',
+    elec:'This is the wiring and panel — the quiet system powering everything.',
+    hvac:'This is your heating and cooling — how warm and cool air reach each room.',
+    struct:'This is the foundation — the ground everything else rests on.'
+  };
+  var readout = document.getElementById('livingReadout');
+  function setXray(key){
+    var grp = key ? SYS[key] : null;
+    xrayKey = grp; xrayTarget = grp ? 1 : 0;
+    if(readout){
+      if(grp){ readout.textContent = LABEL[grp]; readout.classList.add('is-on'); }
+      else { readout.classList.remove('is-on'); }
+    }
+    stage.classList.toggle('xray-active', !!grp);
+  }
+
+  /* ---- smoke ---- */
+  var smoke=[], lastPuff=0;
+  function ndraw(t){
+    ctx.clearRect(0,0,W,H);
+    /* sky */
+    var g=ctx.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,'#16223f');g.addColorStop(.42,'#2a3556');g.addColorStop(.66,'#5c4a63');
+    g.addColorStop(.83,'#bd7576');g.addColorStop(.93,'#e3946b');g.addColorStop(1,'#f0b079');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    /* moon */
+    var mx=W*0.78,my=H*0.22;
+    var mg=ctx.createRadialGradient(mx,my,0,mx,my,Math.max(60,W*0.1));
+    mg.addColorStop(0,'rgba(251,243,223,0.5)');mg.addColorStop(1,'rgba(251,243,223,0)');
+    ctx.fillStyle=mg;ctx.beginPath();ctx.arc(mx,my,Math.max(60,W*0.1),0,7);ctx.fill();
+    ctx.fillStyle='rgba(251,243,223,0.9)';ctx.beginPath();ctx.arc(mx,my,Math.max(12,W*0.018),0,7);ctx.fill();
+    /* stars */
+    ctx.fillStyle='rgba(255,255,255,0.5)';
+    var st=[[.1,.12],[.25,.2],[.43,.08],[.6,.15],[.16,.3],[.7,.26]];
+    for(var i=0;i<st.length;i++){var tw=reduce?0.6:(0.4+0.6*Math.abs(Math.sin(t*0.001+i)));ctx.globalAlpha=tw*0.6;ctx.fillRect(st[i][0]*W,st[i][1]*H,2,2);}
+    ctx.globalAlpha=1;
+    /* treeline */
+    ctx.fillStyle='rgba(20,30,28,0.85)';
+    for(var k=0;k<7;k++){var x=k*W/6,sway=reduce?0:Math.sin(t*0.0006+k)*3;
+      ctx.beginPath();ctx.moveTo(x-40,baseY);ctx.quadraticCurveTo(x+sway,baseY-90-((k%3)*22),x+40,baseY);ctx.closePath();ctx.fill();}
+    /* ground */
+    var gg=ctx.createLinearGradient(0,baseY,0,H);gg.addColorStop(0,'#2b3d33');gg.addColorStop(1,'#13201a');
+    ctx.fillStyle=gg;ctx.fillRect(0,baseY,W,H-baseY);
+    /* home (breathes) */
+    var breathe=reduce?1:(1+Math.sin(t*0.0009)*0.004);
+    ctx.save();ctx.translate(cx,baseY);ctx.scale(breathe,breathe);ctx.translate(-cx,-baseY);
+    var sh=ctx.createRadialGradient(cx,baseY,0,cx,baseY,hw*0.7);
+    sh.addColorStop(0,'rgba(0,0,0,0.45)');sh.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=sh;ctx.beginPath();ctx.ellipse(cx,baseY+6,hw*0.62,18,0,0,7);ctx.fill();
+    var wall=ctx.createLinearGradient(hx,hy,hx,baseY);wall.addColorStop(0,'#e7d7bd');wall.addColorStop(1,'#cdb89a');
+    ctx.fillStyle=wall;ctx.fillRect(hx,hy,hw,hh);
+    ctx.fillStyle='#3a3543';ctx.beginPath();ctx.moveTo(hx-26,hy+6);ctx.lineTo(cx,hy-hh*0.55);ctx.lineTo(hx+hw+26,hy+6);ctx.closePath();ctx.fill();
+    ctx.strokeStyle='rgba(0,0,0,0.18)';ctx.lineWidth=1;
+    for(var r=1;r<7;r++){var yy=hy+6-(r*(hh*0.55)/8);ctx.beginPath();ctx.moveTo(hx-26+r*4,yy);ctx.lineTo(hx+hw+26-r*4,yy);ctx.stroke();}
+    ctx.fillStyle='#6b5a4a';ctx.fillRect(hx+hw*0.66,hy-hh*0.34,22,hh*0.42);
+    var pg=ctx.createRadialGradient(hx+hw*0.5,baseY-hh*0.18,0,hx+hw*0.5,baseY-hh*0.18,46);
+    pg.addColorStop(0,'rgba(255,230,168,0.85)');pg.addColorStop(1,'rgba(255,230,168,0)');
+    ctx.fillStyle=pg;ctx.beginPath();ctx.arc(hx+hw*0.5,baseY-hh*0.18,46,0,7);ctx.fill();
+    ctx.fillStyle='#4a3526';ctx.fillRect(hx+hw*0.44,baseY-hh*0.42,hw*0.12,hh*0.42);
+    function win(wx,wy,ww,wh,ph){
+      var pulse=reduce?0.92:(0.9+0.07*Math.sin(t*0.0011+ph));
+      var sp=ctx.createRadialGradient(wx+ww/2,wy+wh*0.5,0,wx+ww/2,wy+wh*0.5,ww*1.8);
+      sp.addColorStop(0,'rgba(255,207,133,'+(0.28*pulse)+')');sp.addColorStop(1,'rgba(255,207,133,0)');
+      ctx.fillStyle=sp;ctx.fillRect(wx-ww,wy-wh*0.5,ww*3,wh*2.2);
+      var wg=ctx.createRadialGradient(wx+ww/2,wy+wh*0.4,0,wx+ww/2,wy+wh*0.4,ww);
+      wg.addColorStop(0,'rgba(255,240,194,'+pulse+')');wg.addColorStop(.6,'rgba(255,206,125,'+(pulse*0.9)+')');wg.addColorStop(1,'rgba(246,169,78,0.7)');
+      ctx.fillStyle=wg;ctx.fillRect(wx,wy,ww,wh);
+      ctx.strokeStyle='rgba(60,40,20,0.55)';ctx.lineWidth=2;ctx.strokeRect(wx,wy,ww,wh);
+      ctx.beginPath();ctx.moveTo(wx+ww/2,wy);ctx.lineTo(wx+ww/2,wy+wh);ctx.moveTo(wx,wy+wh/2);ctx.lineTo(wx+ww,wy+wh/2);ctx.stroke();
+    }
+    var ww=hw*0.14,wh=hh*0.30;
+    win(hx+hw*0.12,hy+hh*0.22,ww,wh,0);
+    win(hx+hw*0.74,hy+hh*0.22,ww,wh,1.3);
+    win(hx+hw*0.12,baseY-hh*0.42,ww*0.9,wh*0.9,2.1);
+    ctx.restore();
+    /* smoke */
+    var sx=hx+hw*0.66+11, sy=hy-hh*0.34;
+    if(!reduce && t-lastPuff>900){lastPuff=t;smoke.push({x:sx,y:sy,r:6,a:0.4,vx:(Math.random()-0.5)*0.1,vy:-0.26});}
+    for(var s=smoke.length-1;s>=0;s--){var p=smoke[s];p.x+=p.vx;p.y+=p.vy;p.r+=0.22;p.a-=0.0028;p.vx+=(Math.random()-0.5)*0.02;
+      if(p.a<=0){smoke.splice(s,1);continue;}ctx.fillStyle='rgba(200,200,205,'+p.a+')';ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,7);ctx.fill();}
+    /* X-Ray reveal */
+    xray += (xrayTarget - xray)*0.075;
+    if(xray>0.01){
+      var a=xray;
+      ctx.fillStyle='rgba(10,14,26,'+(0.58*a)+')';ctx.fillRect(0,0,W,H);
+      var fg=ctx.createRadialGradient(cx,hy+hh*0.5,0,cx,hy+hh*0.5,hw*0.9);fg.addColorStop(0,'rgba(255,224,178,'+(0.10*a)+')');fg.addColorStop(1,'rgba(255,224,178,0)');ctx.fillStyle=fg;ctx.fillRect(0,0,W,H);
+      if(xrayKey==='roof'){
+        var ag=ctx.createLinearGradient(0,hy-hh*0.55,0,hy);ag.addColorStop(0,'rgba(255,201,138,0)');ag.addColorStop(1,'rgba(255,201,138,'+(0.20*a)+')');
+        ctx.fillStyle=ag;ctx.beginPath();ctx.moveTo(hx-10,hy+4);ctx.lineTo(cx,hy-hh*0.5);ctx.lineTo(hx+hw+10,hy+4);ctx.closePath();ctx.fill();
+        ctx.fillStyle='rgba(255,210,140,'+(0.5*a)+')';
+        for(var b=0;b<6;b++){var bx=hx+30+b*(hw-60)/6;ctx.beginPath();ctx.ellipse(bx,hy-6,(hw-60)/14,7,0,0,7);ctx.fill();}
+        ctx.strokeStyle='rgba(255,208,150,'+(0.6*a)+')';ctx.lineWidth=2;
+        for(var c=0;c<4;c++){var ttx=hx+hw*0.25+c*hw*0.17;ctx.beginPath();
+          for(var yv=0;yv<hh*0.5;yv+=4){var off=Math.sin((yv*0.06)+t*0.002+c)*6;ctx.lineTo(ttx+off,hy-yv);}ctx.stroke();}
+      } else if(xrayKey==='plumb'){
+        ctx.strokeStyle='rgba(244,214,160,'+(0.8*a)+')';ctx.lineWidth=3;ctx.lineCap='round';
+        ctx.beginPath();ctx.moveTo(hx+hw*0.2,baseY-6);ctx.lineTo(hx+hw*0.2,hy+hh*0.4);ctx.lineTo(hx+hw*0.75,hy+hh*0.4);ctx.lineTo(hx+hw*0.75,baseY-6);ctx.stroke();
+        var fl=(t*0.12)%(hw*0.55);
+        ctx.fillStyle='rgba(250,224,176,'+a+')';ctx.beginPath();ctx.arc(hx+hw*0.2+fl,hy+hh*0.4,4,0,7);ctx.fill();
+      } else if(xrayKey==='elec'){
+        ctx.strokeStyle='rgba(255,210,90,'+(0.85*a)+')';ctx.lineWidth=2;
+        for(var w=0;w<3;w++){ctx.beginPath();ctx.moveTo(hx+hw*0.7,hy+hh*0.55);
+          for(var yv2=0;yv2<hh*0.4;yv2+=6){ctx.lineTo(hx+hw*0.7+Math.sin(yv2*0.3+w*2+t*0.004)*8,hy+hh*0.55-yv2);}ctx.stroke();}
+        ctx.fillStyle='rgba(255,230,120,'+(0.9*a)+')';ctx.fillRect(hx+hw*0.66,hy+hh*0.5,16,22);
+      } else if(xrayKey==='hvac'){
+        ctx.strokeStyle='rgba(255,206,150,'+(0.7*a)+')';ctx.lineWidth=10;ctx.lineCap='round';
+        ctx.beginPath();ctx.moveTo(hx+hw*0.85,baseY-hh*0.3);ctx.lineTo(hx+hw*0.3,baseY-hh*0.3);ctx.lineTo(hx+hw*0.3,baseY-hh*0.6);ctx.stroke();
+        for(var d=0;d<5;d++){var dp=((t*0.05+d*40)% (hw*0.55));ctx.fillStyle='rgba(255,220,176,'+(a*(1-dp/(hw*0.55)))+')';
+          ctx.beginPath();ctx.arc(hx+hw*0.85-dp,baseY-hh*0.3,4,0,7);ctx.fill();}
+      } else if(xrayKey==='struct'){
+        ctx.fillStyle='rgba(214,198,172,'+(0.35*a)+')';ctx.fillRect(hx-6,baseY-4,hw+12,22);
+        ctx.strokeStyle='rgba(228,212,186,'+(0.7*a)+')';ctx.lineWidth=2;ctx.strokeRect(hx-6,baseY-4,hw+12,22);
+      }
+    }
+    if(!reduce || xray>0.01) raf=requestAnimationFrame(ndraw);
+  }
+  var raf=requestAnimationFrame(ndraw);
+
+  /* wire hotspots -> X-Ray (overlay anchors already route to /ask) */
+  var spots = stage.querySelectorAll('.hotspot');
+  spots.forEach(function(a){
+    var key = a.getAttribute('data-sys');
+    function on(){ a.classList.add('is-active'); setXray(key); if(reduce){ raf=requestAnimationFrame(ndraw); } }
+    function off(){ a.classList.remove('is-active'); setXray(null); if(reduce){ raf=requestAnimationFrame(ndraw); } }
+    a.addEventListener('mouseenter', on);
+    a.addEventListener('mouseleave', off);
+    a.addEventListener('focus', on);
+    a.addEventListener('blur', off);
+  });
+})();
+
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* scroll reveal */
+    var items = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window && !reduce) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.14 });
+      items.forEach(function (el) { io.observe(el); });
+    } else {
+      items.forEach(function (el) { el.classList.add('in'); });
+    }
+
+    /* time-based greeting typed into the ask bar placeholder */
+    var input = document.querySelector('[data-greeting]');
+    if (input) {
+      var h = new Date().getHours();
+      var part = h < 12 ? 'morning' : (h < 18 ? 'afternoon' : 'evening');
+      var msg = 'Good ' + part + ' \u2014 what is going on with your home?';
+      if (reduce) {
+        input.setAttribute('placeholder', msg);
+      } else {
+        var i = 0;
+        (function typeIt() {
+          input.setAttribute('placeholder', msg.slice(0, i) + (i < msg.length ? '\u2502' : ''));
+          if (i <= msg.length) { i++; setTimeout(typeIt, 38); }
+          else { input.setAttribute('placeholder', msg); }
+        })();
+      }
+    }
+
+    /* gentle cursor parallax on the house */
+    var stage = document.getElementById('stage');
+    var wrap = stage && stage.querySelector('.home-wrap');
+    if (stage && wrap && !reduce && window.matchMedia('(pointer:fine)').matches) {
+      stage.addEventListener('mousemove', function (e) {
+        var r = stage.getBoundingClientRect();
+        var dx = (e.clientX - r.left) / r.width - 0.5;
+        var dy = (e.clientY - r.top) / r.height - 0.5;
+        wrap.style.transform = 'translate3d(' + (dx * 7).toFixed(1) + 'px,' + (dy * 5).toFixed(1) + 'px,0)';
+      });
+      stage.addEventListener('mouseleave', function () {
+        wrap.style.transform = 'translate3d(0,0,0)';
+      });
+    }
+  })();
+
+</script>
