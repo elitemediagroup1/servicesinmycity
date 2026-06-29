@@ -15,14 +15,14 @@ const services = [
 /* Photo hotspots: x/y are % within the hero image. tier ext = shown at rest;
    int = interior/secondary, revealed on hover/proximity/focus. */
 const hotspots = [
-  { key: 'roof',       label: 'Roof & Attic', topic: 'Roof & Attic', icon: 'roof',  x: 46.0, y: 5.0, tier: 'ext' },
-  { key: 'gutters',    label: 'Gutters',      topic: 'Gutters',      icon: 'drop',  x: 79.5, y: 31.0, tier: 'ext' },
-  { key: 'electrical', label: 'Electrical',   topic: 'Electrical',   icon: 'bolt',  x: 72.5, y: 72.0, tier: 'ext' },
-  { key: 'hvac',       label: 'HVAC',         topic: 'HVAC',         icon: 'fan',   x: 81.0, y: 89.0, tier: 'ext' },
-  { key: 'plumbing',   label: 'Plumbing',     topic: 'Plumbing',     icon: 'pipe',  x: 44.0, y: 84.0, tier: 'int' },
-  { key: 'foundation', label: 'Foundation',   topic: 'Foundation',   icon: 'shield',x: 51.5, y: 88.0, tier: 'ext' },
-  { key: 'garage',     label: 'Garage',       topic: 'Garage',       icon: 'garage',x: 24.0, y: 67.0, tier: 'int' },
-  { key: 'windows',    label: 'Windows & Doors', topic: 'Windows & Doors', icon: 'window', x: 45.0, y: 15.0, tier: 'ext' },
+  { key: 'roof',       label: 'Roof & Attic', topic: 'Roof & Attic', icon: 'roof',  x: 43.0, y: 12.0, tier: 'ext' },
+  { key: 'gutters',    label: 'Gutters',      topic: 'Gutters',      icon: 'drop',  x: 80.0, y: 40.0, tier: 'ext' },
+  { key: 'electrical', label: 'Electrical',   topic: 'Electrical',   icon: 'bolt',  x: 79.0, y: 66.0, tier: 'ext' },
+  { key: 'hvac',       label: 'HVAC',         topic: 'HVAC',         icon: 'fan',   x: 80.5, y: 90.0, tier: 'ext' },
+  { key: 'plumbing',   label: 'Plumbing',     topic: 'Plumbing',     icon: 'pipe',  x: 41.0, y: 84.0, tier: 'int' },
+  { key: 'foundation', label: 'Foundation',   topic: 'Foundation',   icon: 'shield',x: 50.0, y: 90.0, tier: 'int' },
+  { key: 'garage',     label: 'Garage',       topic: 'Garage',       icon: 'garage',x: 22.0, y: 66.0, tier: 'int' },
+  { key: 'windows',    label: 'Windows & Doors', topic: 'Windows & Doors', icon: 'window', x: 45.0, y: 30.0, tier: 'int' },
 ];
 
 const ICONS = {
@@ -47,74 +47,71 @@ const prompts = [
 <BaseLayout title="The home guide that knows what&rsquo;s wrong" description="ServicesInMyCity is the AI guide for your home. Ask Rocco what&rsquo;s wrong before anyone touches it &mdash; then connect with a trusted local pro.">
   <!-- ===================== THE OPENING (photoreal home hero) ===================== -->
   <section class="opening" aria-label="Your home, and the guide who knows it">
-    <div class="opening-home">
-      <div class="stage reveal" id="stage">
-        <!-- Photoreal hero. Swappable asset; hotspot overlay + Rocco handoff unchanged. -->
-        <img class="hero-photo" id="heroPhoto"
-             src="/assets/home/living-home-hero.png" width="1536" height="1024"
-             fetchpriority="high" decoding="async"
-             alt="A warmly lit two-story home at dusk. Hover or focus a part of the home to learn about that system, then ask Rocco about it." />
-        <div class="hero-dim" aria-hidden="true"></div>
+    <div class="hero-grid">
+      <div class="hero-left">
+        <p class="opening-eyebrow reveal">Your home, understood</p>
+        <h1 class="opening-title reveal"><span class="opening-title-line">Know what’s wrong</span><span class="opening-title-accent">before anyone touches it.</span></h1>
+        <p class="opening-sub reveal">Explore your home. Understand it. Make confident decisions.</p>
 
-        <div class="hotspots">
-          {hotspots.map((h) => (
-            <a class="hotspot" data-sys={h.key} data-tier={h.tier}
-               href={`/ask?topic=${encodeURIComponent(h.topic)}`}
-               style={`left:${h.x}%;top:${h.y}%`}
-               aria-label={`Ask Rocco about ${h.label}`}>
-              <span class="hotspot-pin" aria-hidden="true"></span>
-              <span class="hotspot-chip">
-                <svg class="hotspot-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={ICONS[h.icon]}></svg>
-                <span class="hotspot-name">{h.label}</span>
-              </span>
-            </a>
-          ))}
+        <div class="rocco-card reveal">
+          <div class="rocco-card-head">
+            <span class="rocco-avatar" aria-hidden="true">
+              <img src="/assets/rocco/rocco-headshot.png" alt="" width="56" height="56" />
+              <span class="rocco-pulse"></span>
+            </span>
+            <span class="rocco-card-intro">
+              <span class="rocco-card-name">Rocco</span>
+              <span class="rocco-card-line">Tell Rocco what you’re noticing.</span>
+            </span>
+          </div>
+          <form class="askbar reveal" action="/ask" method="get" role="search">
+            <input class="askbar-input" type="text" name="q" autocomplete="off"
+              aria-label="Describe what is happening with your home"
+              placeholder="" data-greeting="1" />
+            <button class="askbar-go" type="submit">
+              Ask Rocco
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </form>
+          <div class="opening-prompts reveal" aria-label="Examples">
+            {prompts.map((p) => (
+              <a class="chip" href={`/ask?q=${encodeURIComponent(p)}`}>{p}</a>
+            ))}
+          </div>
+          <p class="opening-hint reveal">No account. No pressure. Just answers.</p>
         </div>
+
+        <ul class="trust-points reveal" aria-label="How we work">
+          <li><span class="trust-h">We’re on your side</span><span class="trust-s">Always.</span></li>
+          <li><span class="trust-h">Advice before referral</span><span class="trust-s">Education first.</span></li>
+          <li><span class="trust-h">No pay-to-rank</span><span class="trust-s">Ever.</span></li>
+          <li><span class="trust-h">Honest about uncertainty</span><span class="trust-s">If we’re not sure, we’ll say so.</span></li>
+        </ul>
       </div>
-    </div>
 
-    <div class="opening-scrim" aria-hidden="true"></div>
-
-    <div class="opening-top">
-      <p class="opening-eyebrow reveal">Your home, understood</p>
-      <h1 class="opening-title reveal"><span class="opening-title-line">Know what’s wrong</span><span class="opening-title-accent">before anyone touches&nbsp;it.</span></h1>
-      <p class="opening-sub reveal">Explore your home. Understand it. Make confident decisions.</p>
-    </div>
-
-    <div class="opening-base">
-      <div class="rocco-card reveal">
-      <form class="askbar reveal" action="/ask" method="get" role="search">
-        <span class="askbar-rocco" aria-hidden="true">
-          <img src="/assets/rocco/rocco-headshot.png" alt="" width="40" height="40" />
-          <span class="askbar-pulse"></span>
-        </span>
-        <input class="askbar-input" type="text" name="q" autocomplete="off"
-          aria-label="Describe what is happening with your home"
-          placeholder="" data-greeting="1" />
-        <button class="askbar-go" type="submit">
-          Ask Rocco
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-      </form>
-      <p class="opening-hint reveal">No account. No pressure. Just answers.</p>
-      </div>
-      <div class="opening-prompts reveal" aria-label="Examples">
-        {prompts.map((p) => (
-          <a class="chip" href={`/ask?q=${encodeURIComponent(p)}`}>{p}</a>
-        ))}
+      <div class="hero-right">
+        <figure class="photo-frame reveal" id="stage">
+          <img class="hero-photo" id="heroPhoto"
+               src="/assets/home/living-home-hero.png" width="1536" height="1024"
+               fetchpriority="high" decoding="async"
+               alt="A warmly lit two-story home at dusk. Hover or focus a part of the home to learn about that system, then ask Rocco about it." />
+          <div class="hotspots">
+            {hotspots.map((h) => (
+              <a class="hotspot" data-sys={h.key} data-tier={h.tier}
+                 href={`/ask?topic=${encodeURIComponent(h.topic)}`}
+                 style={`left:${h.x}%;top:${h.y}%`}
+                 aria-label={`Ask Rocco about ${h.label}`}>
+                <span class="hotspot-pin" aria-hidden="true"></span>
+                <span class="hotspot-chip">{h.label}</span>
+              </a>
+            ))}
+          </div>
+        </figure>
       </div>
     </div>
   </section>
 
-  <!-- ===================== TRUST STRIP ===================== -->
-  <section class="trust-strip reveal" aria-label="How we work">
-    <div class="trust-strip-row">
-      <div class="trust-item"><span class="trust-h">We’re on your side</span><span class="trust-s">Always.</span></div>
-      <div class="trust-item"><span class="trust-h">Advice before referral</span><span class="trust-s">Education first.</span></div>
-      <div class="trust-item"><span class="trust-h">No pay-to-rank</span><span class="trust-s">Ever.</span></div>
-      <div class="trust-item"><span class="trust-h">Honest about uncertainty</span><span class="trust-s">If we’re not sure, we’ll say so.</span></div>
-    </div>
-  </section>
+  
 
   <!-- =================== CHAPTER 1 · FROM CONFUSION TO CONFIDENCE =================== -->
     <section class="chapter ch-path" aria-labelledby="path-title">
@@ -232,124 +229,83 @@ const prompts = [
   :focus-visible{outline:3px solid #F4A24B;outline-offset:3px;border-radius:6px}
 
   /* ===================== THE OPENING ===================== */
-.opening{position:relative;isolation:isolate;min-height:clamp(620px,82vh,940px);display:grid;grid-template-rows:auto 1fr auto;overflow:hidden;padding:clamp(56px,9vh,120px) clamp(40px,7vw,104px) clamp(40px,6vh,80px);}
-.opening-home{position:absolute;inset:0;z-index:0;}
-.opening-home .stage{position:absolute;inset:0;width:100%;height:100%;margin:0;border:0;border-radius:0;max-width:none;aspect-ratio:auto;box-shadow:none;}
-/* scrims guarantee text legibility over the living canvas */
-.opening-scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(8,14,28,.46) 0%,rgba(8,14,28,.12) 26%,rgba(8,14,28,0) 44%,rgba(247,243,236,0) 60%,rgba(247,243,236,.5) 84%,rgba(247,243,236,.9) 100%);}
-.opening-top{position:relative;z-index:2;text-align:left;max-width:660px;}
-.opening-base{position:relative;z-index:2;width:100%;max-width:520px;margin:0;text-align:left;align-self:center;}
-.opening-eyebrow{font-size:.8rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:#f5b878;margin:0 0 1.35rem;}
-.opening-title{font-size:clamp(2.6rem,5.4vw,4.6rem);line-height:1.08;letter-spacing:-.022em;font-weight:700;color:#fcfaf6;margin:0;text-shadow:0 2px 40px rgba(6,11,24,.6);}
-.opening-title-line{display:block;}
-  .opening-title-accent{display:block;color:var(--emg-orange,#E8762B);}
-.opening-hint{margin:1.1rem 0 0;font-size:.9rem;color:rgba(255,255,255,.62);text-align:left}
-@media (max-width:640px){.opening{min-height:clamp(580px,90vh,820px);}}
+/* ===== HERO: editorial two-column composition ===== */
+  .opening{position:relative;isolation:isolate;background:radial-gradient(120% 120% at 80% 0%,#142036 0%,#0c1424 48%,#070d18 100%);color:#fff;padding:clamp(40px,6vh,84px) clamp(20px,5vw,72px) clamp(48px,7vh,96px);overflow:hidden;}
+  .opening::before{content:"";position:absolute;inset:0;z-index:0;background:radial-gradient(60% 80% at 78% 38%,rgba(232,118,43,.10),transparent 70%);pointer-events:none;}
+  .hero-grid{position:relative;z-index:1;max-width:1320px;margin:0 auto;display:grid;grid-template-columns:minmax(0,0.92fr) minmax(0,1.08fr);gap:clamp(28px,4vw,64px);align-items:center;}
 
-  /* ask bar with living Rocco */
-  .rocco-card{max-width:520px;margin:0;padding:1.65rem 1.7rem 1.5rem;background:rgba(12,18,33,.78);backdrop-filter:blur(20px) saturate(140%);-webkit-backdrop-filter:blur(20px) saturate(140%);border:1px solid rgba(255,255,255,.12);border-radius:24px;box-shadow:0 40px 90px -32px rgba(3,7,18,.9),inset 0 1px 0 rgba(255,255,255,.08)}
-  .askbar{display:flex;align-items:center;gap:1rem;max-width:none;margin:0;background:transparent;border:0;border-radius:0;padding:0;box-shadow:none;transition:none}
-  .askbar:focus-within{box-shadow:0 30px 70px -26px rgba(232,118,43,.5),0 0 0 4px rgba(244,162,75,.18);border-color:rgba(244,162,75,.55);transform:translateY(-2px)}
-  .askbar-rocco{position:relative;flex:0 0 auto;width:48px;height:48px;border-radius:50%;overflow:hidden}
-  .askbar-rocco img{width:48px;height:48px;border-radius:50%;object-fit:cover;animation:roccoFloat 5s ease-in-out infinite}
-  @keyframes roccoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-  .askbar-pulse{position:absolute;right:1px;bottom:1px;width:10px;height:10px;border-radius:50%;background:#3AA0A0;box-shadow:0 0 0 2px #fff}
-  .askbar-pulse::after{content:"";position:absolute;inset:0;border-radius:50%;background:#3AA0A0;animation:livePulse 2.4s ease-out infinite}
-  @keyframes livePulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(2.8);opacity:0}}
-  .askbar-input{flex:1;border:0;background:transparent;font-size:1.18rem;line-height:1.4;color:#f6f9fd;padding:.3rem .1rem}
-  .askbar-input:focus{outline:none}
-  .askbar-input::placeholder{color:#8696A8}
-  .askbar-go{flex:0 0 auto;display:inline-flex;align-items:center;gap:.45rem;border:0;cursor:pointer;background:var(--emg-orange,#E8762B);color:#fff;font-weight:700;font-size:1.05rem;padding:.85rem 1.5rem;border-radius:999px;box-shadow:0 12px 30px -10px rgba(232,118,43,.6);transition:transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s,background .25s}
-  .askbar-go:hover{transform:translateY(-1px) scale(1.02);box-shadow:0 12px 26px -10px rgba(232,118,43,.6);background:#F4882F}
-  .askbar-go svg{transition:transform .25s}
-  .askbar-go:hover svg{transform:translateX(3px)}
-  .opening-prompts{display:flex;flex-wrap:wrap;gap:.55rem;justify-content:flex-start;max-width:520px;margin:1.1rem 0 0}
-  .chip{font-size:.88rem;color:rgba(255,255,255,.88);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);padding:.5rem 1rem;border-radius:999px;text-decoration:none;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:all .25s cubic-bezier(.2,.7,.2,1)}
-  .chip:hover,.chip:focus-visible{background:rgba(255,255,255,.2);border-color:rgba(244,162,75,.55);color:#fff;transform:translateY(-1px)}
-  .chip:hover{color:#16304C;background:#fff;border-color:rgba(244,162,75,.6);transform:translateY(-2px);box-shadow:0 10px 22px -12px rgba(22,48,76,.35)}
+  /* ---- LEFT: content ---- */
+  .hero-left{display:flex;flex-direction:column;gap:clamp(16px,2vh,22px);max-width:560px;}
+  .opening-eyebrow{margin:0;font-size:.8rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#E8762B;}
+  .opening-title{margin:0;font-weight:800;line-height:1.04;letter-spacing:-.02em;font-size:clamp(2.5rem,4.6vw,4rem);display:flex;flex-direction:column;}
+  .opening-title-line{color:#fff;}
+  .opening-title-accent{color:#E8762B;}
+  .opening-sub{margin:0;font-size:clamp(1.05rem,1.4vw,1.25rem);line-height:1.5;color:rgba(255,255,255,.78);max-width:42ch;}
 
-  .stage{position:relative;max-width:760px;margin:0 auto;aspect-ratio:1/.84;border-radius:28px;background:linear-gradient(180deg,#2B4A6E 0%,#15314E 100%)}
-  .stage{box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 40px 90px -40px rgba(0,0,0,.6);overflow:hidden}
+  /* ---- Ask Rocco card ---- */
+  .rocco-card{margin-top:6px;background:rgba(16,24,40,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:clamp(20px,2.4vw,28px);box-shadow:0 24px 60px -24px rgba(0,0,0,.7);display:flex;flex-direction:column;gap:16px;}
+  .rocco-card-head{display:flex;align-items:center;gap:14px;}
+  .rocco-avatar{position:relative;flex:0 0 auto;width:56px;height:56px;}
+  .rocco-avatar img{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.18);}
+  .rocco-pulse{position:absolute;inset:-4px;border-radius:50%;border:2px solid rgba(232,118,43,.5);animation:roccoPulse 2.6s ease-out infinite;}
+  @keyframes roccoPulse{0%{transform:scale(.85);opacity:.7}70%{transform:scale(1.25);opacity:0}100%{opacity:0}}
+  .rocco-card-intro{display:flex;flex-direction:column;gap:2px;}
+  .rocco-card-name{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#E8762B;}
+  .rocco-card-line{font-size:1.12rem;font-weight:600;color:#fff;line-height:1.25;}
+  .askbar{display:flex;gap:10px;align-items:stretch;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:6px;}
+  .askbar-input{flex:1;min-width:0;border:0;background:transparent;color:#fff;font-size:1.02rem;padding:12px 14px;outline:none;}
+  .askbar-input::placeholder{color:rgba(255,255,255,.5);}
+  .askbar-go{flex:0 0 auto;display:inline-flex;align-items:center;gap:8px;border:0;cursor:pointer;background:#E8762B;color:#fff;font-weight:700;font-size:1rem;padding:12px 20px;border-radius:11px;box-shadow:0 8px 22px -6px rgba(232,118,43,.6);transition:transform .2s,box-shadow .2s,filter .2s;}
+  .askbar-go:hover{filter:brightness(1.06);transform:translateY(-1px);box-shadow:0 12px 28px -6px rgba(232,118,43,.7);}
+  .opening-prompts{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{display:inline-flex;align-items:center;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.82);font-size:.9rem;text-decoration:none;transition:background .2s,border-color .2s,color .2s;}
+  .chip:hover{background:rgba(232,118,43,.16);border-color:rgba(232,118,43,.5);color:#fff;}
+  .opening-hint{margin:0;font-size:.85rem;color:rgba(255,255,255,.55);}
 
-  /* ===== PHOTOREAL LIVING HOME HERO ===== */
-  .hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 53%;display:block;z-index:0;}
-  .hero-dim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(7,12,24,.82) 0%,rgba(7,12,24,.62) 26%,rgba(7,12,24,.22) 48%,rgba(7,12,24,0) 66%),linear-gradient(0deg,rgba(7,12,24,.7) 0%,rgba(7,12,24,.3) 22%,rgba(7,12,24,0) 46%);transition:backdrop-filter .5s ease,background .5s ease;}
-  .stage.is-exploring .hero-dim{background:rgba(8,12,24,.5);backdrop-filter:blur(1.5px);-webkit-backdrop-filter:blur(1.5px);}
+  /* ---- trust points ---- */
+  .trust-points{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:14px 22px;}
+  .trust-points li{display:flex;flex-direction:column;gap:1px;border-left:2px solid rgba(232,118,43,.55);padding-left:12px;}
+  .trust-h{font-size:.92rem;font-weight:700;color:#fff;}
+  .trust-s{font-size:.82rem;color:rgba(255,255,255,.6);}
 
-  /* ===== HOTSPOTS as pill-chips anchored to the photo ===== */
+  /* ---- RIGHT: framed cinematic photo ---- */
+  .hero-right{position:relative;}
+  .photo-frame{position:relative;margin:0;border-radius:26px;overflow:hidden;box-shadow:0 40px 90px -30px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.08);background:#0a1120;aspect-ratio:1536 / 1024;}
+  .hero-photo{display:block;width:100%;height:100%;object-fit:cover;object-position:center 42%;}
+  .photo-frame::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(7,13,24,.18) 0%,rgba(7,13,24,0) 22%,rgba(7,13,24,0) 70%,rgba(7,13,24,.28) 100%);}
+
+  /* ---- hotspots ---- */
   .hotspots{position:absolute;inset:0;z-index:3;}
-  .hotspot{position:absolute;transform:translate(-50%,-50%);display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;white-space:nowrap;}
-  .hotspot-pin{position:relative;flex:0 0 auto;width:13px;height:13px;border-radius:50%;background:var(--emg-orange,#E8762B);box-shadow:0 0 0 5px rgba(232,118,43,.18),0 0 14px 2px rgba(232,118,43,.45),0 2px 6px rgba(0,0,0,.45);transition:transform .4s cubic-bezier(.2,.7,.2,1),box-shadow .4s;}
-  .hotspot-pin::after{content:"";position:absolute;inset:0;border-radius:50%;background:rgba(232,118,43,.5);animation:pinPulse 2.8s ease-out infinite;}
-  @keyframes pinPulse{0%{box-shadow:0 0 0 0 rgba(232,118,43,.5)}70%{box-shadow:0 0 0 12px rgba(232,118,43,0)}100%{box-shadow:0 0 0 0 rgba(232,118,43,0)}}
-  .hotspot-chip{position:absolute;left:50%;bottom:calc(100% + 14px);transform:translateX(-50%) translateY(6px) scale(.96);display:inline-flex;align-items:center;gap:.5rem;padding:.6rem .95rem;border-radius:14px;background:rgba(10,15,28,.9);color:#fff;font-size:.95rem;font-weight:600;line-height:1;letter-spacing:-.01em;backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);border:1px solid rgba(255,255,255,.16);box-shadow:0 18px 44px -16px rgba(0,0,0,.75),inset 0 1px 0 rgba(255,255,255,.08);opacity:0;pointer-events:none;white-space:nowrap;transition:opacity .32s cubic-bezier(.2,.7,.2,1),transform .32s cubic-bezier(.2,.7,.2,1);}
-  .hotspot-ico{width:17px;height:17px;color:var(--emg-orange,#F4A24B);flex:0 0 auto;}
-  .hotspot-chip::after{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:rgba(10,15,28,.9);}
-  /* subtle living pulse on resting dots */
-  .hotspot-pin::before{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 0 rgba(232,118,43,.5);animation:pinPulse 3.2s cubic-bezier(.2,.7,.2,1) infinite;}
-  @keyframes pinPulse{0%{box-shadow:0 0 0 0 rgba(232,118,43,.45);}70%{box-shadow:0 0 0 12px rgba(232,118,43,0);}100%{box-shadow:0 0 0 0 rgba(232,118,43,0);}}
-  .hotspot-name{white-space:nowrap;}
-  .hotspot[data-tier="ext"] .hotspot-chip{opacity:0;transform:translateY(4px) scale(.96);}
-  .hotspot:hover .hotspot-pin,.hotspot:focus-visible .hotspot-pin{transform:scale(1.45);box-shadow:0 0 0 7px rgba(232,118,43,.26),0 0 20px 4px rgba(232,118,43,.6),0 4px 14px rgba(0,0,0,.5);}
-  .hotspot:hover .hotspot-chip,.hotspot:focus-visible .hotspot-chip{opacity:1;transform:translateX(-50%) translateY(0) scale(1);border-color:rgba(244,162,75,.5);}
-  .hotspot[data-tier="int"]{opacity:0;pointer-events:none;transition:opacity .45s cubic-bezier(.2,.7,.2,1);}
-  .stage.near .hotspot[data-tier="int"],.stage.is-exploring .hotspot[data-tier="int"],.hotspot[data-tier="int"]:focus-within{opacity:1;pointer-events:auto;}
+  .hotspot{position:absolute;transform:translate(-50%,-50%);display:block;width:0;height:0;text-decoration:none;}
+  .hotspot-pin{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:#E8762B;box-shadow:0 0 0 4px rgba(232,118,43,.22),0 0 12px 2px rgba(232,118,43,.5),0 2px 5px rgba(0,0,0,.5);transition:transform .35s cubic-bezier(.2,.7,.2,1);}
+  .hotspot-pin::after{content:"";position:absolute;inset:0;border-radius:50%;animation:pinPulse 2.8s ease-out infinite;}
+  @keyframes pinPulse{0%{box-shadow:0 0 0 0 rgba(232,118,43,.5)}70%{box-shadow:0 0 0 11px rgba(232,118,43,0)}100%{box-shadow:0 0 0 0 rgba(232,118,43,0)}}
+  .hotspot-chip{position:absolute;left:50%;bottom:calc(50% + 16px);transform:translateX(-50%) translateY(6px) scale(.96);opacity:0;pointer-events:none;white-space:nowrap;padding:8px 13px;border-radius:12px;background:rgba(12,18,32,.92);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.14);color:#fff;font-size:.86rem;font-weight:600;box-shadow:0 12px 30px -10px rgba(0,0,0,.8);transition:opacity .25s,transform .25s;}
+  .hotspot-chip::after{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:rgba(12,18,32,.92);}
+  /* secondary/interior hidden at rest */
+  .hotspot[data-tier="int"]{opacity:0;pointer-events:none;transition:opacity .3s;}
+  .hero-right:hover .hotspot[data-tier="int"],.hero-right:focus-within .hotspot[data-tier="int"]{opacity:1;pointer-events:auto;}
+  .hotspot:hover .hotspot-pin,.hotspot:focus-visible .hotspot-pin{transform:translate(-50%,-50%) scale(1.35);}
+  .hotspot:hover .hotspot-chip,.hotspot:focus-visible .hotspot-chip{opacity:1;transform:translateX(-50%) translateY(0) scale(1);}
+  .hotspot:focus-visible{outline:none;}
+  .hotspot:focus-visible .hotspot-pin{box-shadow:0 0 0 4px rgba(255,255,255,.9),0 0 0 7px rgba(232,118,43,.6);}
 
-  .opening-sub{margin:1.4rem 0 0;max-width:27rem;font-size:clamp(1rem,1.4vw,1.18rem);line-height:1.5;color:rgba(255,255,255,.92);text-shadow:0 1px 14px rgba(0,0,0,.5);}
+  /* ---- reduced motion ---- */
+  @media (prefers-reduced-motion: reduce){.hotspot-pin::after,.rocco-pulse{animation:none;}}
 
-  /* ===== TRUST STRIP ===== */
-  .trust-strip{background:linear-gradient(180deg,#0d1526 0%,#0a1120 100%);color:#fff;padding:2.4rem clamp(1.5rem,6vw,4rem);border-top:1px solid rgba(255,255,255,.06);}
-  .trust-strip-row{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem 2.5rem;}
-  .trust-item{display:flex;flex-direction:column;gap:.35rem;padding-left:1.1rem;border-left:2px solid rgba(244,162,75,.6);}
-  .trust-h{font-size:1rem;font-weight:700;letter-spacing:-.01em;}
-  .trust-s{font-size:.9rem;color:rgba(255,255,255,.6);}
-
-  /* ===== HERO RESPONSIVE / MOBILE ===== */
-  @media (max-width:760px){
-    .opening{min-height:auto;padding:clamp(40px,7vh,72px) clamp(20px,6vw,32px) clamp(32px,5vh,48px);grid-template-rows:auto auto;}
-    .hero-photo{object-position:center 40%;}
-    .hero-dim{background:linear-gradient(0deg,rgba(8,12,22,.96) 0%,rgba(8,12,22,.66) 32%,rgba(8,12,22,.2) 58%,rgba(8,12,22,.48) 100%);}
-    .opening-top{max-width:none;}
-    .opening-base{align-self:start;max-width:none;margin-top:1.6rem;}
-    .rocco-card{max-width:none;padding:1.25rem 1.25rem 1.15rem;border-radius:20px;}
-    .opening-prompts{max-width:none;}
-    /* keep only the two clearest major dots on small screens */
-    .hotspot[data-sys="gutters"],.hotspot[data-sys="foundation"],.hotspot[data-sys="plumbing"],.hotspot[data-tier="int"]{display:none;}
-    .hotspot-chip{font-size:.86rem;padding:.5rem .8rem;}
-    .trust-strip{padding:1.8rem clamp(1.25rem,6vw,2rem);}
-    .trust-strip-row{grid-template-columns:repeat(2,1fr);gap:1.2rem 1.4rem;}
+  /* ---- mobile: stack text + card first, image after ---- */
+  @media (max-width:920px){
+    .hero-grid{grid-template-columns:1fr;gap:28px;}
+    .hero-left{max-width:none;order:1;}
+    .hero-right{order:2;}
   }
-  @media (max-width:440px){ .trust-strip-row{grid-template-columns:1fr;} }
-  @media (prefers-reduced-motion: reduce){
-    .hotspot-pin::before{animation:none;}
-    .hero-dim,.hotspot,.hotspot-pin,.hotspot-chip{transition:none;}
+  @media (max-width:560px){
+    .trust-points{grid-template-columns:1fr;}
+    .photo-frame{border-radius:18px;}
+    .hotspot[data-sys="gutters"],.hotspot[data-sys="electrical"]{display:none;}
+    .askbar{flex-direction:column;}
+    .askbar-go{justify-content:center;}
   }
-
-  /* ============ BUTTONS ============ */
-  .btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--emg-orange,#E8762B);color:#fff;font-weight:700;text-decoration:none;border-radius:999px;padding:1rem 2rem;transition:transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s,background .25s}
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 20px 40px -16px rgba(232,118,43,.6);background:#F4882F}
-  .btn-xl{font-size:1.2rem;padding:1.15rem 2.6rem}
-  .btn-light{display:inline-flex;align-items:center;background:#fff;color:#16304C;font-weight:700;text-decoration:none;border-radius:999px;padding:.9rem 1.8rem;transition:transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s}
-  .btn-light:hover{transform:translateY(-2px);box-shadow:0 18px 34px -16px rgba(0,0,0,.5)}
-
-  /* ============ MOBILE ============ */
-  @media(max-width:640px){
-    .askbar{flex-wrap:wrap;border-radius:24px;padding:.7rem}
-    .askbar-input{flex:1 1 100%;order:2;padding:.6rem .4rem}
-    .askbar-go{flex:1 1 100%;order:3;justify-content:center}
-    .askbar-rocco{order:1}
-    .hotspot-label{font-size:.72rem;padding:.26rem .55rem}
-  }
-
-  /* ============ REDUCED MOTION ============ */
-  @media(prefers-reduced-motion:reduce){
-    *,*::before,*::after{animation:none !important;transition:none !important}
-    .reveal{opacity:1 !important;transform:none !important}
-  }
-
-  /* hotspot dot refinement (works with existing .hotspot styles) */
-  .hotspot{width:26px;height:26px}
-  .hotspot:hover{z-index:5}
 
   /* ===================================================================
      EMG EXPERIENCE SYSTEM — the homepage as one continuous journey.
@@ -469,7 +425,7 @@ const prompts = [
     if (input) {
       var hh = new Date().getHours();
       var part = hh < 12 ? 'morning' : (hh < 18 ? 'afternoon' : 'evening');
-      var msg = 'Hello \u2014 what\u2019s happening at your home?';
+      var msg = 'e.g. brown stain on my ceiling\u2026';
       if (reduce) { input.setAttribute('placeholder', msg); }
       else {
         var i = 0;
