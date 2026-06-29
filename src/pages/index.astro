@@ -232,7 +232,7 @@ const prompts = [
   :focus-visible{outline:3px solid #F4A24B;outline-offset:3px;border-radius:6px}
 
   /* ===================== THE OPENING ===================== */
-.opening{position:relative;isolation:isolate;min-height:clamp(760px,100vh,1180px);display:grid;grid-template-rows:auto 1fr auto;overflow:hidden;padding:clamp(56px,9vh,120px) clamp(40px,7vw,104px) clamp(40px,6vh,80px);}
+.opening{position:relative;isolation:isolate;min-height:clamp(620px,82vh,940px);display:grid;grid-template-rows:auto 1fr auto;overflow:hidden;padding:clamp(56px,9vh,120px) clamp(40px,7vw,104px) clamp(40px,6vh,80px);}
 .opening-home{position:absolute;inset:0;z-index:0;}
 .opening-home .stage{position:absolute;inset:0;width:100%;height:100%;margin:0;border:0;border-radius:0;max-width:none;aspect-ratio:auto;box-shadow:none;}
 /* scrims guarantee text legibility over the living canvas */
@@ -272,7 +272,7 @@ const prompts = [
   .stage{box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 40px 90px -40px rgba(0,0,0,.6);overflow:hidden}
 
   /* ===== PHOTOREAL LIVING HOME HERO ===== */
-  .hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 46%;display:block;z-index:0;}
+  .hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 38%;display:block;z-index:0;}
   .hero-dim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(90deg,rgba(7,12,24,.82) 0%,rgba(7,12,24,.62) 26%,rgba(7,12,24,.22) 48%,rgba(7,12,24,0) 66%),linear-gradient(0deg,rgba(7,12,24,.7) 0%,rgba(7,12,24,.3) 22%,rgba(7,12,24,0) 46%);transition:backdrop-filter .5s ease,background .5s ease;}
   .stage.is-exploring .hero-dim{background:rgba(8,12,24,.5);backdrop-filter:blur(1.5px);-webkit-backdrop-filter:blur(1.5px);}
 
@@ -469,7 +469,7 @@ const prompts = [
     if (input) {
       var hh = new Date().getHours();
       var part = hh < 12 ? 'morning' : (hh < 18 ? 'afternoon' : 'evening');
-      var msg = 'Good ' + part + ' \u2014 what is happening at your home?';
+      var msg = 'Hello \u2014 what\u2019s happening at your home?';
       if (reduce) { input.setAttribute('placeholder', msg); }
       else {
         var i = 0;
