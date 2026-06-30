@@ -107,7 +107,10 @@ const prompts = [
         </ul>
       </div>
 
-      <div class="hero-right">
+            <div class="hero-mid" aria-hidden="true">
+        <img class="rocco-figure reveal" id="roccoFigure" src="/assets/rocco/rocco-full.png" alt="" width="1024" height="1536" decoding="async" />
+      </div>
+<div class="hero-right">
         <figure class="photo-frame" id="stage">
           <img class="hero-photo" id="heroPhoto" src="/assets/home/living-home-hero.png" width="1536" height="1024" fetchpriority="high" decoding="async" alt="A warmly lit two-story home at dusk. Select a part of the home to explore that system and tell Rocco what you are noticing." />
           <div class="stage-scrim" aria-hidden="true"></div>
@@ -132,6 +135,7 @@ const prompts = [
           </button>
 
           <!-- in-page diagnostic panel (slides up over the stage) -->
+          <button class="diag-backdrop" id="diagBackdrop" type="button" aria-label="Close panel" hidden></button>
           <div class="diag" id="diag" role="dialog" aria-modal="false" aria-labelledby="diagTitle" hidden>
             <button class="diag-close" id="diagClose" type="button" aria-label="Close">×</button>
             <p class="diag-eyebrow" id="diagEyebrow"></p>
@@ -147,8 +151,6 @@ const prompts = [
           </div>
         </figure>
 
-        <!-- full-length Rocco standing in front of the scene -->
-        <img class="rocco-figure reveal" id="roccoFigure" src="/assets/rocco/rocco-full.png" alt="Rocco, your home guide" width="1024" height="1536" decoding="async" />
       </div>
     </div>
   </section>
@@ -270,9 +272,9 @@ const prompts = [
   /* ===== HERO: interactive editorial composition ===== */
   .opening{position:relative;isolation:isolate;background:radial-gradient(120% 120% at 78% 0%,#152339 0%,#0c1424 50%,#070d18 100%);color:#fff;min-height:92vh;display:flex;align-items:center;padding:clamp(64px,8vh,96px) clamp(24px,4vw,72px) clamp(36px,5vh,60px);overflow:hidden;}
   .opening::before{content:"";position:absolute;inset:0;z-index:0;background:radial-gradient(70% 90% at 70% 42%,rgba(232,118,43,.13),transparent 72%);pointer-events:none;}
-  .hero-grid{position:relative;z-index:1;width:100%;max-width:1600px;margin:0 auto;display:grid;grid-template-columns:minmax(0,0.82fr) minmax(0,1.18fr);gap:clamp(20px,2.4vw,44px);align-items:center;}
+  .hero-grid{position:relative;z-index:1;width:100%;max-width:1640px;margin:0 auto;display:grid;grid-template-columns:minmax(0,0.78fr) minmax(0,0.42fr) minmax(0,1.06fr);gap:clamp(8px,1vw,24px);align-items:end;}
   /* ---- LEFT: content ---- */
-  .hero-left{display:flex;flex-direction:column;gap:clamp(13px,1.7vh,19px);max-width:600px;justify-self:end;}
+  .hero-left{display:flex;flex-direction:column;gap:clamp(13px,1.7vh,19px);max-width:600px;justify-self:end;align-self:center;}
   .opening-eyebrow{margin:0;font-size:.8rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#E8762B;}
   .opening-title{margin:0;font-weight:800;line-height:1.04;letter-spacing:-.02em;font-size:clamp(2.4rem,4.4vw,3.85rem);display:flex;flex-direction:column;}
   .opening-title-line{color:#fff;}
@@ -306,8 +308,9 @@ const prompts = [
   .photo-frame.is-focused .hero-photo{filter:brightness(.7) saturate(.9);}
   .photo-frame.is-focused .stage-scrim{opacity:1;}
   /* full-length Rocco: stands at the lower-left of the scene, overlapping frame edge */
-  .rocco-figure{position:absolute;left:clamp(-58px,-3vw,-30px);bottom:-2px;height:min(86%,640px);width:auto;z-index:5;pointer-events:none;filter:drop-shadow(0 26px 30px rgba(0,0,0,.55));transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .5s;}
-  .photo-frame.is-focused ~ .rocco-figure{transform:translateY(8px) scale(.98);opacity:.92;}
+  .hero-mid{position:relative;align-self:end;display:flex;justify-content:center;align-items:flex-end;pointer-events:none;z-index:4;}
+  .rocco-figure{display:block;width:auto;max-width:none;height:min(74vh,620px);margin-right:clamp(-72px,-4vw,-30px);margin-bottom:-2px;pointer-events:none;filter:drop-shadow(0 26px 34px rgba(0,0,0,.55));transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .5s;}
+  
 
   /* ---- beacons (discovery points, not pins) ---- */
   .beacons{position:absolute;inset:0;z-index:3;}
@@ -336,10 +339,13 @@ const prompts = [
   .xray-toggle[aria-pressed="true"]{background:rgba(58,160,160,.3);border-color:rgba(120,210,210,.6);}
 
   /* ---- in-page diagnostic panel ---- */
-  .diag{position:absolute;left:0;right:0;bottom:0;z-index:8;padding:clamp(20px,3vw,32px);background:linear-gradient(180deg,rgba(10,16,28,.4) 0%,rgba(8,13,24,.94) 26%,rgba(8,13,24,.98) 100%);backdrop-filter:blur(8px);border-top:1px solid rgba(255,255,255,.1);transform:translateY(101%);transition:transform .5s cubic-bezier(.2,.7,.2,1);max-height:100%;overflow-y:auto;}
+  .diag-backdrop{position:absolute;inset:0;z-index:7;border:0;padding:0;margin:0;background:transparent;cursor:default;opacity:0;transition:opacity .4s;}
+  .diag-backdrop.is-open{opacity:1;}
+  .diag{position:absolute;left:0;right:0;bottom:0;z-index:9;padding:clamp(18px,2.6vw,30px) clamp(18px,2.6vw,30px) clamp(18px,2.6vw,28px);background:linear-gradient(180deg,rgba(10,16,28,.4) 0%,rgba(8,13,24,.95) 24%,rgba(8,13,24,.99) 100%);backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,.12);transform:translateY(101%);transition:transform .5s cubic-bezier(.2,.7,.2,1);max-height:88%;overflow-y:auto;overscroll-behavior:contain;}
   .diag.is-open{transform:translateY(0);}
   .diag[hidden]{display:block;}
-  .diag-close{position:absolute;top:12px;right:14px;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;font-size:1.3rem;line-height:1;cursor:pointer;transition:background .2s;}
+  .diag-close{position:sticky;float:right;top:0;z-index:10;width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:rgba(20,28,44,.92);color:#fff;font-size:1.4rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:-4px -4px 0 0;transition:background .2s,transform .15s;}
+  .diag-close:hover{background:rgba(255,255,255,.18);transform:scale(1.06);}
   .diag-close:hover{background:rgba(255,255,255,.16);}
   .diag-eyebrow{margin:0 0 4px;font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#E8762B;}
   .diag-title{margin:0 0 8px;font-size:clamp(1.3rem,2vw,1.7rem);font-weight:800;color:#fff;letter-spacing:-.01em;}
@@ -364,16 +370,17 @@ const prompts = [
 
   /* ---- mobile: text + card first, then image; Rocco scales; hide xray ---- */
   @media (max-width:920px){
-    .hero-grid{grid-template-columns:1fr;gap:26px;}
-    .hero-left{max-width:none;order:1;justify-self:stretch;}
-    .hero-right{order:2;}
-    .photo-frame{height:min(64vh,520px);}
-    .rocco-figure{height:min(70%,440px);left:-24px;}
+    .hero-grid{grid-template-columns:1fr;gap:22px;align-items:stretch;}
+    .hero-left{max-width:none;order:1;justify-self:stretch;align-self:stretch;}
+    .hero-mid{order:2;justify-content:center;margin-top:4px;}
+    .rocco-figure{height:min(46vh,360px);margin-right:0;margin-bottom:0;}
+    .hero-right{order:3;}
+    .photo-frame{height:min(60vh,500px);}
   }
   @media (max-width:560px){
     .trust-points{grid-template-columns:1fr;}
     .photo-frame{border-radius:18px;aspect-ratio:4 / 5;height:auto;}
-    .rocco-figure{display:none;}
+    .hero-mid{display:none;}
     .beacon[data-sys="gutters"],.beacon[data-sys="window"]{display:none;}
     .askbar{flex-direction:column;}
     .askbar-go{justify-content:center;}
@@ -462,7 +469,7 @@ const prompts = [
   var elConcerns = document.getElementById('diagConcerns');
   var elOptions = document.getElementById('diagOptions');
   var elGo = document.getElementById('diagGo');
-  var current = null, chosen = null;
+  var current = null, chosen = null, lastBeacon = null;
 
   function buildGo(){
     var base = '/ask?topic=' + encodeURIComponent(current.topic) + '&system=' + encodeURIComponent(current.key);
@@ -499,21 +506,33 @@ const prompts = [
     stage.classList.add('is-focused');
     Array.prototype.forEach.call(document.querySelectorAll('.beacon'), function(b){ b.classList.remove('is-active'); });
     if(beaconEl) beaconEl.classList.add('is-active');
+    lastBeacon = beaconEl || null;
+    document.getElementById('diagBackdrop').hidden = false;
+    var bd = document.getElementById('diagBackdrop'); void bd.offsetWidth; bd.classList.add('is-open');
     diag.hidden = false; void diag.offsetWidth; diag.classList.add('is-open');
+    diag.scrollTop = 0;
+    var cb = document.getElementById('diagClose'); if(cb && cb.focus){ try{ cb.focus({preventScroll:true}); }catch(e){ cb.focus(); } }
   }
 
   function closeDiag(){
-    diag.classList.remove('is-open'); stage.classList.remove('is-focused');
+    if(!diag.classList.contains('is-open') && diag.hidden){ return; }
+    diag.classList.remove('is-open');
+    var bd = document.getElementById('diagBackdrop'); bd.classList.remove('is-open');
+    stage.classList.remove('is-focused');
     Array.prototype.forEach.call(document.querySelectorAll('.beacon'), function(b){ b.classList.remove('is-active'); });
-    current=null; chosen=null;
-    setTimeout(function(){ if(!diag.classList.contains('is-open')) diag.hidden = true; }, reduce?0:500);
+    var ret = lastBeacon;
+    current = null; chosen = null;
+    setTimeout(function(){ if(!diag.classList.contains('is-open')){ diag.hidden = true; bd.hidden = true; } }, reduce ? 0 : 480);
+    if(ret && ret.focus){ try{ ret.focus({preventScroll:true}); }catch(e){ ret.focus(); } }
+    lastBeacon = null;
   }
 
   Array.prototype.forEach.call(document.querySelectorAll('.beacon'), function(b){
     b.addEventListener('click', function(){ openSystem(b.getAttribute('data-sys'), b); });
   });
-  document.getElementById('diagClose').addEventListener('click', closeDiag);
-  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && diag.classList.contains('is-open')) closeDiag(); });
+  document.getElementById('diagClose').addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); closeDiag(); });
+  document.getElementById('diagBackdrop').addEventListener('click', function(e){ e.preventDefault(); closeDiag(); });
+  document.addEventListener('keydown', function(e){ if((e.key==='Escape'||e.key==='Esc') && diag.classList.contains('is-open')){ e.preventDefault(); closeDiag(); } });
 
   // Look Inside toggle
   var xray = document.getElementById('xrayToggle');
