@@ -366,7 +366,7 @@ const prompts = [
   .diag-go:hover svg{transform:translateX(3px);}
 
   /* global Ask Rocco drawer must not capture clicks while hidden (it stays display:flex;opacity:0) */
-  #rocco-panel[hidden]{pointer-events:none !important;}
+  :global(#rocco-panel[hidden]){pointer-events:none !important;}
 
   /* ---- reduced motion ---- */
   @media (prefers-reduced-motion: reduce){.beacon-ring::after{animation:none;}.diag{transition:none;}.rocco-figure,.hero-photo,.stage-scrim{transition:none;}}
