@@ -1,40 +1,68 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-/* EMG EXPERIENCE SYSTEM - the homepage is the product.
-   The Living Home hero is now a photoreal image (public/assets/home/living-home-hero.png).
-   Hotspots are absolute-positioned over real features and deep-link into Ask Rocco (/ask?topic=).
-   No fabricated stats/reviews. Backend untouched. */
+/* EMG EXPERIENCE SYSTEM - the homepage IS the product.
+   Photoreal hero (public/assets/home/living-home-hero.png) + full-length Rocco standing in scene.
+   Beacons are anchored only to features VISIBLE in the photo. Interior systems live behind X-Ray.
+   Clicking a beacon does NOT navigate: it focuses the house, opens an in-page diagnostic panel,
+   collects one symptom, THEN hands off to /ask with full context. Backend untouched. */
+
 const services = [
-  { slug: 'hvac',       label: 'Heating &amp; Cooling', hint: 'No heat, no cool, weird noises' },
-  { slug: 'plumbing',   label: 'Plumbing',              hint: 'Leaks, clogs, water heaters' },
-  { slug: 'electrical', label: 'Electrical',            hint: 'Breakers, outlets, panels' },
-  { slug: 'roofing',    label: 'Roofing',               hint: 'Leaks, shingles, storm damage' },
+  { slug: 'hvac',       label: 'Heating & Cooling', hint: 'No heat, no cool, weird noises' },
+  { slug: 'plumbing',   label: 'Plumbing',          hint: 'Leaks, clogs, water heaters' },
+  { slug: 'electrical', label: 'Electrical',        hint: 'Breakers, outlets, panels' },
+  { slug: 'roofing',    label: 'Roofing',           hint: 'Leaks, shingles, storm damage' },
 ];
 
-
-/* Photo hotspots: x/y are % within the hero image. tier ext = shown at rest;
-   int = interior/secondary, revealed on hover/proximity/focus. */
-const hotspots = [
-  { key: 'roof',       label: 'Roof & Attic', topic: 'Roof & Attic', icon: 'roof',  x: 44.0, y: 15.0, tier: 'ext' },
-  { key: 'gutters',    label: 'Gutters',      topic: 'Gutters',      icon: 'drop',  x: 80.0, y: 28.0, tier: 'ext' },
-  { key: 'electrical', label: 'Electrical',   topic: 'Electrical',   icon: 'bolt',  x: 72.0, y: 72.0, tier: 'ext' },
-  { key: 'hvac',       label: 'HVAC',         topic: 'HVAC',         icon: 'fan',   x: 76.0, y: 80.0, tier: 'ext' },
-  { key: 'plumbing',   label: 'Plumbing',     topic: 'Plumbing',     icon: 'pipe',  x: 41.0, y: 84.0, tier: 'int' },
-  { key: 'foundation', label: 'Foundation',   topic: 'Foundation',   icon: 'shield',x: 50.0, y: 90.0, tier: 'int' },
-  { key: 'garage',     label: 'Garage',       topic: 'Garage',       icon: 'garage',x: 22.0, y: 66.0, tier: 'int' },
-  { key: 'windows',    label: 'Windows & Doors', topic: 'Windows & Doors', icon: 'window', x: 45.0, y: 30.0, tier: 'int' },
+/* Each system: beacon coords are % within the framed photo.
+   tier 'visible' = anchored to something you can SEE (shown at rest).
+   tier 'xray'    = interior system, only shown in Look Inside mode (approx placement).
+   blurb + concerns + symptoms power the in-page diagnostic panel before handoff. */
+const systems = [
+  { key:'roof', label:'Roof & Attic', topic:'Roof & Attic', x:44, y:15, tier:'visible',
+    blurb:'Your roof protects everything underneath it.',
+    concerns:['Missing shingles','Water stains','Ice dams','Poor attic ventilation'],
+    symptoms:['Water stain','Missing shingles','Roof leak','Other'] },
+  { key:'gutters', label:'Gutters', topic:'Gutters', x:80, y:28, tier:'visible',
+    blurb:'Gutters carry water away from your roof, siding, and foundation.',
+    concerns:['Overflowing','Sagging','Clogged','Loose from house'],
+    symptoms:['Overflowing','Sagging or pulling away','Water near foundation','Other'] },
+  { key:'window', label:'Upstairs Window', topic:'Windows', x:45, y:30, tier:'visible',
+    blurb:'Windows affect comfort, drafts, and your energy bills.',
+    concerns:['Drafts','Foggy glass','Hard to open','Leaks'],
+    symptoms:['Drafty','Foggy between panes','Hard to open','Other'] },
+  { key:'door', label:'Front Door', topic:'Doors', x:53, y:62, tier:'visible',
+    blurb:'Entry doors matter for security, drafts, and weather sealing.',
+    concerns:['Drafts','Sticking','Weatherstrip worn','Lock issues'],
+    symptoms:['Drafty','Sticks or wont latch','Worn weatherstrip','Other'] },
+  { key:'porch', label:'Porch', topic:'Porch & Exterior', x:62, y:70, tier:'visible',
+    blurb:'Porches, columns, and steps take the brunt of the weather.',
+    concerns:['Rotting wood','Loose railing','Cracked steps','Peeling paint'],
+    symptoms:['Soft or rotting wood','Loose railing','Cracked steps','Other'] },
+  { key:'electrical', label:'Electrical Meter', topic:'Electrical', x:72, y:64, tier:'visible',
+    blurb:'Your meter and panel feed power to the whole home.',
+    concerns:['Breaker tripping','Flickering lights','Warm outlets','Buzzing'],
+    symptoms:['Breaker keeps tripping','Flickering lights','Warm or buzzing outlet','Other'] },
+  { key:'hvac', label:'Air Conditioner', topic:'HVAC', x:76, y:80, tier:'visible',
+    blurb:'Your outdoor unit is half of your heating and cooling system.',
+    concerns:['No cool air','Strange noise','Not turning on','High bills'],
+    symptoms:['Blowing warm air','Loud or strange noise','Wont turn on','Other'] },
+  { key:'plumbing', label:'Plumbing', topic:'Plumbing', x:38, y:55, tier:'xray',
+    blurb:'Supply and drain lines run hidden through walls and floors.',
+    concerns:['Low pressure','Leaks','Slow drains','No hot water'],
+    symptoms:['Low water pressure','A leak','Slow or clogged drain','Other'] },
+  { key:'ducts', label:'HVAC Ducts', topic:'HVAC', x:55, y:45, tier:'xray',
+    blurb:'Ductwork carries conditioned air to every room.',
+    concerns:['Uneven rooms','Weak airflow','Dusty air','Whistling'],
+    symptoms:['Some rooms wont heat or cool','Weak airflow','Dusty air','Other'] },
+  { key:'waterheater', label:'Water Heater', topic:'Plumbing', x:40, y:70, tier:'xray',
+    blurb:'Your water heater keeps hot water flowing on demand.',
+    concerns:['No hot water','Runs out fast','Leaking','Rumbling'],
+    symptoms:['No hot water','Runs out quickly','Leaking at the base','Other'] },
+  { key:'foundation', label:'Foundation', topic:'Foundation', x:50, y:90, tier:'xray',
+    blurb:'The foundation is the ground everything else rests on.',
+    concerns:['Cracks','Moisture','Settling','Sticking doors'],
+    symptoms:['Cracks in walls or floor','Moisture or water','Doors sticking','Other'] },
 ];
-
-const ICONS = {
-  roof:   '<path d="M3 11l9-7 9 7" /><path d="M6 10v9h12v-9" />',
-  drop:   '<path d="M12 3s6 6.5 6 10a6 6 0 0 1-12 0c0-3.5 6-10 6-10z" />',
-  bolt:   '<path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" />',
-  fan:    '<circle cx="12" cy="12" r="2.4" /><path d="M12 9.6c1-3 .4-5.4-1.2-6 .8 1.6.4 4 1.2 6zM14.4 12c3-1 5.4-.4 6 1.2-1.6-.8-4-.4-6-1.2zM12 14.4c-1 3-.4 5.4 1.2 6-.8-1.6-.4-4-1.2-6zM9.6 12c-3 1-5.4.4-6-1.2 1.6.8 4 .4 6 1.2z" />',
-  pipe:   '<path d="M4 8h8v4H4zM12 10h4a4 4 0 0 1 4 4v6" />',
-  shield: '<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z" />',
-  garage: '<path d="M3 10l9-5 9 5v10H3z" /><path d="M6 20v-7h12v7" />',
-  window: '<rect x="4" y="4" width="16" height="16" rx="1" /><path d="M12 4v16M4 12h16" />'
-};
 
 const prompts = [
   'My AC is blowing warm air',
@@ -45,7 +73,8 @@ const prompts = [
 ---
 
 <BaseLayout title="The home guide that knows what&rsquo;s wrong" description="ServicesInMyCity is the AI guide for your home. Ask Rocco what&rsquo;s wrong before anyone touches it &mdash; then connect with a trusted local pro.">
-  <!-- ===================== THE OPENING (photoreal home hero) ===================== -->
+
+  <!-- ===================== THE OPENING (interactive photoreal home) ===================== -->
   <section class="opening" aria-label="Your home, and the guide who knows it">
     <div class="hero-grid">
       <div class="hero-left">
@@ -55,30 +84,19 @@ const prompts = [
 
         <div class="rocco-card reveal">
           <div class="rocco-card-head">
-            <span class="rocco-avatar" aria-hidden="true">
-              <img src="/assets/rocco/rocco-headshot.png" alt="" width="56" height="56" />
-              <span class="rocco-pulse"></span>
-            </span>
-            <span class="rocco-card-intro">
-              <span class="rocco-card-name">Rocco</span>
-              <span class="rocco-card-line">Tell Rocco what you’re noticing.</span>
-            </span>
+            <span class="rocco-card-name">Ask Rocco</span>
+            <span class="rocco-card-line">Tell Rocco what you’re noticing.</span>
           </div>
-          <form class="askbar reveal" action="/ask" method="get" role="search">
-            <input class="askbar-input" type="text" name="q" autocomplete="off"
-              aria-label="Describe what is happening with your home"
-              placeholder="" data-greeting="1" />
-            <button class="askbar-go" type="submit">
-              Ask Rocco
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
+          <form class="askbar" action="/ask" method="get" role="search">
+            <input class="askbar-input" type="text" name="q" autocomplete="off" aria-label="Describe what is happening with your home" placeholder="" data-greeting="1" />
+            <button class="askbar-go" type="submit">Ask Rocco<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
           </form>
-          <div class="opening-prompts reveal" aria-label="Examples">
+          <div class="opening-prompts" aria-label="Examples">
             {prompts.map((p) => (
               <a class="chip" href={`/ask?q=${encodeURIComponent(p)}`}>{p}</a>
             ))}
           </div>
-          <p class="opening-hint reveal">No account. No pressure. Just answers.</p>
+          <p class="opening-hint">No account. No pressure. Just answers.</p>
         </div>
 
         <ul class="trust-points reveal" aria-label="How we work">
@@ -89,29 +107,53 @@ const prompts = [
         </ul>
       </div>
 
-      <div class="hero-right">
-        <figure class="photo-frame reveal" id="stage">
-          <img class="hero-photo" id="heroPhoto"
-               src="/assets/home/living-home-hero.png" width="1536" height="1024"
-               fetchpriority="high" decoding="async"
-               alt="A warmly lit two-story home at dusk. Hover or focus a part of the home to learn about that system, then ask Rocco about it." />
-          <div class="hotspots">
-            {hotspots.map((h) => (
-              <a class="hotspot" data-sys={h.key} data-tier={h.tier}
-                 href={`/ask?topic=${encodeURIComponent(h.topic)}`}
-                 style={`left:${h.x}%;top:${h.y}%`}
-                 aria-label={`Ask Rocco about ${h.label}`}>
-                <span class="hotspot-pin" aria-hidden="true"></span>
-                <span class="hotspot-chip">{h.label}</span>
-              </a>
+            <div class="hero-mid" aria-hidden="true">
+        <img class="rocco-figure reveal" id="roccoFigure" src="/assets/rocco/rocco-full.png" alt="" width="1024" height="1536" decoding="async" />
+      </div>
+<div class="hero-right">
+        <figure class="photo-frame" id="stage">
+          <img class="hero-photo" id="heroPhoto" src="/assets/home/living-home-hero.png" width="1536" height="1024" fetchpriority="high" decoding="async" alt="A warmly lit two-story home at dusk. Select a part of the home to explore that system and tell Rocco what you are noticing." />
+          <div class="stage-scrim" aria-hidden="true"></div>
+
+          <!-- beacons: discovery points, not links. They open an in-page diagnostic. -->
+          <div class="beacons">
+            {systems.map((s) => (
+              <button class="beacon" type="button" data-sys={s.key} data-tier={s.tier}
+                style={`left:${s.x}%;top:${s.y}%`}
+                aria-label={`Explore ${s.label}`}>
+                <span class="beacon-glow" aria-hidden="true"></span>
+                <span class="beacon-ring" aria-hidden="true"></span>
+                <span class="beacon-chip">{s.label}</span>
+              </button>
             ))}
           </div>
+
+          <!-- look inside toggle -->
+          <button class="xray-toggle" id="xrayToggle" type="button" aria-pressed="false">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/></svg>
+            <span class="xray-label">Look inside</span>
+          </button>
+
+          <!-- in-page diagnostic panel (slides up over the stage) -->
+          <button class="diag-backdrop" id="diagBackdrop" type="button" aria-label="Close panel" hidden></button>
+          <div class="diag" id="diag" role="dialog" aria-modal="false" aria-labelledby="diagTitle" hidden>
+            <button class="diag-close" id="diagClose" type="button" aria-label="Close">×</button>
+            <p class="diag-eyebrow" id="diagEyebrow"></p>
+            <h3 class="diag-title" id="diagTitle"></h3>
+            <p class="diag-blurb" id="diagBlurb"></p>
+            <p class="diag-concerns-label">Common homeowner concerns:</p>
+            <ul class="diag-concerns" id="diagConcerns"></ul>
+            <p class="diag-q">What are you noticing?</p>
+            <div class="diag-options" id="diagOptions" role="radiogroup" aria-label="What are you noticing"></div>
+            <a class="diag-go" id="diagGo" href="/ask">Continue with Rocco
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
         </figure>
+
       </div>
     </div>
   </section>
-
-  
 
   <!-- =================== CHAPTER 1 · FROM CONFUSION TO CONFIDENCE =================== -->
     <section class="chapter ch-path" aria-labelledby="path-title">
@@ -218,7 +260,6 @@ const prompts = [
     <p class="closing-area">Live now across the Jersey Shore launch area &mdash; Stafford, Manahawkin, Barnegat, LBI, Toms River, Forked River, Waretown and nearby. Not in your town yet? Rocco will tell you straight.</p>
   </section>
 
-
 </BaseLayout>
 
 <style>
@@ -228,28 +269,20 @@ const prompts = [
   .reveal.in{opacity:1;transform:none}
   :focus-visible{outline:3px solid #F4A24B;outline-offset:3px;border-radius:6px}
 
-  /* ===================== THE OPENING ===================== */
-/* ===== HERO: editorial two-column composition ===== */
-  .opening{position:relative;isolation:isolate;background:radial-gradient(120% 120% at 78% 0%,#152339 0%,#0c1424 50%,#070d18 100%);color:#fff;min-height:88vh;display:flex;align-items:center;padding:clamp(72px,9vh,104px) clamp(24px,4vw,72px) clamp(40px,5vh,64px);overflow:hidden;}
-  .opening::before{content:"";position:absolute;inset:0;z-index:0;background:radial-gradient(70% 90% at 72% 42%,rgba(232,118,43,.13),transparent 72%);pointer-events:none;}
-  .hero-grid{position:relative;z-index:1;width:100%;max-width:1600px;margin:0 auto;display:grid;grid-template-columns:minmax(0,0.82fr) minmax(0,1.18fr);gap:clamp(24px,3vw,52px);align-items:center;}
-
+  /* ===== HERO: interactive editorial composition ===== */
+  .opening{position:relative;isolation:isolate;background:radial-gradient(120% 120% at 78% 0%,#152339 0%,#0c1424 50%,#070d18 100%);color:#fff;min-height:92vh;display:flex;align-items:center;padding:clamp(64px,8vh,96px) clamp(24px,4vw,72px) clamp(36px,5vh,60px);overflow:hidden;}
+  .opening::before{content:"";position:absolute;inset:0;z-index:0;background:radial-gradient(70% 90% at 70% 42%,rgba(232,118,43,.13),transparent 72%);pointer-events:none;}
+  .hero-grid{position:relative;z-index:1;width:100%;max-width:1640px;margin:0 auto;display:grid;grid-template-columns:minmax(0,0.78fr) minmax(0,0.42fr) minmax(0,1.06fr);gap:clamp(8px,1vw,24px);align-items:end;}
   /* ---- LEFT: content ---- */
-  .hero-left{display:flex;flex-direction:column;gap:clamp(14px,1.8vh,20px);max-width:600px;justify-self:end;}
+  .hero-left{display:flex;flex-direction:column;gap:clamp(13px,1.7vh,19px);max-width:600px;justify-self:end;align-self:center;}
   .opening-eyebrow{margin:0;font-size:.8rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#E8762B;}
-  .opening-title{margin:0;font-weight:800;line-height:1.04;letter-spacing:-.02em;font-size:clamp(2.5rem,4.6vw,4rem);display:flex;flex-direction:column;}
+  .opening-title{margin:0;font-weight:800;line-height:1.04;letter-spacing:-.02em;font-size:clamp(2.4rem,4.4vw,3.85rem);display:flex;flex-direction:column;}
   .opening-title-line{color:#fff;}
   .opening-title-accent{color:#E8762B;}
-  .opening-sub{margin:0;font-size:clamp(1.05rem,1.4vw,1.25rem);line-height:1.5;color:rgba(255,255,255,.78);max-width:42ch;}
-
-  /* ---- Ask Rocco card ---- */
-  .rocco-card{margin-top:6px;background:rgba(16,24,40,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:clamp(20px,2.4vw,28px);box-shadow:0 24px 60px -24px rgba(0,0,0,.7);display:flex;flex-direction:column;gap:16px;}
-  .rocco-card-head{display:flex;align-items:center;gap:14px;}
-  .rocco-avatar{position:relative;flex:0 0 auto;width:56px;height:56px;}
-  .rocco-avatar img{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.18);}
-  .rocco-pulse{position:absolute;inset:-4px;border-radius:50%;border:2px solid rgba(232,118,43,.5);animation:roccoPulse 2.6s ease-out infinite;}
-  @keyframes roccoPulse{0%{transform:scale(.85);opacity:.7}70%{transform:scale(1.25);opacity:0}100%{opacity:0}}
-  .rocco-card-intro{display:flex;flex-direction:column;gap:2px;}
+  .opening-sub{margin:0;font-size:clamp(1.02rem,1.4vw,1.22rem);line-height:1.5;color:rgba(255,255,255,.78);max-width:42ch;}
+  /* ---- Ask Rocco card (no headshot inside now) ---- */
+  .rocco-card{margin-top:4px;background:rgba(16,24,40,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:clamp(18px,2.2vw,26px);box-shadow:0 24px 60px -24px rgba(0,0,0,.7);display:flex;flex-direction:column;gap:14px;}
+  .rocco-card-head{display:flex;flex-direction:column;gap:3px;}
   .rocco-card-name{font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#E8762B;}
   .rocco-card-line{font-size:1.12rem;font-weight:600;color:#fff;line-height:1.25;}
   .askbar{display:flex;gap:10px;align-items:stretch;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:6px;}
@@ -261,56 +294,110 @@ const prompts = [
   .chip{display:inline-flex;align-items:center;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.82);font-size:.9rem;text-decoration:none;transition:background .2s,border-color .2s,color .2s;}
   .chip:hover{background:rgba(232,118,43,.16);border-color:rgba(232,118,43,.5);color:#fff;}
   .opening-hint{margin:0;font-size:.85rem;color:rgba(255,255,255,.55);}
-
-  /* ---- trust points ---- */
-  .trust-points{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:14px 22px;}
+  .trust-points{list-style:none;margin:6px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:13px 22px;}
   .trust-points li{display:flex;flex-direction:column;gap:1px;border-left:2px solid rgba(232,118,43,.55);padding-left:12px;}
   .trust-h{font-size:.92rem;font-weight:700;color:#fff;}
   .trust-s{font-size:.82rem;color:rgba(255,255,255,.6);}
 
-  /* ---- RIGHT: framed cinematic photo ---- */
+  /* ---- RIGHT: framed photo + full-length Rocco ---- */
   .hero-right{position:relative;}
-  .photo-frame{position:relative;margin:0;border-radius:28px;overflow:hidden;box-shadow:0 50px 110px -34px rgba(0,0,0,.85),0 0 0 1px rgba(255,255,255,.09);background:#0a1120;aspect-ratio:7 / 5;height:min(74vh,660px);width:100%;}
-  .hero-photo{display:block;width:100%;height:100%;object-fit:cover;object-position:center 46%;}
-  .photo-frame::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(7,13,24,.18) 0%,rgba(7,13,24,0) 22%,rgba(7,13,24,0) 70%,rgba(7,13,24,.28) 100%);}
+  .photo-frame{position:relative;margin:0;border-radius:28px;overflow:hidden;box-shadow:0 50px 110px -34px rgba(0,0,0,.85),0 0 0 1px rgba(255,255,255,.09);background:#0a1120;aspect-ratio:7 / 5;height:min(76vh,680px);width:100%;}
+  .hero-photo{display:block;width:100%;height:100%;object-fit:cover;object-position:center 46%;transition:filter .6s ease,transform .6s ease;}
+  .stage-scrim{position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(closest-side at var(--fx,50%) var(--fy,50%),transparent 0,transparent 16%,rgba(6,11,20,.62) 60%,rgba(6,11,20,.82) 100%);transition:opacity .55s ease;z-index:2;}
+  /* when a system is focused, dim the rest of the house and spotlight the area */
+  .photo-frame.is-focused .hero-photo{filter:brightness(.7) saturate(.9);}
+  .photo-frame.is-focused .stage-scrim{opacity:1;}
+  /* full-length Rocco: stands at the lower-left of the scene, overlapping frame edge */
+  .hero-mid{position:relative;align-self:end;display:flex;justify-content:center;align-items:flex-end;pointer-events:none;z-index:4;}
+  .rocco-figure{display:block;width:auto;max-width:none;height:min(74vh,620px);margin-right:clamp(-72px,-4vw,-30px);margin-bottom:-2px;pointer-events:none;filter:drop-shadow(0 26px 34px rgba(0,0,0,.55));transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .5s;}
+  
 
-  /* ---- hotspots ---- */
-  .hotspots{position:absolute;inset:0;z-index:3;}
-  .hotspot{position:absolute;transform:translate(-50%,-50%);display:block;width:0;height:0;text-decoration:none;}
-  .hotspot-pin{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:#E8762B;box-shadow:0 0 0 4px rgba(232,118,43,.22),0 0 12px 2px rgba(232,118,43,.5),0 2px 5px rgba(0,0,0,.5);transition:transform .35s cubic-bezier(.2,.7,.2,1);}
-  .hotspot-pin::after{content:"";position:absolute;inset:0;border-radius:50%;animation:pinPulse 2.8s ease-out infinite;}
-  @keyframes pinPulse{0%{box-shadow:0 0 0 0 rgba(232,118,43,.5)}70%{box-shadow:0 0 0 11px rgba(232,118,43,0)}100%{box-shadow:0 0 0 0 rgba(232,118,43,0)}}
-  .hotspot-chip{position:absolute;left:50%;bottom:calc(50% + 16px);transform:translateX(-50%) translateY(6px) scale(.96);opacity:0;pointer-events:none;white-space:nowrap;padding:8px 13px;border-radius:12px;background:rgba(12,18,32,.92);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.14);color:#fff;font-size:.86rem;font-weight:600;box-shadow:0 12px 30px -10px rgba(0,0,0,.8);transition:opacity .25s,transform .25s;}
-  .hotspot-chip::after{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:rgba(12,18,32,.92);}
-  /* secondary/interior hidden at rest */
-  .hotspot[data-tier="int"]{opacity:0;pointer-events:none;transition:opacity .3s;}
-  .hero-right:hover .hotspot[data-tier="int"],.hero-right:focus-within .hotspot[data-tier="int"]{opacity:1;pointer-events:auto;}
-  .hotspot:hover .hotspot-pin,.hotspot:focus-visible .hotspot-pin{transform:translate(-50%,-50%) scale(1.35);}
-  .hotspot:hover .hotspot-chip,.hotspot:focus-visible .hotspot-chip{opacity:1;transform:translateX(-50%) translateY(0) scale(1);}
-  .hotspot:focus-visible{outline:none;}
-  .hotspot:focus-visible .hotspot-pin{box-shadow:0 0 0 4px rgba(255,255,255,.9),0 0 0 7px rgba(232,118,43,.6);}
+  /* ---- beacons (discovery points, not pins) ---- */
+  .beacons{position:absolute;inset:0;z-index:52;}
+  .beacon{position:absolute;transform:translate(-50%,-50%);width:30px;height:30px;padding:0;border:0;background:transparent;cursor:pointer;display:block;}
+  .beacon-glow{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:12px;height:12px;border-radius:50%;background:radial-gradient(circle,rgba(255,196,128,.95) 0%,rgba(232,118,43,.55) 45%,rgba(232,118,43,0) 72%);box-shadow:0 0 10px 3px rgba(232,118,43,.45);transition:width .35s cubic-bezier(.2,.7,.2,1),height .35s,box-shadow .35s;}
+  .beacon-ring{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.4);width:30px;height:30px;border-radius:50%;border:1.5px solid rgba(255,196,128,.85);opacity:0;transition:opacity .35s,transform .35s cubic-bezier(.2,.7,.2,1);}
+  .beacon-ring::after{content:"";position:absolute;inset:-1.5px;border-radius:50%;border:1.5px solid rgba(232,118,43,.5);animation:beaconPulse 3s ease-out infinite;}
+  @keyframes beaconPulse{0%{transform:scale(.7);opacity:.6}70%{transform:scale(1.8);opacity:0}100%{opacity:0}}
+  .beacon-chip{position:absolute;left:50%;bottom:calc(50% + 20px);transform:translateX(-50%) translateY(6px) scale(.96);opacity:0;pointer-events:none;white-space:nowrap;padding:7px 13px;border-radius:11px;background:rgba(12,18,32,.92);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.14);color:#fff;font-size:.84rem;font-weight:600;box-shadow:0 12px 30px -10px rgba(0,0,0,.8);transition:opacity .25s,transform .25s;}
+  .beacon-chip::after{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:rgba(12,18,32,.92);}
+  .beacon:hover .beacon-glow,.beacon:focus-visible .beacon-glow{width:18px;height:18px;box-shadow:0 0 18px 6px rgba(232,118,43,.6);}
+  .beacon:hover .beacon-ring,.beacon:focus-visible .beacon-ring{opacity:1;transform:translate(-50%,-50%) scale(1);}
+  .beacon:hover .beacon-chip,.beacon:focus-visible .beacon-chip{opacity:1;transform:translateX(-50%) translateY(0) scale(1);}
+  .beacon.is-active .beacon-glow{width:22px;height:22px;}
+  .beacon:focus-visible{outline:none;}
+  .beacon:focus-visible .beacon-ring{border-color:#fff;box-shadow:0 0 0 3px rgba(232,118,43,.5);}
+  /* xray-tier beacons hidden until Look Inside is on */
+  .beacon[data-tier="xray"]{opacity:0;pointer-events:none;transition:opacity .4s;}
+  .photo-frame.xray-on .beacon[data-tier="xray"]{opacity:1;pointer-events:auto;}
+  .photo-frame.xray-on .hero-photo{filter:brightness(.62) saturate(.8) hue-rotate(-6deg);}
+  .photo-frame.xray-on .beacon[data-tier="visible"] .beacon-glow{background:radial-gradient(circle,rgba(150,210,255,.95) 0%,rgba(58,160,160,.5) 45%,rgba(58,160,160,0) 72%);box-shadow:0 0 10px 3px rgba(58,160,160,.4);}
+
+  /* ---- look inside toggle ---- */
+  .xray-toggle{position:absolute;top:16px;right:16px;z-index:53;display:inline-flex;align-items:center;gap:7px;padding:9px 15px;border-radius:999px;border:1px solid rgba(255,255,255,.2);background:rgba(12,18,32,.66);backdrop-filter:blur(10px);color:#fff;font-size:.84rem;font-weight:600;cursor:pointer;transition:background .25s,border-color .25s,transform .2s;}
+  .xray-toggle:hover{background:rgba(12,18,32,.85);transform:translateY(-1px);}
+  .xray-toggle[aria-pressed="true"]{background:rgba(58,160,160,.3);border-color:rgba(120,210,210,.6);}
+
+  /* ---- in-page diagnostic panel ---- */
+  .diag-backdrop{position:absolute;inset:0;z-index:60;border:0;padding:0;margin:0;background:transparent;cursor:default;opacity:0;transition:opacity .4s;}
+  .diag-backdrop.is-open{opacity:1;}
+  .diag{position:absolute;left:0;right:0;bottom:0;padding:clamp(18px,2.6vw,30px) clamp(18px,2.6vw,30px) clamp(18px,2.6vw,28px);background:linear-gradient(180deg,rgba(10,16,28,.4) 0%,rgba(8,13,24,.95) 24%,rgba(8,13,24,.99) 100%);backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,.12);z-index:61;transform:translateY(101%);transition:transform .5s cubic-bezier(.2,.7,.2,1);max-height:88%;overflow-y:auto;overscroll-behavior:contain;}
+  .diag.is-open{transform:translateY(0);}
+  .diag[hidden]{display:block;}
+  .diag-close{position:sticky;float:right;top:0;z-index:62;width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:rgba(20,28,44,.92);color:#fff;font-size:1.4rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:-4px -4px 0 0;transition:background .2s,transform .15s;}
+  .diag-close:hover{background:rgba(255,255,255,.18);transform:scale(1.06);}
+  .diag-close:hover{background:rgba(255,255,255,.16);}
+  .diag-eyebrow{margin:0 0 4px;font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#E8762B;}
+  .diag-title{margin:0 0 8px;font-size:clamp(1.3rem,2vw,1.7rem);font-weight:800;color:#fff;letter-spacing:-.01em;}
+  .diag-blurb{margin:0 0 14px;font-size:1rem;line-height:1.5;color:rgba(255,255,255,.82);max-width:52ch;}
+  .diag-concerns-label{margin:0 0 7px;font-size:.82rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:rgba(255,255,255,.55);}
+  .diag-concerns{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-wrap:wrap;gap:7px;}
+  .diag-concerns li{font-size:.86rem;color:rgba(255,255,255,.78);padding:5px 11px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);}
+  .diag-q{margin:0 0 10px;font-size:1.05rem;font-weight:700;color:#fff;}
+  .diag-options{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:20px;}
+  .diag-opt{display:inline-flex;align-items:center;gap:9px;padding:11px 16px;border-radius:13px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);color:#fff;font-size:.95rem;cursor:pointer;transition:border-color .2s,background .2s,transform .15s;}
+  .diag-opt:hover{border-color:rgba(232,118,43,.6);background:rgba(232,118,43,.1);transform:translateY(-1px);}
+  .diag-opt[aria-checked="true"]{border-color:#E8762B;background:rgba(232,118,43,.2);}
+  .diag-opt .dot{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.45);flex:0 0 auto;transition:border-color .2s,background .2s;}
+  .diag-opt[aria-checked="true"] .dot{border-color:#E8762B;background:#E8762B;box-shadow:inset 0 0 0 3px rgba(8,13,24,.9);}
+  .diag-go{display:inline-flex;align-items:center;gap:8px;background:#E8762B;color:#fff;font-weight:700;font-size:1rem;text-decoration:none;padding:13px 24px;border-radius:13px;box-shadow:0 10px 26px -8px rgba(232,118,43,.65);transition:filter .2s,transform .2s,opacity .2s;}
+  .diag-go:hover{filter:brightness(1.06);transform:translateY(-1px);}
+  .diag-go svg{transition:transform .2s;}
+  .diag-go:hover svg{transform:translateX(3px);}
+
+  /* global Ask Rocco drawer must not capture clicks while hidden (it stays display:flex;opacity:0) */
+  :global(#rocco-panel[hidden]){pointer-events:none !important;}
 
   /* ---- reduced motion ---- */
-  @media (prefers-reduced-motion: reduce){.hotspot-pin::after,.rocco-pulse{animation:none;}}
+  @media (prefers-reduced-motion: reduce){.beacon-ring::after{animation:none;}.diag{transition:none;}.rocco-figure,.hero-photo,.stage-scrim{transition:none;}}
 
-  /* ---- mobile: stack text + card first, image after ---- */
+  /* ---- mobile: text + card first, then image; Rocco scales; hide xray ---- */
   @media (max-width:920px){
-    .hero-grid{grid-template-columns:1fr;gap:28px;}
-    .hero-left{max-width:none;order:1;}
-    .hero-right{order:2;}
+    .hero-grid{grid-template-columns:1fr;gap:22px;align-items:stretch;}
+    .hero-left{max-width:none;order:1;justify-self:stretch;align-self:stretch;}
+    .hero-mid{order:2;justify-content:center;margin-top:4px;}
+    .rocco-figure{height:min(46vh,360px);margin-right:0;margin-bottom:0;}
+    .hero-right{order:3;}
+    .photo-frame{height:min(60vh,500px);}
   }
   @media (max-width:560px){
     .trust-points{grid-template-columns:1fr;}
-    .photo-frame{border-radius:18px;}
-    .hotspot[data-sys="gutters"],.hotspot[data-sys="electrical"]{display:none;}
+    .photo-frame{border-radius:18px;aspect-ratio:4 / 5;height:auto;}
+    .hero-mid{display:none;}
+    .beacon[data-sys="gutters"],.beacon[data-sys="window"]{display:none;}
     .askbar{flex-direction:column;}
     .askbar-go{justify-content:center;}
+    .diag-options{flex-direction:column;}
+    .diag-opt{width:100%;}
   }
+
+  /* ============ BUTTONS ============ */
+  .btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:var(--emg-orange,#E8762B);color:#fff;font-weight:700;text-decoration:none;border-radius:999px;padding:1rem 2rem;transition:transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s,background .25s}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 20px 40px -16px rgba(232,118,43,.6);background:#F4882F}
+  .btn-xl{font-size:17px;padding:18px 34px;}
 
   /* ===================================================================
      EMG EXPERIENCE SYSTEM — the homepage as one continuous journey.
-     Chapters, not marketing blocks. Navy = safety, amber = home,
-     orange = Rocco/help, teal = platform/system only.
      =================================================================== */
   .chapter{max-width:1080px;margin:0 auto;padding:clamp(72px,11vw,150px) 24px;}
   .ch-head{max-width:760px;margin:0 auto clamp(40px,6vw,72px);text-align:center;}
@@ -318,18 +405,8 @@ const prompts = [
   .ch-kicker-light{color:#ffb784;}
   .ch-title{margin:0;font-size:clamp(30px,4.6vw,52px);line-height:1.08;letter-spacing:-.02em;font-weight:800;color:#0f1b33;}
   .ch-lede{margin:20px auto 0;max-width:600px;font-size:clamp(16px,2vw,19px);line-height:1.6;color:#54607a;}
-  /* Chapter 1 - the path */
   .ch-path{background:linear-gradient(180deg,#fbfaf7 0%,#f4f1ea 100%);max-width:none;}
-  .path-step{position:relative;padding:26px 22px;border-radius:20px;background:#fff;border:1px solid rgba(15,27,51,.07);box-shadow:0 18px 40px -28px rgba(15,27,51,.35);counter-increment:step;}
-  .path-step::before{content:counter(step,decimal-leading-zero);display:block;margin-bottom:14px;font-size:13px;font-weight:800;letter-spacing:.1em;color:#c8b9a0;}
-  .path-step h3{margin:0 0 8px;font-size:18px;line-height:1.25;color:#0f1b33;font-weight:750;}
-  .path-step p{margin:0;font-size:14.5px;line-height:1.55;color:#5a647c;}
-  /* Chapter 2 - where is it happening */
-  .where-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem;margin:2.4rem auto 0;max-width:520px;}
-.where-link{display:flex;flex-direction:column;gap:.15rem;padding:.7rem 1.15rem;border-radius:14px;background:rgba(255,255,255,.72);border:1px solid rgba(15,27,51,.08);text-decoration:none;transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .4s,background .4s;}
-.where-link:hover,.where-link:focus-visible{transform:translateY(-2px);border-color:rgba(232,118,43,.5);background:#fff;}
-.where-link-label{font-size:1rem;font-weight:700;color:var(--emg-navy,#0f1b30);}
-.where-link-hint{font-size:.82rem;color:#6a7588;}  /* Chapter 3 - trust principles */
+  .ch-where{background:#fff;max-width:none;}
   .ch-trust{background:#0f1b33;color:#fff;max-width:none;}
   .ch-trust .ch-title{color:#fff;}
   .ch-trust .ch-kicker{color:#ffb784;}
@@ -337,7 +414,6 @@ const prompts = [
   .trust-principle{padding:34px 30px;background:#0f1b33;}
   .trust-principle h3{margin:0 0 12px;font-size:19px;font-weight:750;color:#fff;line-height:1.25;}
   .trust-principle p{margin:0;font-size:15px;line-height:1.6;color:rgba(255,255,255,.72);}
-  /* Chapter 4 - Rocco */
   .ch-rocco{max-width:none;background:linear-gradient(180deg,#fff6ef 0%,#fdeee2 100%);}
   .rocco-inner{display:grid;grid-template-columns:auto 1fr;gap:clamp(28px,5vw,64px);align-items:center;max-width:920px;margin:0 auto;}
   .rocco-portrait{position:relative;width:200px;height:200px;flex:none;}
@@ -348,93 +424,140 @@ const prompts = [
   .rocco-quiet{color:#8a6a50;}
   .btn-light{display:inline-block;margin-top:10px;padding:14px 26px;border-radius:999px;background:#e8804e;color:#fff;font-weight:700;text-decoration:none;box-shadow:0 16px 32px -16px rgba(232,128,78,.7);transition:transform .25s ease;}
   .btn-light:hover{transform:translateY(-2px);}
-  /* Chapter 5 - HVAC pilot */
+  .ch-pilot{background:#fff;max-width:none;}
   .pilot-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;max-width:900px;margin:0 auto;}
   .pilot-fact{padding:30px 26px;border-radius:20px;background:#fbfaf7;border:1px solid rgba(15,27,51,.08);}
   .pilot-fact h3{margin:0 0 10px;font-size:18px;font-weight:750;color:#0f1b33;}
   .pilot-fact p{margin:0;font-size:14.5px;line-height:1.55;color:#5a647c;}
-  /* Closing - relief */
   .closing{max-width:none;text-align:center;padding:clamp(80px,12vw,160px) 24px;background:linear-gradient(180deg,#f4f1ea 0%,#fff 100%);}
   .closing-kicker{margin:0 0 14px;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#e8804e;}
   .closing-title{margin:0;font-size:clamp(32px,5.2vw,60px);line-height:1.05;letter-spacing:-.025em;font-weight:850;color:#0f1b33;}
   .closing-sub{margin:18px auto 32px;max-width:520px;font-size:17px;line-height:1.6;color:#54607a;}
   .closing-area{margin:30px auto 0;max-width:560px;font-size:13.5px;line-height:1.6;color:#8a93a6;}
-  .btn-xl{font-size:17px;padding:18px 34px;}
   @media (max-width:760px){
     .rocco-inner{grid-template-columns:1fr;text-align:center;justify-items:center;}
     .rocco-copy p{margin-left:auto;margin-right:auto;}
     .chapter{padding:64px 22px;}
-    .ch-head{margin-bottom:36px;}
-    .path-step{padding:22px 20px;}
-    .pilot-grid{gap:12px;}
     .trust-principle{padding:26px 24px;}
-    .rocco-inner{gap:26px;}
     .closing{padding:72px 22px;}
-    .ch-lede,.closing-sub{max-width:34ch;}
   }
-
-/* journey as quiet progression (no cards) */
-.ch-narrow{max-width:760px;margin:0 auto;text-align:center;}
-.ch-lede-center{margin-left:auto;margin-right:auto;}
-.ch-soft{color:#5b6678;font-weight:600;}
-.path-steps{list-style:none;margin:2.6rem auto 0;padding:0;max-width:620px;text-align:left;display:grid;gap:1.15rem;counter-reset:step;}
-.path-steps li{position:relative;padding-left:2.4rem;font-size:1.04rem;line-height:1.55;color:#46536a;counter-increment:step;}
-.path-steps li::before{content:counter(step);position:absolute;left:0;top:.05em;width:1.6rem;height:1.6rem;border-radius:50%;background:rgba(232,118,43,.1);color:var(--emg-orange,#E8762B);font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
-.path-n{color:var(--emg-navy,#0f1b30);font-weight:700;}
-@media (max-width:600px){.trust-grid{grid-template-columns:1fr;}.where-row{grid-template-columns:1fr;max-width:340px;}}
+  .ch-narrow{max-width:760px;margin:0 auto;text-align:center;}
+  .ch-lede-center{margin-left:auto;margin-right:auto;}
+  .ch-soft{color:#5b6678;font-weight:600;}
+  .path-steps{list-style:none;margin:2.6rem auto 0;padding:0;max-width:620px;text-align:left;display:grid;gap:1.15rem;counter-reset:step;}
+  .path-steps li{position:relative;padding-left:2.4rem;font-size:1.04rem;line-height:1.55;color:#46536a;counter-increment:step;}
+  .path-steps li::before{content:counter(step);position:absolute;left:0;top:.05em;width:1.6rem;height:1.6rem;border-radius:50%;background:rgba(232,118,43,.1);color:var(--emg-orange,#E8762B);font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
+  .path-n{color:var(--emg-navy,#0f1b30);font-weight:700;}
+  .where-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem;margin:2.4rem auto 0;max-width:520px;}
+  .where-link{display:flex;flex-direction:column;gap:.15rem;padding:.7rem 1.15rem;border-radius:14px;background:rgba(255,255,255,.72);border:1px solid rgba(15,27,51,.08);text-decoration:none;transition:transform .4s cubic-bezier(.2,.7,.2,1),border-color .4s,background .4s;}
+  .where-link:hover,.where-link:focus-visible{transform:translateY(-2px);border-color:rgba(232,118,43,.5);background:#fff;}
+  .where-link-label{font-size:1rem;font-weight:700;color:var(--emg-navy,#0f1b30);}
+  .where-link-hint{font-size:.82rem;color:#6a7588;}
+  @media (max-width:600px){.trust-grid{grid-template-columns:1fr;}.where-row{grid-template-columns:1fr;max-width:340px;}}
 </style>
 
-<script is:inline>
-  /* Photoreal Living Home: hotspot interaction + scroll reveal + greeting. Backend untouched. */
-  (function () {
-    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var stage = document.getElementById('stage');
-    if (stage) {
-      var spots = stage.querySelectorAll('.hotspot');
-      spots.forEach(function (a) {
-        function on(){ stage.classList.add('is-exploring'); a.classList.add('is-active'); }
-        function off(){ stage.classList.remove('is-exploring'); a.classList.remove('is-active'); }
-        a.addEventListener('mouseenter', on);
-        a.addEventListener('mouseleave', off);
-        a.addEventListener('focus', on);
-        a.addEventListener('blur', off);
+<script is:inline define:vars={{ systems }}>
+/* Interactive Home Engine. Clicking a beacon focuses the house and opens an in-page
+   diagnostic; only after a symptom is chosen do we hand off to /ask with full context.
+   No navigation on beacon click. Backend (functions/sessions/consent/ARS/Rocco) untouched. */
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var stage = document.getElementById('stage');
+  var diag = document.getElementById('diag');
+  if(!stage || !diag) return;
+  var byKey = {}; systems.forEach(function(s){ byKey[s.key] = s; });
+  var elEyebrow = document.getElementById('diagEyebrow');
+  var elTitle = document.getElementById('diagTitle');
+  var elBlurb = document.getElementById('diagBlurb');
+  var elConcerns = document.getElementById('diagConcerns');
+  var elOptions = document.getElementById('diagOptions');
+  var elGo = document.getElementById('diagGo');
+  var current = null, chosen = null, lastBeacon = null;
+
+  function buildGo(){
+    var base = '/ask?topic=' + encodeURIComponent(current.topic) + '&system=' + encodeURIComponent(current.key);
+    if(chosen && chosen !== 'Other'){ base += '&symptom=' + encodeURIComponent(chosen); }
+    var q = chosen && chosen !== 'Other' ? (current.label + ': ' + chosen) : ('I have a question about my ' + current.label.toLowerCase());
+    base += '&q=' + encodeURIComponent(q);
+    elGo.setAttribute('href', base);
+  }
+
+  function openSystem(key, beaconEl){
+    var s = byKey[key]; if(!s) return; current = s; chosen = null;
+    elEyebrow.textContent = s.tier === 'xray' ? 'Inside your home' : 'Your home';
+    elTitle.textContent = s.label;
+    elBlurb.textContent = s.blurb;
+    elConcerns.innerHTML = '';
+    s.concerns.forEach(function(c){ var li=document.createElement('li'); li.textContent=c; elConcerns.appendChild(li); });
+    elOptions.innerHTML = '';
+    s.symptoms.forEach(function(sym){
+      var b=document.createElement('button'); b.type='button'; b.className='diag-opt'; b.setAttribute('role','radio'); b.setAttribute('aria-checked','false');
+      var dot=document.createElement('span'); dot.className='dot'; dot.setAttribute('aria-hidden','true');
+      var t=document.createElement('span'); t.textContent=sym;
+      b.appendChild(dot); b.appendChild(t);
+      b.addEventListener('click', function(){
+        chosen = sym;
+        Array.prototype.forEach.call(elOptions.children, function(o){ o.setAttribute('aria-checked','false'); });
+        b.setAttribute('aria-checked','true'); buildGo();
       });
-      if (!reduce && window.matchMedia('(pointer:fine)').matches) {
-        var zone = { x0: 0.18, x1: 0.92, y0: 0.10, y1: 0.96 };
-        stage.addEventListener('mousemove', function (e) {
-          var r = stage.getBoundingClientRect();
-          var px = (e.clientX - r.left) / r.width;
-          var py = (e.clientY - r.top) / r.height;
-          stage.classList.toggle('near', px > zone.x0 && px < zone.x1 && py > zone.y0 && py < zone.y1);
-        });
-        stage.addEventListener('mouseleave', function () { stage.classList.remove('near'); });
-      } else {
-        stage.classList.add('near');
-      }
-    }
-    var items = document.querySelectorAll('.reveal');
-    if ('IntersectionObserver' in window && !reduce) {
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
-      }, { threshold: 0.14 });
-      items.forEach(function (el) { io.observe(el); });
-    } else {
-      items.forEach(function (el) { el.classList.add('in'); });
-    }
-    var input = document.querySelector('[data-greeting]');
-    if (input) {
-      var hh = new Date().getHours();
-      var part = hh < 12 ? 'morning' : (hh < 18 ? 'afternoon' : 'evening');
-      var msg = 'e.g. brown stain on my ceiling\u2026';
-      if (reduce) { input.setAttribute('placeholder', msg); }
-      else {
-        var i = 0;
-        (function typeIt() {
-          input.setAttribute('placeholder', msg.slice(0, i) + (i < msg.length ? '\u2502' : ''));
-          if (i <= msg.length) { i++; setTimeout(typeIt, 38); }
-          else { input.setAttribute('placeholder', msg); }
-        })();
-      }
-    }
-  })();
+      elOptions.appendChild(b);
+    });
+    buildGo();
+    // focus the house on the beacon location
+    stage.style.setProperty('--fx', s.x + '%');
+    stage.style.setProperty('--fy', s.y + '%');
+    stage.classList.add('is-focused');
+    Array.prototype.forEach.call(document.querySelectorAll('.beacon'), function(b){ b.classList.remove('is-active'); });
+    if(beaconEl) beaconEl.classList.add('is-active');
+    lastBeacon = beaconEl || null;
+    document.getElementById('diagBackdrop').hidden = false;
+    var bd = document.getElementById('diagBackdrop'); void bd.offsetWidth; bd.classList.add('is-open');
+    diag.hidden = false; void diag.offsetWidth; diag.classList.add('is-open');
+    diag.scrollTop = 0;
+    var cb = document.getElementById('diagClose'); if(cb && cb.focus){ try{ cb.focus({preventScroll:true}); }catch(e){ cb.focus(); } }
+  }
+
+  function closeDiag(){
+    if(!diag.classList.contains('is-open') && diag.hidden){ return; }
+    diag.classList.remove('is-open');
+    var bd = document.getElementById('diagBackdrop'); bd.classList.remove('is-open');
+    stage.classList.remove('is-focused');
+    Array.prototype.forEach.call(document.querySelectorAll('.beacon'), function(b){ b.classList.remove('is-active'); });
+    var ret = lastBeacon;
+    current = null; chosen = null;
+    setTimeout(function(){ if(!diag.classList.contains('is-open')){ diag.hidden = true; bd.hidden = true; } }, reduce ? 0 : 480);
+    if(ret && ret.focus){ try{ ret.focus({preventScroll:true}); }catch(e){ ret.focus(); } }
+    lastBeacon = null;
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('.beacon'), function(b){
+    b.addEventListener('click', function(){ openSystem(b.getAttribute('data-sys'), b); });
+  });
+  document.getElementById('diagClose').addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); closeDiag(); });
+  document.getElementById('diagBackdrop').addEventListener('click', function(e){ e.preventDefault(); closeDiag(); });
+  document.addEventListener('keydown', function(e){ if((e.key==='Escape'||e.key==='Esc') && diag.classList.contains('is-open')){ e.preventDefault(); closeDiag(); } });
+
+  // Look Inside toggle
+  var xray = document.getElementById('xrayToggle');
+  if(xray){ xray.addEventListener('click', function(){
+    var on = stage.classList.toggle('xray-on');
+    xray.setAttribute('aria-pressed', on ? 'true' : 'false');
+    xray.querySelector('.xray-label').textContent = on ? 'Exit' : 'Look inside';
+    if(!on && current && byKey[current.key] && byKey[current.key].tier==='xray') closeDiag();
+  }); }
+
+  // scroll reveal
+  var items = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window && !reduce){
+    var io = new IntersectionObserver(function(entries){ entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); }, { threshold: 0.14 });
+    items.forEach(function(el){ io.observe(el); });
+  } else { items.forEach(function(el){ el.classList.add('in'); }); }
+
+  // greeting placeholder in the ask bar
+  var input = document.querySelector('[data-greeting]');
+  if(input){ var msg='e.g. brown stain on my ceiling\u2026';
+    if(reduce){ input.setAttribute('placeholder', msg); }
+    else { var i=0; (function typeIt(){ input.setAttribute('placeholder', msg.slice(0,i) + (i<msg.length?'\u2502':'')); if(i<=msg.length){ i++; setTimeout(typeIt,38); } else { input.setAttribute('placeholder', msg); } })(); }
+  }
+})();
 </script>
