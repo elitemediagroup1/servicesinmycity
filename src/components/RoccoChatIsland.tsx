@@ -285,7 +285,7 @@ export default function RoccoChatIsland({ city = '', service = '' }: Props) {
         }),
       });
 
-      const data = await res.json() as { message: string; meta?: { emergency?: boolean; hvac?: boolean; asked_followup?: boolean; suggested_pro?: boolean; conversation_complete?: boolean; }; error?: string };
+      const data = await res.json() as { message: string; meta?: { emergency?: boolean; hvac?: boolean; asked_followup?: boolean; suggested_pro?: boolean; conversation_complete?: boolean; }; businesses?: PlaceTile[]; searchedLocation?: string; error?: string };
 
       if (!res.ok || data.error) {
         const errMsg: Message = {
@@ -310,11 +310,20 @@ export default function RoccoChatIsland({ city = '', service = '' }: Props) {
         emitLoopEvent('conversation_completed', { sessionId });
       }
 
+      // Single source of truth: businesses come straight from the backend (server-orchestrated Places).
+      const placeTiles: PlaceTile[] = (data.businesses || []).slice(0, 4).map((b) => ({
+        name: b.name,
+        address: b.address,
+        rating: b.rating,
+        userRatingsTotal: b.userRatingsTotal,
+        placeId: b.placeId,
+      }));
       const roccoMsg: Message = {
         id: Date.now().toString() + '_r',
         role: 'assistant',
         content: data.message,
         showFeedback: true,
+        places: placeTiles.length ? placeTiles : undefined,
       };
 
       setMessages((prev) => {
@@ -323,9 +332,6 @@ export default function RoccoChatIsland({ city = '', service = '' }: Props) {
         return [...updated, roccoMsg];
       });
 
-      if (data.meta?.suggested_pro) {
-        searchLocalPros(text);
-      }
       emitLoopEvent('rocco_response_generated', { sessionId, length: data.message.length });
     } catch {
       const errMsg: Message = {
@@ -340,38 +346,6 @@ export default function RoccoChatIsland({ city = '', service = '' }: Props) {
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [input, loading, messages, conversationStarted, hvacDetected, sessionId, city, service]);
-
-  const searchLocalPros = useCallback(async (lastUserText: string) => {
-    try {
-      const q = (service ? service + ' ' : '') + 'repair service';
-      const res = await fetch('/api/local-search', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ query: q.trim(), city }),
-      });
-      if (!res.ok) return;
-      const json = await res.json();
-      const businesses = (json && json.data && json.data.businesses) || [];
-      if (!businesses.length) return;
-      const places: PlaceTile[] = businesses.slice(0, 3).map((b: any) => ({
-        name: b.name,
-        address: b.address,
-        rating: b.rating,
-        userRatingsTotal: b.userRatingsTotal,
-        placeId: b.placeId,
-      }));
-      const tilesMsg: Message = {
-        id: Date.now().toString() + '_places',
-        role: 'assistant',
-        content: city ? 'A few highly-rated local options near ' + city + ' you can look into:' : 'A few highly-rated local options you can look into:',
-        places,
-      };
-      setMessages((prev) => [...prev, tilesMsg]);
-      emitLoopEvent('local_pros_shown', { sessionId, count: places.length });
-    } catch {
-      // Discovery is non-critical; fail silently.
-    }
-  }, [city, service, sessionId]);
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {

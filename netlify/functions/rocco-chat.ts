@@ -1,5 +1,73 @@
 import type { Handler } from '@netlify/functions';
 
+// ─── Local-service discovery (ADR-004/ADR-010): deterministic intent + live Google Places ───
+// The backend decides when to search; the LLM never has to. Results are honest discovery,
+// never ranked picks, never fabricated. Empty means empty.
+const SERVICE_TERMS: Record<string, string> = {
+  plumber: 'plumber', plumbing: 'plumber', 'plumbers': 'plumber',
+  electrician: 'electrician', electrical: 'electrician', electricians: 'electrician',
+  roofer: 'roofer', roofers: 'roofer', roofing: 'roofer', roof: 'roofer',
+  hvac: 'HVAC contractor', 'air conditioning': 'HVAC contractor', furnace: 'HVAC contractor', heating: 'HVAC contractor', ac: 'HVAC contractor',
+  locksmith: 'locksmith', locksmiths: 'locksmith',
+  handyman: 'handyman', contractor: 'general contractor', contractors: 'general contractor',
+  painter: 'painter', painters: 'painter', painting: 'painter',
+  landscaper: 'landscaper', landscaping: 'landscaper',
+  'pest control': 'pest control', exterminator: 'pest control',
+  'water heater': 'water heater repair', drain: 'drain cleaning',
+  appliance: 'appliance repair', garage: 'garage door repair', 'garage door': 'garage door repair',
+};
+
+// Verbs that signal the homeowner wants to find/see a local pro (not just diagnose).
+const FIND_INTENT = /\b(find|show|recommend|suggest|need|looking for|search|get me|near me|nearby|in my area|who (can|should)|hire)\b/i;
+
+function detectLocalIntent(text: string): { service: string; raw: string } | null {
+  const lower = (text || '').toLowerCase();
+  let matchedKey = '';
+  for (const key of Object.keys(SERVICE_TERMS)) {
+    const re = new RegExp('\\b' + key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i');
+    if (re.test(lower)) { matchedKey = key; break; }
+  }
+  if (!matchedKey) return null;
+  // Require either an explicit find-verb OR a 'near'/zip/'in my area' locality cue.
+  const hasFindCue = FIND_INTENT.test(lower) || /\b\d{5}\b/.test(lower) || /near|area|local|around/i.test(lower);
+  if (!hasFindCue) return null;
+  return { service: SERVICE_TERMS[matchedKey], raw: matchedKey };
+}
+
+// Pull a 5-digit ZIP or a 'near <place>' / 'in <place>' phrase from the text.
+function extractLocation(text: string): string {
+  const zip = (text || '').match(/\b\d{5}\b/);
+  if (zip) return zip[0];
+  const near = (text || '').match(/\b(?:near|in|around|by)\s+([A-Za-z][A-Za-z .'-]{1,40})/i);
+  if (near) return near[1].replace(/[.,]+\s*$/, '').trim();
+  return '';
+}
+
+type Business = { name: string; address?: string; rating?: number; userRatingsTotal?: number; placeId?: string };
+
+// Shared search logic (mirrors local-search.ts). Never fabricates; empty/failure => [].
+async function searchPlaces(query: string, where: string): Promise<{ businesses: Business[]; status: 'ok' | 'empty' | 'error' | 'unconfigured' }> {
+  const key = process.env.GOOGLE_MAPS_API_KEY;
+  if (!key) return { businesses: [], status: 'unconfigured' };
+  try {
+    const q = encodeURIComponent((query + ' in ' + where).trim());
+    const url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=' + q + '&key=' + key;
+    const r = await fetch(url);
+    const j = await r.json() as { results?: any[] };
+    const businesses: Business[] = (j.results || []).slice(0, 6).map((p: any) => ({
+      name: p.name,
+      address: p.formatted_address,
+      rating: p.rating,
+      userRatingsTotal: p.user_ratings_total,
+      placeId: p.place_id,
+    }));
+    return { businesses, status: businesses.length ? 'ok' : 'empty' };
+  } catch {
+    return { businesses: [], status: 'error' };
+  }
+}
+
+
 // âââ Rate-limit stores (in-memory, reset on cold start) âââââââââââââââââââââ
 const sessionCounts: Record<string, number> = {};
 const ipCounts: Record<string, number> = {};
@@ -10,13 +78,14 @@ const IP_LIMIT = 80;
 const DAILY_LIMIT = 2000;
 
 // âââ System prompt builder âââââââââââââââââââââââââââââââââââââââââââââââââââ
-function buildSystem(city: string, service: string): string {
+function buildSystem(city: string, service: string, localResults?: string): string {
   const location = city ? `the ${city} area` : 'your area';
   const context  = service ? `The homeowner came from the ${service} service page.` : '';
+  const localBlock = localResults ? `\n\n## Live Local Business Results (from Google Places — REAL data, use these)\n${localResults}\n- Present these naturally in conversation as nearby businesses the homeowner can look into.\n- Make clear they are Google discovery results, NOT paid rankings and NOT personally vetted or ranked by us.\n- Do NOT add, invent, or alter any name, rating, or review count. Use ONLY what is listed above.\n- After presenting them, keep helping the homeowner understand the underlying problem.` : '';
 
   return `You are Rocco â a friendly, experienced local contractor who has spent 20+ years fixing homes in ${location}. You speak plainly, like a trusted neighbor who happens to know everything about home repair.
 
-${context}
+${context}${localBlock}
 
 ## Your Personality
 - Warm, direct, and genuinely helpful â never robotic or corporate
@@ -49,6 +118,14 @@ ${context}
 - Never rush them into a referral â trust first, referral second
 - Never say "We can connect you now" â let them come to that decision themselves
 
+## Finding Local Pros (you CAN do this)
+- You have live access to nearby businesses through Google Places. You can and should surface them when a homeowner asks to find, see, or get a local pro.
+- If the system message includes a "Live Local Business Results" block, present those businesses conversationally — they are real.
+- If a homeowner asks for a pro ("find me a plumber", "show electricians near me") but no results block is present and no location is known, ask once for their ZIP code or city so you can look.
+- Frame results honestly: "Here are nearby [trade] businesses I found for [area] — these are Google discovery results, not paid rankings."
+- Never tell a homeowner to go use Google Maps or Yelp themselves — finding nearby pros is something WE do for them.
+- Never say you are unable to search for local businesses. You are able to.
+
 ## HVAC / ARS Managed Partner
 - When the issue is HVAC-related and needs professional attention, you can offer to help connect them with a trusted local technician
 - Only after genuinely discussing the problem and establishing it needs professional help
@@ -63,7 +140,7 @@ ${context}
 - Electrical emergency: don't touch anything, leave, call 911
 
 ## What You Never Do
-- Never fabricate contractor names, phone numbers, pricing, or availability
+- Never fabricate contractor names, phone numbers, pricing, ratings, review counts, or availability — only ever use the real Google Places results provided to you
 - Never pretend to know something you don't
 - Never diagnose remotely â you equip, you inform, you guide
 - Never be pushy about referrals
@@ -168,6 +245,40 @@ export const handler: Handler = async (event) => {
   // Keep last 20 turns for memory
   const trimmed = sanitized.slice(-20);
 
+  // ─── Local-service intent → server-orchestrated Places search ───────────────
+  // Deterministic: the backend decides when to search, not the LLM.
+  const lastUserText = trimmed[trimmed.length - 1].content;
+  const intent = detectLocalIntent(lastUserText);
+  let localResultsText = '';
+  let foundBusinesses: Business[] = [];
+  let searchedLocation = '';
+  if (intent) {
+    // Prefer a location stated in the message; fall back to the city passed from the page.
+    const loc = extractLocation(lastUserText) || (city as string) || '';
+    if (loc) {
+      searchedLocation = loc;
+      const { businesses, status } = await searchPlaces(intent.service, loc);
+      if (status === 'ok' && businesses.length) {
+        foundBusinesses = businesses;
+        localResultsText = businesses
+          .map((b, i) => {
+            const rt = (typeof b.rating === 'number')
+              ? ` (Google rating ${b.rating}${b.userRatingsTotal ? ', ' + b.userRatingsTotal + ' reviews' : ''})`
+              : '';
+            return `${i + 1}. ${b.name}${b.address ? ' — ' + b.address : ''}${rt}`;
+          })
+          .join('\n') + `\n(Searched: ${intent.service} near ${loc})`;
+      } else {
+        // Reached search but no usable results / error / unconfigured.
+        localResultsText = `No live results were returned for "${intent.service} near ${loc}" right now. Tell the homeowner: "I'm having trouble reaching local business listings right now, but I can still help you understand what's going on." Then keep helping. Do NOT invent any businesses.`;
+      }
+    } else {
+      // We know they want a pro but have no location — instruct Rocco to ask once.
+      localResultsText = `The homeowner wants help finding a ${intent.service}, but no ZIP code or city is known yet. Ask them once for their ZIP code or city so you can look up nearby businesses. Do not refuse — you CAN search once you have a location.`;
+    }
+  }
+
+
   // ââ Call Anthropic âââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
   const apiKey = process.env.ANTHROPIC_API_KEY;
   const model = process.env.ROCCO_MODEL || 'claude-sonnet-4-6';
@@ -187,7 +298,7 @@ export const handler: Handler = async (event) => {
       body: JSON.stringify({
         model,
         max_tokens: 1024,
-        system: buildSystem(city as string, service as string),
+        system: buildSystem(city as string, service as string, localResultsText || undefined),
         messages: trimmed,
       }),
     });
@@ -245,7 +356,7 @@ export const handler: Handler = async (event) => {
     return {
       statusCode: 200,
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ message, meta }),
+      body: JSON.stringify({ message, meta, businesses: foundBusinesses, searchedLocation }),
     };
   } catch (err) {
     // Network/runtime failure reaching Anthropic. Never log the API key.
