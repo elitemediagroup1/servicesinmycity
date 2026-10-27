@@ -54,3 +54,14 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+# ARS paid landing page: keep clean ad URLs on this domain.
+[[redirects]]
+  from = "/ars-hvac"
+  to = "/ars-hvac.html"
+  status = 200
+
+[[headers]]
+  for = "/ars-hvac*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

@@ -1,0 +1,956 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>HVAC Service | ARS/Rescue Rooter &amp; ServicesInMyCity</title>
+<meta name="description" content="Get help with home heating and cooling repairs, replacement systems and installation. Request service or call 1-855-448-4993.">
+<meta name="robots" content="noindex, follow" />
+<link rel="canonical" href="https://servicesinmycity.com/ars-hvac" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap">
+
+<!-- Google Analytics 4 + Google Ads (existing ServicesInMyCity paid-lander stack) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M3FTEYNNQ0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-M3FTEYNNQ0');
+  gtag('config', 'AW-17686113990');
+</script>
+
+<!-- Microsoft Clarity (existing EMG analytics standard) -->
+<script>
+(function(){
+  if (window.__cshClarityLoaded) return;
+  window.__cshClarityLoaded = true;
+  (function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r); t.async=1; t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "x80jgx4xmv");
+  try { window.clarity("set", "masking", "balanced"); } catch (e) {}
+  try {
+    if (typeof gtag === "function") {
+      gtag("get", "G-M3FTEYNNQ0", "client_id", function(id){
+        if (id && window.clarity) window.clarity("set", "ga_client_id", String(id));
+      });
+    }
+  } catch (e) {}
+})();
+</script>
+
+<style>
+/* =========================================================================
+   ServicesInMyCity x ARS/Rescue Rooter - HVAC lander
+   Standalone stylesheet. Deliberately does NOT load /assets/style.css so the
+   editorial site design is not inherited.
+   ========================================================================= */
+:root{
+  /* ARS - sampled from images/ars/approved/ars-rescue-rooter-official-logo.jpg */
+  --ars-navy:#0C416B;
+  --ars-navy-deep:#072A47;
+  --ars-red:#DE1C1B;
+  --ars-red-dark:#B41412;
+  /* ServicesInMyCity - sampled from assets/logo.png */
+  --csh-navy:#17273A;
+  --csh-teal:#1489A7;
+  --csh-teal-dark:#0F6D85;
+  /* Neutrals */
+  --ink:#17273A;
+  --body:#4A5764;
+  --muted:#6B7680;
+  --line:#DDE3E9;
+  --bg-soft:#F4F6F8;
+  --container:1480px;
+  /* Distance from the viewport edge to the container edge; keeps the hero photo
+     panel locked to the grid at every desktop width. */
+  --gutter:max(0px,calc((100vw - var(--container)) / 2));
+  --radius:10px;
+}
+*,*::before,*::after{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size:16px;line-height:1.55;color:var(--body);background:#fff;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block;}
+a{color:var(--csh-teal-dark);}
+.container{max-width:var(--container);margin:0 auto;padding:0 32px;}
+.display{font-family:"Barlow Condensed","Inter",Arial,sans-serif;text-transform:uppercase;font-weight:800;letter-spacing:.005em;}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+:focus-visible{outline:3px solid var(--csh-teal);outline-offset:2px;}
+
+/* ============================ HEADER ============================ */
+.site-header{background:#fff;}
+.header-inner{
+  display:flex;align-items:center;justify-content:space-between;gap:24px;
+  padding:18px 32px;max-width:var(--container);margin:0 auto;
+}
+.brands{display:flex;align-items:center;gap:30px;min-width:0;}
+.brand-ars img{width:auto;height:78px;}
+.brand-divider{width:1px;align-self:stretch;background:var(--line);min-height:66px;}
+.brand-csh{display:flex;flex-direction:column;gap:5px;line-height:1.1;}
+.sic-wordmark{font-family:Inter,Arial,sans-serif;font-weight:800;font-size:25px;color:var(--ars-navy);white-space:nowrap;}
+.sic-wordmark>span{color:#d96a20;}
+.brand-csh small{font-size:11px;font-weight:600;color:var(--muted,#52616c);}
+.header-call{text-align:right;flex-shrink:0;}
+.header-call a{
+  display:inline-flex;align-items:center;gap:10px;text-decoration:none;
+  font-family:"Barlow Condensed","Inter",Arial,sans-serif;font-weight:700;
+  font-size:clamp(30px,3vw,42px);line-height:1;color:var(--ars-navy-deep);
+  letter-spacing:.01em;
+}
+.header-call a:hover{color:var(--ars-navy);}
+.header-call svg{width:.72em;height:.72em;flex-shrink:0;}
+.header-call .avail{
+  margin:6px 0 0;font-weight:700;font-size:16px;color:var(--ars-red);letter-spacing:.015em;
+}
+
+/* ============================ NAV ============================ */
+.site-nav{background:var(--ars-navy);overflow:hidden;}
+.nav-inner{
+  display:flex;align-items:stretch;
+  max-width:var(--container);margin:0 auto;padding:0 32px;
+}
+.nav-menu{display:flex;align-items:stretch;justify-content:space-between;gap:8px;flex:1;min-width:0;}
+.nav-inner a{
+  display:flex;align-items:center;gap:9px;text-decoration:none;color:#fff;
+  font-family:"Barlow Condensed","Inter",Arial,sans-serif;font-weight:700;
+  text-transform:uppercase;font-size:17px;letter-spacing:.045em;
+  padding:13px 10px;white-space:nowrap;
+}
+.nav-inner a:hover{color:#BBD6EC;}
+.nav-inner svg{width:19px;height:19px;flex-shrink:0;}
+.nav-offers{position:relative;background:var(--ars-red);padding-left:34px !important;padding-right:34px !important;margin-left:8px;}
+.nav-offers:hover{background:var(--ars-red-dark);color:#fff !important;}
+.nav-offers::after{content:"";position:absolute;left:100%;top:0;bottom:0;width:100vw;background:inherit;}
+.nav-toggle{display:none;}
+.nav-toggle-label{font-family:"Barlow Condensed","Inter",Arial,sans-serif;}
+
+/* ============================ HERO ============================ */
+.hero{position:relative;background:#F1F4F7;overflow:hidden;}
+/* The approved family photograph is the single hero image. It sits in the centre of the
+   three-part composition and runs the full height of the hero, with its left and right
+   edges dissolved into the page so the three zones read as one art-directed band. */
+.hero-photo{
+  position:absolute;top:0;bottom:0;z-index:1;overflow:hidden;
+  left:calc(var(--gutter) + 520px);right:calc(var(--gutter) + 272px);
+}
+.hero-photo-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:76% 18%;}
+.hero-photo::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(90deg,#F1F4F7 0%,rgba(241,244,247,.55) 4%,rgba(241,244,247,0) 11%),
+    linear-gradient(270deg,#F1F4F7 0%,rgba(241,244,247,.55) 8%,rgba(241,244,247,0) 20%);
+}
+.hero-inner{
+  max-width:var(--container);margin:0 auto;padding:52px 32px 56px;
+  display:grid;grid-template-columns:minmax(0,460px) minmax(0,1fr) minmax(0,400px);
+  grid-template-areas:"copy photo form" "bullets photo form";
+  grid-template-rows:auto 1fr;column-gap:28px;row-gap:22px;align-items:start;
+}
+.hero-copy{grid-area:copy;position:relative;z-index:3;}
+.hero-bullets{grid-area:bullets;position:relative;z-index:3;}
+.hero-form{grid-area:form;position:relative;z-index:3;}
+.hero h1{
+  font-family:"Barlow Condensed","Inter",Arial,sans-serif;text-transform:uppercase;
+  font-weight:800;font-size:clamp(40px,4vw,62px);line-height:.93;letter-spacing:-.004em;
+  color:var(--ars-navy-deep);margin:0 0 20px;
+}
+.hero h1 .teal{color:var(--csh-teal);display:block;}
+.hero h1 span{display:block;}
+.hero-lede{font-size:18px;line-height:1.55;color:var(--csh-navy);margin:0 0 4px;max-width:38ch;}
+.benefits{list-style:none;margin:0;padding:0;display:grid;gap:14px;}
+.benefits li{display:flex;align-items:flex-start;gap:12px;font-size:17px;color:var(--csh-navy);font-weight:500;}
+.benefits svg{width:22px;height:22px;flex-shrink:0;margin-top:1px;color:var(--csh-teal);}
+
+/* ---------- Lead form ---------- */
+.form-card{
+  background:var(--ars-navy);border:1px solid rgba(255,255,255,.55);border-radius:14px;
+  box-shadow:0 22px 54px rgba(7,42,71,.34);padding:24px 22px 22px;
+}
+.form-card h2{
+  font-family:"Barlow Condensed","Inter",Arial,sans-serif;text-transform:uppercase;
+  font-weight:700;font-size:30px;line-height:1.05;color:#fff;text-align:center;margin:0 0 4px;letter-spacing:.015em;
+}
+.form-card .form-sub{
+  font-family:"Barlow Condensed","Inter",Arial,sans-serif;text-transform:uppercase;
+  font-weight:600;font-size:18px;color:#BFD6E8;text-align:center;margin:0 0 18px;letter-spacing:.06em;
+}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.field{position:relative;margin-bottom:10px;}
+.field svg{
+  position:absolute;left:11px;top:50%;transform:translateY(-50%);
+  width:17px;height:17px;color:#7A8794;pointer-events:none;
+}
+.field .chev{left:auto;right:11px;}
+.field input,.field select{
+  width:100%;font-family:inherit;font-size:15.5px;color:var(--ink);
+  padding:13px 12px 13px 38px;border:1px solid #fff;border-radius:8px;background:#fff;
+  -webkit-appearance:none;appearance:none;
+}
+.field select{padding-right:32px;color:#6B7680;}
+.field select.filled{color:var(--ink);}
+.field input::placeholder{color:#6B7680;}
+.field input:focus,.field select:focus{outline:3px solid #7FC2DC;outline-offset:0;}
+.field input[aria-invalid="true"],.field select[aria-invalid="true"]{border:2px solid #FFC4C4;background:#FFF6F6;}
+.btn-submit{
+  width:100%;display:block;margin-top:6px;padding:17px 16px;border:0;border-radius:8px;
+  background:var(--ars-red);color:#fff;cursor:pointer;
+  font-family:"Barlow Condensed","Inter",Arial,sans-serif;text-transform:uppercase;
+  font-weight:700;font-size:25px;letter-spacing:.04em;line-height:1.1;
+  box-shadow:0 6px 16px rgba(222,28,27,.34);transition:background .15s ease;
+}
+.btn-submit:hover{background:var(--ars-red-dark);}
+.btn-submit[disabled]{opacity:.65;cursor:default;}
+.consent{font-size:11.5px;line-height:1.55;color:#C6D8E7;margin:15px 0 0;}
+.consent a{color:#fff;text-decoration:underline;}
+.form-status{margin:10px 0 0;font-size:13px;line-height:1.45;color:#fff;font-weight:600;}
+.form-status.err{color:#FFD5D5;}
+.form-done{text-align:center;padding:18px 6px;}
+.form-done h3{font-family:"Barlow Condensed","Inter",Arial,sans-serif;text-transform:uppercase;font-size:24px;color:#fff;margin:0 0 8px;}
+.form-done p{color:#D5E2EE;font-size:14px;margin:0 0 14px;}
+.form-done a{
+  display:inline-block;background:var(--ars-red);color:#fff;text-decoration:none;
+  padding:13px 22px;border-radius:7px;font-family:"Barlow Condensed","Inter",Arial,sans-serif;
+  text-transform:uppercase;font-weight:700;font-size:21px;letter-spacing:.03em;
+}
+
+/* ============================ TRUST STRIP ============================ */
+.trust{background:#fff;border-top:1px solid var(--line);}
+.trust-inner{
+  max-width:var(--container);margin:0 auto;padding:34px 32px;
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+}
+.trust-item{display:flex;align-items:flex-start;gap:16px;padding:2px 30px;border-left:1px solid var(--line);}
+.trust-item:first-child{border-left:0;}
+.trust-icon{
+  width:54px;height:54px;flex-shrink:0;border:2px solid var(--csh-teal);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;color:var(--csh-teal);
+}
+.trust-icon svg{width:28px;height:28px;}
+.trust-text{min-width:0;}
+.trust-item h3{
+  font-family:"Barlow Condensed","Inter",Arial,sans-serif;text-transform:uppercase;
+  font-weight:700;font-size:20px;line-height:1.08;color:var(--ars-navy-deep);margin:4px 0 6px;letter-spacing:.02em;
+}
+.trust-item p{margin:0;font-size:15px;line-height:1.45;color:var(--body);}
+
+/* ============================ OFFERS ============================ */
+.offers{background:var(--bg-soft);padding:56px 0 64px;}
+.offers-head{display:flex;align-items:center;gap:24px;max-width:1040px;margin:0 auto 34px;padding:0 32px;}
+.offers-head::before,.offers-head::after{content:"";flex:1;height:1px;background:#CFD8E0;}
+.offers-head h2{
+  font-family:"Barlow Condensed","Inter",Arial,sans-serif;text-transform:uppercase;
+  font-weight:700;font-size:clamp(26px,2.8vw,36px);color:var(--ars-navy-deep);margin:0;letter-spacing:.035em;white-space:nowrap;
+}
+.offer-grid{
+  max-width:var(--container);margin:0 auto;padding:0 32px;
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px;
+}
+.offer{
+  display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);
+  border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(7,42,71,.07);
+}
+/* Top band: the approved equipment photograph on the tune-up card, a typographic
+   panel on the system card. Equal height so both cards align. */
+.offer-band{height:210px;position:relative;flex-shrink:0;}
+.offer-band img{width:100%;height:100%;object-fit:cover;object-position:50% 32%;}
+.offer-band-red{
+  background:linear-gradient(135deg,var(--ars-red) 0%,#C4110F 100%);
+  display:flex;align-items:center;justify-content:center;
+}
+.offer-band-red span{
+  font-family:"Barlow Condensed","Inter",Arial,sans-serif;text-transform:uppercase;
+  font-weight:700;font-size:clamp(30px,3vw,40px);color:#fff;letter-spacing:.09em;line-height:1;
+}
+.offer-body{padding:28px 32px 30px;display:flex;flex-direction:column;flex:1;}
+.offer-amt{
+  font-family:"Barlow Condensed","Inter",Arial,sans-serif;font-weight:800;line-height:.82;
+  font-size:clamp(66px,7vw,94px);color:var(--ars-navy);letter-spacing:-.015em;margin:0;
+}
+.offer-amt sup{font-size:.4em;top:-.62em;position:relative;font-weight:700;margin-right:3px;}
+.offer-red .offer-amt{color:var(--ars-red);}
+.offer-name{
+  font-family:"Barlow Condensed","Inter",Arial,sans-serif;
+  font-weight:700;font-size:clamp(26px,2.5vw,33px);line-height:1.08;
+  color:var(--ars-navy-deep);margin:12px 0 0;letter-spacing:.01em;
+}
+.offer-rule{border:0;border-top:1px solid var(--line);margin:20px 0 16px;}
+.offer .fine{font-size:13px;line-height:1.62;color:var(--muted);margin:0;}
+
+/* ============================ FOOTER ============================ */
+.site-footer{background:var(--ars-navy-deep);color:#C3D5E4;padding:52px 0 40px;}
+.footer-inner{
+  max-width:var(--container);margin:0 auto;padding:0 32px;
+  display:grid;grid-template-columns:1.6fr 1.25fr 1.5fr 1fr;gap:0;
+}
+.footer-col{border-left:1px solid rgba(255,255,255,.15);padding:0 40px;}
+.footer-col:first-child{border-left:0;padding-left:0;}
+.footer-col:last-child{padding-right:0;}
+.footer-col h3{
+  font-family:"Barlow Condensed","Inter",Arial,sans-serif;text-transform:uppercase;
+  font-weight:700;font-size:17px;letter-spacing:.11em;color:#fff;margin:0 0 14px;
+}
+.site-footer p{font-size:13.5px;line-height:1.65;margin:0 0 12px;}
+.site-footer p:last-child{margin-bottom:0;}
+.site-footer a{color:#F3C96B;text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere;}
+.site-footer a:hover{color:#FFE0A3;}
+.guarantee-url{font-size:12px;color:#8AA6BC;margin-top:16px !important;}
+.guarantee-url a{color:#8AA6BC;}
+.footer-legal{
+  max-width:var(--container);margin:40px auto 0;padding:22px 32px 0;
+  border-top:1px solid rgba(255,255,255,.13);font-size:12.5px;line-height:1.65;color:#8AA6BC;
+}
+
+/* ============================ RESPONSIVE ============================ */
+@media (max-width:1240px){
+  .hero-photo{
+    position:relative;left:auto;right:auto;grid-area:photo;
+    height:360px;align-self:start;border-radius:12px;
+  }
+  .hero-photo::after{background:linear-gradient(180deg,rgba(241,244,247,0) 74%,rgba(241,244,247,.5) 100%);}
+  .hero-photo-img{position:relative;inset:auto;width:100%;object-position:52% 22%;}
+  .hero-inner{
+    grid-template-columns:minmax(0,1fr) minmax(0,400px);
+    grid-template-areas:"copy copy" "photo form" "bullets form";
+    grid-template-rows:auto auto 1fr;row-gap:26px;padding:40px 32px 48px;
+  }
+  .hero-lede{max-width:62ch;}
+  .trust-inner{grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 0;}
+  .trust-item:nth-child(odd){border-left:0;padding-left:0;}
+  .footer-inner{grid-template-columns:1fr 1fr;row-gap:32px;}
+  .footer-col{padding:0 32px;}
+  .footer-col:nth-child(odd){border-left:0;padding-left:0;}
+}
+@media (max-width:860px){
+  /* Collapse the desktop bar into a disclosure menu rather than squeezing it. */
+  .site-nav{overflow:visible;}
+  .nav-inner{display:block;padding:0;}
+  .nav-toggle{
+    display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+    min-height:52px;padding:14px 20px;border:0;background:var(--ars-navy);color:#fff;cursor:pointer;
+    font-family:"Barlow Condensed","Inter",Arial,sans-serif;font-weight:700;
+    text-transform:uppercase;font-size:19px;letter-spacing:.09em;line-height:1;
+  }
+  .nav-toggle svg{width:22px;height:22px;}
+  .nav-toggle[aria-expanded="true"]{background:var(--ars-navy-deep);}
+  .nav-menu{display:none;flex-direction:column;gap:0;}
+  .nav-menu.open{display:flex;}
+  .nav-inner a{
+    font-size:18px;padding:0 20px;min-height:52px;width:100%;
+    border-top:1px solid rgba(255,255,255,.16);letter-spacing:.06em;
+  }
+  .nav-offers{margin-left:0;padding-left:20px !important;padding-right:20px !important;}
+  .nav-offers::after{display:none;}
+  /* Touch-width only, so the approved desktop layout is untouched. */
+  .header-call a{min-height:44px;}
+  /* Inline legal links stay inline but get a more forgiving touch area. */
+  .consent a{display:inline-block;padding:4px 2px;margin:-4px -2px;}
+  .benefits a,.trust-item h3 a{display:inline-block;padding:8px 7px;margin:-8px -5px;}
+  .offer-grid{grid-template-columns:minmax(0,1fr);gap:24px;}
+  .offer-band{height:190px;}
+  .consent{font-size:12.5px;line-height:1.6;}
+}
+@media (max-width:720px){
+  .header-inner{flex-direction:column;align-items:stretch;gap:14px;padding:16px 20px 18px;}
+  .brands{justify-content:center;gap:18px;}
+  .brand-ars img{height:56px;}
+  .sic-wordmark{font-size:20px;}
+  .header-call{text-align:center;}
+  .header-call a{
+    justify-content:center;width:100%;background:var(--ars-navy);color:#fff;
+    padding:12px 16px;border-radius:8px;font-size:30px;
+  }
+  .header-call a:hover{color:#fff;background:var(--ars-navy-deep);}
+  .header-call .avail{font-size:14px;}
+  .hero-inner{
+    display:flex;flex-direction:column;gap:0;padding:24px 20px 30px;
+  }
+  /* Requested mobile hierarchy: headline -> family photo -> form -> benefits */
+  .hero-copy{order:1;}
+  .hero-photo{order:2;height:260px;margin-bottom:26px;}
+  .hero-form{order:3;}
+  .hero-bullets{order:4;margin-top:28px;}
+  .hero h1{font-size:clamp(34px,9vw,50px);}
+  .hero-lede{font-size:17px;}
+  .form-card{padding:20px 17px 18px;}
+  .consent{font-size:12.5px;line-height:1.6;}
+  .benefits li{font-size:16.5px;}
+  .trust-inner{grid-template-columns:minmax(0,1fr);gap:26px;padding:30px 20px;}
+  .trust-item{border-left:0;padding:0;}
+  .offers{padding:42px 0 48px;}
+  .offers-head{gap:14px;padding:0 20px;margin-bottom:26px;}
+  .offers-head h2{font-size:24px;white-space:normal;text-align:center;}
+  .offer-grid{grid-template-columns:minmax(0,1fr);gap:22px;padding:0 20px;}
+  .offer-band{height:170px;}
+  .offer-body{padding:24px 24px 26px;}
+  .site-footer{padding:38px 0 30px;}
+  .footer-inner{grid-template-columns:minmax(0,1fr);row-gap:0;padding:0 20px;}
+  .footer-col{border-left:0;padding:22px 0 0;border-top:1px solid rgba(255,255,255,.15);margin-top:22px;}
+  .footer-col:first-child{border-top:0;padding-top:0;margin-top:0;}
+  .footer-legal{padding:22px 20px 0;margin-top:30px;}
+}
+@media (max-width:420px){
+  .field-row{grid-template-columns:1fr;}
+}
+/* Smallest supported phones (320-360px): keep headings and the CTA on single lines. */
+@media (max-width:360px){
+  .header-inner{padding:14px 16px 16px;}
+  .brands{gap:14px;}
+  .brand-ars img{height:50px;}
+  .sic-wordmark{font-size:17px;}
+  .brand-csh small{font-size:9px;}
+  .header-call a{font-size:26px;}
+  .header-call .avail{font-size:14px;}
+  .hero-inner{padding:22px 16px 28px;}
+  .hero h1{font-size:32px;}
+  .btn-submit{font-size:21px;letter-spacing:.02em;}
+  .form-card{padding:18px 14px 16px;}
+  .field input,.field select{font-size:15px;padding-left:36px;}
+  .offers-head{padding:0 16px;}
+  .offer-grid{padding:0 16px;}
+  .offer-body{padding:22px 20px 24px;}
+  .offer-amt{font-size:60px;}
+  .offer-name{font-size:24px;}
+  .trust-inner{padding:28px 16px;}
+  .footer-inner,.footer-legal{padding-left:16px;padding-right:16px;}
+}
+.mobile-contact-bar{display:none;}
+.field-error{color:#FFD5D5;font-size:13px;line-height:1.4;margin:6px 0 0;font-weight:600;}
+.field:has(.field-hint) svg,.field:has(.field-error) svg{top:24px;}
+.field-hint{color:#D5E2EE;font-size:12px;margin:5px 0 0;}
+@media(max-width:720px){
+  body{padding-bottom:calc(80px + env(safe-area-inset-bottom));}
+  .mobile-contact-bar{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:50;gap:10px;background:var(--ars-navy-deep);padding:12px 16px calc(12px + env(safe-area-inset-bottom));box-shadow:0 -3px 16px rgba(7,42,71,.2);}
+  .mobile-contact-bar a{display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:8px;text-decoration:none;font-weight:700;font-size:16px;}
+  .mobile-contact-bar .mobile-call{flex:1.35;background:var(--ars-red);color:#fff;}
+  .mobile-contact-bar .mobile-request{flex:1;background:#fff;color:var(--ars-navy-deep);}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================ HEADER ============================ -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brands">
+      <!-- Official ARS/Rescue Rooter logo - approved production asset, used unmodified -->
+      <span class="brand-ars">
+        <picture>
+          <source type="image/webp" srcset="/images/ars/approved/optimized/ars-logo-520.webp 520w, /images/ars/approved/optimized/ars-logo-260.webp 260w" sizes="232px">
+          <img src="/images/ars/approved/optimized/ars-logo-520.webp" width="1304" height="662" alt="ARS/Rescue Rooter" fetchpriority="high" decoding="async">
+        </picture>
+      </span>
+      <span class="brand-divider" aria-hidden="true"></span>
+      <!-- ServicesInMyCity marketing-partner wordmark -->
+      <span class="brand-csh" aria-label="ServicesInMyCity">
+        <span class="sic-wordmark">Services<span>InMyCity</span></span>
+        <small>ARS Marketing Partner</small>
+      </span>
+    </div>
+
+    <div class="header-call">
+      <a href="tel:+18554484993" data-call aria-label="Call ARS/Rescue Rooter at 1 855 448 4993">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.3 2.2z"/></svg>
+        1-855-448-4993
+      </a>
+      <p class="avail">Available Seven Days a Week</p>
+    </div>
+  </div>
+</header>
+
+<!-- ============================ NAV ============================ -->
+<nav class="site-nav" aria-label="Primary">
+  <div class="nav-inner">
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" aria-hidden="true"><path d="M3.5 7h17M3.5 12h17M3.5 17h17"/></svg>
+      <span class="nav-toggle-label">Menu</span>
+    </button>
+    <div class="nav-menu" id="nav-menu">
+    <a href="#hero">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M12 2v20M4.2 6.5l15.6 11M19.8 6.5L4.2 17.5M12 6.5 9 4m3 2.5L15 4m-3 13.5L9 20m3-2.5 3 2.5M4.2 6.5l.2-3.4m-.2 3.4L1 7.2m18.8-.7.5-3.4m-.5 3.4 3.2.7M4.2 17.5 1 16.8m3.2.7-.2 3.4m15.8-4.1 3.2-.7m-3.2.7.5 3.4"/></svg>
+      Heating &amp; Cooling
+    </a>
+    <a href="#request">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0 5.1 5.1l-7.6 7.6a2.4 2.4 0 0 1-3.4-3.4l7.6-7.6-1.7-1.7z"/><path d="M14.7 6.3 17.4 3.6a4 4 0 0 0-4.6 5.2"/></svg>
+      HVAC Services
+    </a>
+    <a href="#request">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M2 8h12a3 3 0 1 0-3-3M2 12h16a3 3 0 1 1-3 3M2 16h10a2.5 2.5 0 1 1-2.5 2.5"/></svg>
+      Indoor Air Quality
+    </a>
+    <a href="#about">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M2.6 19a6.4 6.4 0 0 1 12.8 0"/><path d="M16.2 5.2a3.2 3.2 0 0 1 0 5.6"/><path d="M17.6 13.4A6.4 6.4 0 0 1 21.4 19"/></svg>
+      About Us
+    </a>
+    <a href="#offers" class="nav-offers">Special Offers</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+<!-- ============================ HERO ============================ -->
+<section class="hero" id="hero">
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <h1>
+        <span>Home</span>
+        <span class="teal">Heating &amp; Cooling</span>
+        <span>Repair &amp; Replacement</span>
+      </h1>
+      <p class="hero-lede">Need a repair or ready for a new system? Get help with home air conditioning, heating and heat pumps, from repairs to replacement and installation.</p>
+    </div>
+
+  <!-- Approved family lifestyle photography. Framing is CSS object-fit only; file is unmodified. -->
+  <div class="hero-photo">
+    <picture>
+      <source type="image/webp" srcset="/images/ars/approved/optimized/family-lifestyle-1400.webp 1400w, /images/ars/approved/optimized/family-lifestyle-1000.webp 1000w, /images/ars/approved/optimized/family-lifestyle-700.webp 700w, /images/ars/approved/optimized/family-lifestyle-500.webp 500w" sizes="(max-width:1080px) 100vw, 63vw">
+      <img class="hero-photo-img" src="/images/ars/approved/optimized/family-lifestyle-1000.jpg" width="1000" height="585" alt="A family relaxing together at home" fetchpriority="high" decoding="async">
+    </picture>
+  </div>
+
+    <div class="hero-bullets">
+      <ul class="benefits">
+        <li>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.1 14.2-4-4 1.6-1.6 2.4 2.4 5.1-5.1 1.6 1.6-6.7 6.7z"/></svg>
+          Background-checked professionals
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.1 14.2-4-4 1.6-1.6 2.4 2.4 5.1-5.1 1.6 1.6-6.7 6.7z"/></svg>
+          Upfront pricing &ndash; no surprises
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.1 14.2-4-4 1.6-1.6 2.4 2.4 5.1-5.1 1.6 1.6-6.7 6.7z"/></svg>
+          Available 7 days a week
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.1 14.2-4-4 1.6-1.6 2.4 2.4 5.1-5.1 1.6 1.6-6.7 6.7z"/></svg>
+          <span>100% Satisfaction Guarantee<a href="https://www.ars.com/about-us/service-guarantee" target="_blank" rel="noopener" aria-label="100% Satisfaction Guarantee terms">*</a></span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- ---------- Lead form ---------- -->
+    <div class="hero-form" id="request">
+      <div class="form-card">
+        <h2>Request HVAC Service</h2>
+        <p class="form-sub">Repair, Replacement &amp; Installation</p>
+
+        <p style="text-align:center;margin:0 0 18px"><a href="tel:+18554484993" data-call style="display:block;background:var(--ars-red);color:white;text-decoration:none;padding:14px 12px;border-radius:6px;font-weight:700">Call 1-855-448-4993</a><small style="color:#C6D8E7">Phone lines open 24/7 · Service availability varies by location</small></p>
+        <p class="form-status">Call now or tell us what service your home needs below.</p>
+        <form id="ars-lead-form" novalidate>
+          <div hidden aria-hidden="true"><label>Leave empty<input name="website" id="f-website" tabindex="-1" autocomplete="off"></label></div>
+          <div class="field-row">
+            <div class="field">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="3.4"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>
+              <label class="sr-only" for="f-first">First Name</label>
+              <input type="text" id="f-first" name="firstname" placeholder="First Name" autocomplete="given-name" required>
+            </div>
+            <div class="field">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="3.4"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>
+              <label class="sr-only" for="f-last">Last Name</label>
+              <input type="text" id="f-last" name="lastname" placeholder="Last Name" autocomplete="family-name" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.2.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1l-2.3 2.2z"/></svg>
+            <label class="sr-only" for="f-phone">Phone Number</label>
+            <input type="tel" id="f-phone" name="phone" placeholder="Phone Number" autocomplete="tel" aria-describedby="phone-hint" required>
+            <p id="phone-hint" class="field-hint">Enter your 10-digit phone number. +1 is also accepted.</p>
+          </div>
+
+          <div class="field">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="2.8" y="5" width="18.4" height="14" rx="2.2"/><path d="m3.4 6.4 8.6 6.2 8.6-6.2"/></svg>
+            <label class="sr-only" for="f-email">Email Address</label>
+            <input type="email" id="f-email" name="email" placeholder="Email Address" autocomplete="email" required>
+          </div>
+
+          <div class="field">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.9 2.9l-.1-.1a1.7 1.7 0 0 0-2.9 1.2v.2a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 7 19.4a1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.9-2.9l.1-.1A1.7 1.7 0 0 0 2 15a1.7 1.7 0 0 0-1.6-1.1H.3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 2 8.8a1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.9-2.9l.1.1A1.7 1.7 0 0 0 7 4.3a1.7 1.7 0 0 0 1.1-1.6V2.6a2 2 0 1 1 4 0v.1A1.7 1.7 0 0 0 15 4.3" transform="translate(1.7 1.7) scale(.86)"/></svg>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 9 7 7 7-7"/></svg>
+            <label class="sr-only" for="f-service">Service Needed</label>
+            <select id="f-service" name="service" required>
+              <option value="" selected disabled>Service Needed</option>
+              <option>Air Conditioning Repair</option>
+              <option>Heating Repair</option>
+              <option>Heat Pump Repair</option>
+              <option>Maintenance / Tune-Up</option>
+              <option>Air Conditioning Replacement</option>
+              <option>Heating Replacement</option>
+              <option>New HVAC System Installation</option>
+              <option>Heat Pump Installation / Replacement</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 21.5s7-6.1 7-11.1a7 7 0 1 0-14 0c0 5 7 11.1 7 11.1z"/><circle cx="12" cy="10.2" r="2.6"/></svg>
+            <label class="sr-only" for="f-zip">Zip Code</label>
+            <input type="text" id="f-zip" name="zip" placeholder="Zip Code" autocomplete="postal-code" inputmode="numeric" maxlength="5" required>
+          </div>
+
+          <button type="submit" class="btn-submit" id="ars-submit">Request My HVAC Service</button>
+
+          <p class="consent">By clicking above, you acknowledge you have reviewed ARS&rsquo; <a href="https://www.ars.com/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a> and consent to ARS and its affiliates contacting you at the number above via automatic telephone dialing system, artificial/prerecorded voice messages and text messages for marketing purposes. Message/data rates may apply. Consent not required for purchase.</p>
+          <p class="form-status" id="ars-status" role="status" aria-live="polite"></p>
+        </form>
+
+        <div class="form-done" id="ars-done" hidden>
+          <h3>Thank You &mdash; We&rsquo;ve Got It</h3>
+          <p>Your request has been received. To speak with someone right away, give us a call.</p>
+          <a href="tel:+18554484993" data-call>Call 1-855-448-4993</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ TRUST STRIP ============================ -->
+<section class="trust" id="about" aria-label="Why choose ARS/Rescue Rooter">
+  <div class="trust-inner">
+    <div class="trust-item">
+      <div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.6 4.6 5.8v5.4c0 4.6 3.1 8.9 7.4 10.2 4.3-1.3 7.4-5.6 7.4-10.2V5.8L12 2.6z"/><path d="m8.6 11.9 2.4 2.4 4.4-4.4"/></svg></div>
+      <div class="trust-text">
+        <h3>Background-Checked<br>Professionals</h3>
+        <p>Highly trained and<br>trustworthy.</p>
+      </div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><path d="M12 6.6V12l3.6 2.2"/></svg></div>
+      <div class="trust-text">
+        <h3>Available 7 Days<br>a Week</h3>
+        <p>We&rsquo;re here when<br>you need us most.</p>
+      </div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8v18.4"/><path d="M16.2 7.1c0-1.7-1.9-2.8-4.2-2.8S7.8 5.4 7.8 7.1s1.7 2.5 4.2 3 4.2 1.3 4.2 3-1.9 2.8-4.2 2.8-4.2-1.1-4.2-2.8"/></svg></div>
+      <div class="trust-text">
+        <h3>Upfront Pricing</h3>
+        <p>You&rsquo;ll always know the<br>cost before we start.</p>
+      </div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.2 10.4 11 2.9a2.3 2.3 0 0 1 2.3 2.3v3.4h4.9a2.1 2.1 0 0 1 2.1 2.4l-1.2 7a2.1 2.1 0 0 1-2.1 1.7H7.2z"/><rect x="2.6" y="10.4" width="4.6" height="9.3" rx="1.1"/></svg></div>
+      <div class="trust-text">
+        <h3>100% Satisfaction<br>Guaranteed<a href="https://www.ars.com/about-us/service-guarantee" target="_blank" rel="noopener" aria-label="100% Satisfaction Guaranteed terms">*</a></h3>
+        <p>We stand behind<br>our work 100%.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ SPECIAL OFFERS ============================ -->
+<section class="offers" id="offers">
+  <div class="offers-head"><h2>Limited Time Special Offers</h2></div>
+
+  <div class="offer-grid">
+    <!-- $49 TUNE-UP -->
+    <div class="offer offer-blue">
+      <!-- Approved HVAC equipment photo, unbranded and unmodified. Full-frame, CSS framing only. -->
+      <div class="offer-band">
+        <picture>
+          <source type="image/webp" srcset="/images/ars/approved/optimized/hvac-equipment-700.webp 700w, /images/ars/approved/optimized/hvac-equipment-1000.webp 1000w" sizes="(max-width:860px) 100vw, 720px">
+          <img src="/images/ars/approved/optimized/hvac-equipment-700.jpg" width="700" height="516" alt="Residential outdoor air conditioning condenser units" loading="lazy" decoding="async">
+        </picture>
+      </div>
+      <div class="offer-body">
+        <p class="offer-amt"><sup>$</sup>49</p>
+        <h3 class="offer-name">HVAC Tune-Up</h3>
+        <hr class="offer-rule">
+        <p class="fine">
+          Price valid for one working unit. For gas or heat pump systems only. Excludes oil fired systems. Not valid with any other offers, discounts, or on prior sales. Valid only for residential customers. Any other use may constitute fraud. Cash value $0.01.
+          <!-- Expiration date intentionally omitted: the date shown in the mockup is stale
+               and no replacement date has been approved by ARS. -->
+        </p>
+      </div>
+    </div>
+
+    <!-- SAVE UP TO $2000 -->
+    <div class="offer offer-red">
+      <div class="offer-band offer-band-red"><span>Save Up To</span></div>
+      <div class="offer-body">
+        <p class="offer-amt"><sup>$</sup>2000</p>
+        <h3 class="offer-name">on a New HVAC System</h3>
+        <hr class="offer-rule">
+        <p class="fine">
+          Purchase and installation of qualifying HVAC systems and accessories required. Not valid with any other offers, discounts, or on prior sales. Valid only for residential customers. Any other use may constitute fraud. Cash value $0.01.
+          <!-- Expiration date intentionally omitted: see note above. -->
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-col">
+      <h3>Exceptional Service Guarantee</h3>
+      <p>If, for any reason, within one (1) year of the date of the original invoice, you are dissatisfied with our work in your home, we&rsquo;ll make every effort to meet your expectations, or remove your equipment (if applicable) and cheerfully refund 100% of your money.</p>
+      <p class="guarantee-url">*<a href="https://www.ars.com/about-us/service-guarantee" target="_blank" rel="noopener">https://www.ars.com/about-us/service-guarantee</a></p>
+    </div>
+
+    <div class="footer-col">
+      <h3>Licensing</h3>
+      <p>View license information at<br>
+      <a href="https://www.ars.com/licenses" target="_blank" rel="noopener">https://www.ars.com/licenses</a></p>
+    </div>
+
+    <div class="footer-col">
+      <h3>California License Numbers</h3>
+      <p>License # Rescue Rooter 765155, ARS 791820, RighTime 765074, Greenstar Home Services 795556, Beutler Air Conditioning &amp; Plumbing 795540, Atlas Trillo 742039</p>
+    </div>
+
+    <div class="footer-col">
+      <h3>Legal</h3>
+      <p>&copy; 2026 American Residential Services LLC. All rights reserved.</p>
+    </div>
+  </div>
+
+  <div class="footer-legal">
+    ServicesInMyCity is a marketing partner of ARS/Rescue Rooter and is operated by Elite Media Group LLC. Service availability, pricing and offers vary by location.
+  </div>
+</footer>
+
+<nav class="mobile-contact-bar" aria-label="Quick HVAC contact">
+  <a class="mobile-call" href="tel:+18554484993" data-call>Call for HVAC Service</a>
+  <a class="mobile-request" href="#request">Request Service</a>
+</nav>
+
+<script>
+/* ---- Mobile navigation disclosure (layout only; no tracking or form behaviour) ---- */
+(function(){
+  "use strict";
+  var toggle = document.getElementById('nav-toggle');
+  var menu   = document.getElementById('nav-menu');
+  if(!toggle || !menu) return;
+  function close(){ menu.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); }
+  toggle.addEventListener('click', function(){
+    var open = menu.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  menu.addEventListener('click', function(e){ if(e.target.closest('a')) close(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') close(); });
+  /* Never leave the menu stuck open when resizing up to the desktop bar. */
+  window.addEventListener('resize', function(){ if(window.innerWidth > 860) close(); });
+})();
+
+(function(){
+  "use strict";
+
+  /* ---- Shared event tracking: GA4 + Clarity (matches existing paid-lander pattern) ---- */
+  function track(name, params){
+    if(typeof gtag === 'function'){ gtag('event', name, params || {}); }
+    try{
+      if(typeof window.clarity === 'function'){
+        window.clarity('event', name);
+        if(name === 'phone_call_click'){
+          window.clarity('set','called','yes');
+          window.clarity('upgrade','phone_call_click');
+        }
+        if(name === 'lead_form_complete'){
+          window.clarity('set','lead','yes');
+          window.clarity('upgrade','lead_form_complete');
+        }
+      }
+    }catch(e){}
+  }
+
+  /* ---- CallGrid: reserve a tracking number only when a visitor calls. ---- */
+  var callGridReady;
+  function prepareCallGrid(){
+    if(callGridReady) return callGridReady;
+    callGridReady = new Promise(function(resolve){
+      var finished = false;
+      function finish(number){
+        if(finished) return;
+        finished = true;
+        document.removeEventListener('callgrid:numberAssigned', assigned);
+        resolve(number || '+18554484993');
+      }
+      function assigned(event){
+        var number = event.detail && event.detail.phoneNumber;
+        if(!/^\+?\d{10,15}$/.test(String(number || '').replace(/[^\d+]/g,''))) return;
+        number = String(number).replace(/[^\d+]/g,'');
+        document.querySelectorAll('a[data-call]').forEach(function(link){ link.href = 'tel:' + number; });
+        finish(number);
+      }
+      document.addEventListener('callgrid:numberAssigned', assigned);
+      var script = document.createElement('script');
+      script.src = 'https://cdn.callgrid.com/callgrid.js';
+      script.dataset.organizationId = 'cmjirqemz000001c9uuhlhqjk';
+      script.dataset.campaignSourceId = 'cmvb8ftzn010j06l99qa9nci2';
+      script.dataset.targetPhoneNumber = '+18554484993';
+      script.dataset.autoEnableDni = 'true';
+      script.async = true;
+      script.onerror = function(){ finish(); };
+      setTimeout(function(){ finish(); }, 2500);
+      document.head.appendChild(script);
+    });
+    return callGridReady;
+  }
+  document.querySelectorAll('a[data-call]').forEach(function(link){
+    link.addEventListener('click', function(event){
+      event.preventDefault();
+      track('phone_call_click', {event_category:'conversion', event_label:'ars_hvac', value:1});
+      prepareCallGrid().then(function(number){ window.location.href = 'tel:' + number; });
+    });
+  });
+
+  /* ---- Attribution: capture and persist paid click / UTM parameters ---- */
+  var ATTR_KEYS = ['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid','gbraid','wbraid','msclkid','fbclid','subid','sourceid'];
+  var ATTR_STORE = 'ars_hvac_attr';
+  function readAttribution(){
+    var stored = {};
+    try{ stored = JSON.parse(sessionStorage.getItem(ATTR_STORE) || '{}'); }catch(e){}
+    var qs = new URLSearchParams(window.location.search), fresh = false;
+    ATTR_KEYS.forEach(function(k){
+      var v = qs.get(k);
+      if(v){ stored[k] = v.slice(0, 200); fresh = true; }
+    });
+    if(fresh){
+      stored.landing_page = window.location.pathname;
+      stored.first_seen = stored.first_seen || new Date().toISOString();
+      try{ sessionStorage.setItem(ATTR_STORE, JSON.stringify(stored)); }catch(e){}
+    }
+    return stored;
+  }
+  var attribution = readAttribution();
+
+  /* ---- Lead form ---- */
+  var form   = document.getElementById('ars-lead-form');
+  var status = document.getElementById('ars-status');
+  var done   = document.getElementById('ars-done');
+  var btn    = document.getElementById('ars-submit');
+  var select = document.getElementById('f-service');
+  var phone  = document.getElementById('f-phone');
+  var zip    = document.getElementById('f-zip');
+  var approvedZips;
+
+  if(select){
+    select.addEventListener('change', function(){
+      select.classList.toggle('filled', !!select.value);
+    });
+  }
+  function phoneDigits(value){
+    var digits = String(value || '').replace(/\D/g,'');
+    return digits.length === 11 && digits.charAt(0) === '1' ? digits.slice(1) : digits;
+  }
+  // Preserve what visitors type or autofill; normalize only for validation and submission.
+  if(zip){
+    zip.addEventListener('input', function(){ this.value = this.value.replace(/\D/g,'').slice(0,5); });
+  }
+
+  function fail(field, message){
+    if(status){ status.textContent = message; status.className = 'form-status err'; }
+    if(field){
+      field.setAttribute('aria-invalid','true');
+      var error = document.createElement('p');
+      error.className = 'field-error';
+      error.id = field.id + '-error';
+      error.textContent = message;
+      field.closest('.field').appendChild(error);
+      field.setAttribute('aria-describedby', (field.id === 'f-phone' ? 'phone-hint ' : '') + error.id);
+      field.focus();
+      track('lead_form_validation_error', {event_label:'ars_hvac', field:field.id});
+    }
+    return false;
+  }
+
+  if(form){
+    form.addEventListener('submit', async function(ev){
+      ev.preventDefault();
+      form.querySelectorAll('.field-error').forEach(function(el){ el.remove(); });
+      form.querySelectorAll('[aria-invalid]').forEach(function(el){
+        el.removeAttribute('aria-invalid');
+        if(el.id === 'f-phone') el.setAttribute('aria-describedby','phone-hint');
+        else el.removeAttribute('aria-describedby');
+      });
+
+      var first = document.getElementById('f-first');
+      var last  = document.getElementById('f-last');
+      var email = document.getElementById('f-email');
+      var normalizedPhone = phoneDigits(phone.value);
+
+      if(!first.value.trim())                          return fail(first, 'Please enter your first name.');
+      if(!last.value.trim())                           return fail(last,  'Please enter your last name.');
+      if(normalizedPhone.length !== 10)                    return fail(phone, 'Please enter a valid 10-digit phone number.');
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.value.trim())) return fail(email, 'Please enter a valid email address.');
+      if(!select.value)                                return fail(select,'Please select the service you need.');
+      if(zip.value.length !== 5)                       return fail(zip,   'Please enter a valid 5-digit ZIP code.');
+
+      // The supplied ARS list is a union of Residential HVAC = Yes rows.
+      // Check it before sending any contact details to the lead destination.
+      btn.disabled = true;
+      btn.textContent = 'Checking coverage…';
+      try {
+        if (!approvedZips) {
+          var coverageResponse = await fetch('/assets/ars-hvac-zips.json');
+          if (!coverageResponse.ok) throw new Error('Coverage unavailable');
+          approvedZips = new Set(await coverageResponse.json());
+        }
+      } catch (error) {
+        btn.disabled = false;
+        btn.textContent = 'Request My HVAC Service';
+        return fail(zip, 'We could not check service coverage. Please try again.');
+      }
+      if (!approvedZips.has(zip.value)) {
+        btn.disabled = false;
+        btn.textContent = 'Request My HVAC Service';
+        return fail(zip, 'This ZIP is outside the participating ARS residential HVAC service area.');
+      }
+      if(status){ status.textContent = ''; status.className = 'form-status'; }
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+
+      /* GA4 / Google Ads conversion signal, with attribution attached. */
+      var eventParams = {
+        event_category:'conversion',
+        event_label:'ars_hvac',
+        value:1,
+        service_needed:select.value
+      };
+      Object.keys(attribution).forEach(function(k){ eventParams[k] = attribution[k]; });
+
+
+      try {
+        var leadPayload = {
+          first:first.value.trim(), last:last.value.trim(), phone:normalizedPhone,
+          email:email.value.trim(), service:select.value, zip:zip.value,
+          consent:true, website:document.getElementById('f-website').value
+        };
+        ['gclid','gbraid','wbraid','utm_source','utm_medium','utm_campaign','utm_term','utm_content'].forEach(function(k){
+          if(attribution[k]) leadPayload[k] = attribution[k];
+        });
+        var response = await fetch('/.netlify/functions/hvac-lead', {
+          method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(leadPayload)
+        });
+        var result = await response.json();
+        if(!response.ok || !result.ok) throw new Error('Request not saved');
+        form.hidden = true;
+        done.hidden = false;
+        track('lead_form_complete', eventParams);
+        if(typeof gtag === 'function') gtag('event','generate_lead',eventParams);
+      } catch(error) {
+        track('lead_form_save_error', {event_label:'ars_hvac'});
+        if(status){ status.textContent = 'We could not confirm your request. Please call 1-855-448-4993.'; status.className = 'form-status err'; }
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Request My HVAC Service';
+      }
+
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
