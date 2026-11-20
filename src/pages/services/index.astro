@@ -1,22 +1,23 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-// Services hub. HVAC is the live pilot vertical. Others are honestly 'coming soon'.
+// Status labels distinguish the HVAC pilot from the partner callback flow.
 const services = [
-  { slug: 'hvac', label: 'HVAC (heating & cooling)', status: 'live' },
-  { slug: 'plumbing', label: 'Plumbing', status: 'coming-soon' },
-  { slug: 'electrical', label: 'Electrical', status: 'coming-soon' },
-  { slug: 'roofing', label: 'Roofing', status: 'coming-soon' },
-  { slug: 'handyman', label: 'Handyman', status: 'coming-soon' },
-  { slug: 'appliance-repair', label: 'Appliance repair', status: 'coming-soon' },
-  { slug: 'landscaping', label: 'Landscaping', status: 'coming-soon' },
-  { slug: 'pest-control', label: 'Pest control', status: 'coming-soon' },
+  { slug: 'hvac', label: 'HVAC (heating & cooling)', status: 'Live pilot' },
+  { slug: 'home-security', label: 'Home security', status: 'Partner callback form' },
+  { slug: 'plumbing', label: 'Plumbing', status: 'Coming soon' },
+  { slug: 'electrical', label: 'Electrical', status: 'Coming soon' },
+  { slug: 'roofing', label: 'Roofing', status: 'Coming soon' },
+  { slug: 'handyman', label: 'Handyman', status: 'Coming soon' },
+  { slug: 'appliance-repair', label: 'Appliance repair', status: 'Coming soon' },
+  { slug: 'landscaping', label: 'Landscaping', status: 'Coming soon' },
+  { slug: 'pest-control', label: 'Pest control', status: 'Coming soon' },
 ];
 ---
 <BaseLayout title="Services" description="Browse home services. Rocco helps you find trusted local pros on the Jersey Shore.">
   <section class="hero">
     <div class="container">
       <h1>Services</h1>
-      <p class="lede">Rocco's first pilot is HVAC. More services are rolling out honestly &mdash; we won't pretend to cover something we can't help with yet.</p>
+      <p class="lede">Get heating and cooling guidance from Rocco, or explore home security and request a provider callback.</p>
     </div>
   </section>
   <section class="container" style="padding:40px 20px 64px">
@@ -24,7 +25,7 @@ const services = [
       {services.map((s) => (
         <a class="card" href={`/services/${s.slug}`}>
           <h3>{s.label}</h3>
-          <p class="soft-note">{s.status === 'live' ? 'Live pilot' : 'Coming soon'}</p>
+          <p class="soft-note">{s.status}</p>
         </a>
       ))}
     </div>

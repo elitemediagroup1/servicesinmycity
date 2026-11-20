@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const callbackUrl = '/go/home-security';
+const priorities = [
+  {
+    title: 'See who’s at the door',
+    detail: 'A video doorbell can show visitors and deliveries. Ask whether the camera will show the doorstep, how it gets power and how long recordings are kept.',
+  },
+  {
+    title: 'Know when a door or window opens',
+    detail: 'List the entrances and accessible windows you want covered. Ask how many sensors are included and what it would cost to add one more.',
+  },
+  {
+    title: 'Have someone respond while I’m away',
+    detail: 'Ask the provider to walk you through an alarm, from the first alert to the steps taken if you miss their call. Ask how the system handles an internet or power outage.',
+  },
+];
+---
+<BaseLayout title="Home security options" description="Explore cameras, entry sensors and monitoring. Homeowners can request a callback through our home security partner." showRoccoWidget={false}>
+  <section class="security-intro">
+    <div class="container security-layout">
+      <div>
+        <a class="back" href="/services">All services</a>
+        <h1>Home security for the way you live</h1>
+        <p class="intro">Whether you want to see a delivery at the door or get an alert while you’re away, start with what you want your system to do.</p>
+        <div class="actions">
+          <a class="btn callback" href={callbackUrl} rel="sponsored">Open the callback form</a>
+          <a class="guide-link" href="#security-guide">Help me choose</a>
+        </div>
+        <p class="handoff">The form opens on our partner’s website. If you own your home and submit your details, the provider may call or text you about equipment, monitoring and installation.</p>
+      </div>
+      <img src="/assets/home/living-home-hero.png" width="1536" height="1024" alt="Front porch and entrances of a two-story home at dusk" />
+    </div>
+  </section>
+  <section id="security-guide" class="container planning" aria-labelledby="priority-title">
+    <h2 id="priority-title">What matters most at your home?</h2>
+    <p>Choose a priority for a question to take into the call.</p>
+    {priorities.map(({ title, detail }) => (
+      <details name="security-priority">
+        <summary>{title}</summary>
+        <p>{detail}</p>
+        <a href={callbackUrl} rel="sponsored">Continue to the partner’s callback form</a>
+      </details>
+    ))}
+    <h2>Before you choose a system</h2>
+    <p>Ask for the equipment price, installation charge, monthly monitoring fee and contract length in writing. The provider can confirm availability for your address.</p>
+    <p>Renting? Check your lease before installing cameras or drilling into walls. The partner’s offer is for homeowners.</p>
+  </section>
+</BaseLayout>
+
+<script is:inline>
+  document.addEventListener('click', function (event) {
+    const link = event.target.closest('a[href="/go/home-security"]');
+    if (link && typeof window.__sicTrack === 'function') {
+      window.__sicTrack('home_security_callback_click', {
+        placement: link.closest('details') ? 'guide' : 'direct'
+      });
+    }
+  });
+</script>
+
+<style>
+  .security-intro { background: var(--navy-900); color: var(--white); padding: clamp(2rem, 5vw, 5rem) 0; }
+  .security-layout { display: grid; grid-template-columns: 1.15fr 1fr; align-items: center; gap: clamp(2rem, 5vw, 4rem); }
+  .security-layout img { width: 100%; height: auto; border-radius: var(--radius-lg); }
+  .back, .guide-link { color: var(--white); text-underline-offset: .22em; }
+  .back { font-size: 1rem; }
+  h1 { color: var(--white); margin: 1rem 0; font-size: var(--fs-display); line-height: 1.08; }
+  .intro { color: var(--white); font-size: var(--fs-body-lg); }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; margin: 1.5rem 0 .75rem; }
+  .callback { background: var(--orange-500); color: var(--navy-900); }
+  .callback:hover { background: var(--orange-300); }
+  .handoff { max-width: 55ch; color: var(--stone-200); font-size: 1rem; }
+  .planning { max-width: 800px; padding-block: clamp(2rem, 5vw, 4.5rem); }
+  .planning h2 { margin: 0 0 .5rem; }
+  .planning details + h2 { margin-top: 2.5rem; }
+  .planning details { margin: .65rem 0; padding: 0 1.25rem; border: 1px solid var(--color-border-strong); border-radius: var(--radius-md); background: var(--white); }
+  .planning summary { padding-block: 1rem; font-weight: 700; cursor: pointer; }
+  .planning details p { margin: 0 0 .75rem; }
+  .planning details a { display: inline-block; margin-bottom: 1rem; font-weight: 600; }
+  @media (max-width: 720px) { .security-layout { grid-template-columns: 1fr; } .security-layout img { max-height: 14rem; object-fit: cover; } }
+</style>

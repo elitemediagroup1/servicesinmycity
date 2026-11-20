@@ -65,3 +65,13 @@
   for = "/ars-hvac*"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
+
+[[redirects]]
+  from = "/home-security"
+  to = "/services/home-security/"
+  status = 301
+
+[[redirects]]
+  from = "/go/home-security"
+  to = "https://s24alarms.com/Elite-Media-Group-ADT"
+  status = 302

@@ -173,7 +173,7 @@ const prompts = [
     <div class="ch-narrow reveal">
       <p class="ch-kicker">Not sure where to start</p>
       <h2 id="where-title" class="ch-title">Start with whatever’s on your mind.</h2>
-      <p class="ch-lede ch-lede-center">Every one of these opens the same calm conversation with Rocco. There’s no wrong door.</p>
+      <p class="ch-lede ch-lede-center">Ask Rocco about a repair, or explore security options for your home.</p>
       <div class="where-row">
         {services.map((sv) => (
           <a class="where-link" href={`/ask?topic=${encodeURIComponent(sv.label.replace(/&amp;/g,"&"))}`}>
@@ -181,6 +181,10 @@ const prompts = [
             <span class="where-link-hint">{sv.hint}</span>
           </a>
         ))}
+        <a class="where-link" href="/services/home-security">
+          <span class="where-link-label">Home Security</span>
+          <span class="where-link-hint">Cameras, alarms and callback requests</span>
+        </a>
       </div>
     </div>
   </section>
