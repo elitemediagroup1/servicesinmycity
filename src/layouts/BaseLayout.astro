@@ -8,8 +8,11 @@ interface Props {
   title: string;
   description?: string;
   showRoccoWidget?: boolean;
+  searchTitle?: string;
+  searchDescription?: string;
+  canonical?: string;
 }
-const { title, description = 'Find trusted local pros and get the job done right. Meet Rocco, your local repair guide.', showRoccoWidget = true } = Astro.props;
+const { title, description = 'Find trusted local pros and get the job done right. Meet Rocco, your local repair guide.', showRoccoWidget = true, searchTitle = title, searchDescription = description, canonical } = Astro.props;
 const year = new Date().getFullYear();
 ---
 <!doctype html>
@@ -17,8 +20,10 @@ const year = new Date().getFullYear();
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title} | ServicesInMyCity</title>
-    <meta name="description" content={description} />
+    <title>{searchTitle} | ServicesInMyCity</title>
+    <meta name="description" content={searchDescription} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    {canonical && <meta property="og:url" content={canonical} />}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet" />

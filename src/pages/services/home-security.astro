@@ -4,8 +4,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 const callbackUrl = '/go/home-security';
 const priorities = [
   {
-    title: 'See who’s at the door',
+    title: 'Video doorbell for visitors and deliveries',
     detail: 'A video doorbell can show visitors and deliveries. Ask whether the camera will show the doorstep, how it gets power and how long recordings are kept.',
+  },
+  {
+    title: 'Outdoor camera for a driveway or side gate',
+    detail: 'Start with a spot you want a camera to see, such as a side gate that is out of view from the front door. Walk that sightline with the installer. Ask about power at the mounting point, Wi-Fi signal and how the image looks after dark.',
   },
   {
     title: 'Know when a door or window opens',
@@ -17,13 +21,20 @@ const priorities = [
   },
 ];
 ---
-<BaseLayout title="Home security options" description="Explore cameras, entry sensors and monitoring. Homeowners can request a callback through our home security partner." showRoccoWidget={false}>
+<BaseLayout
+  title="Video doorbells and outdoor security cameras"
+  description="Explore camera placement, installation and alarm monitoring for your Jersey Shore home."
+  searchTitle="Google Nest Doorbell or Outdoor Cam for ADT Monitoring?"
+  searchDescription="Comparing a Google Nest Doorbell with an outdoor Nest Cam for a Jersey Shore home? Explore placement, installation and an ADT-monitored home security option."
+  canonical={new URL('/services/home-security/', Astro.site).href}
+  showRoccoWidget={false}
+>
   <section class="security-intro">
     <div class="container security-layout">
       <div>
         <a class="back" href="/services">All services</a>
-        <h1>Home security for the way you live</h1>
-        <p class="intro">Whether you want to see a delivery at the door or get an alert while you’re away, start with what you want your system to do.</p>
+        <h1>Video doorbell or outdoor security camera?</h1>
+        <p class="intro">For a Jersey Shore home, start with the entrance you use most. A doorbell camera looks out from the porch. A separately mounted outdoor camera can cover a side gate or driveway beyond that view.</p>
         <div class="actions">
           <a class="btn callback" href={callbackUrl} rel="sponsored">Open the callback form</a>
           <a class="guide-link" href="#security-guide">Help me choose</a>
@@ -43,7 +54,10 @@ const priorities = [
         <a href={callbackUrl} rel="sponsored">Continue to the partner’s callback form</a>
       </details>
     ))}
-    <h2>Before you choose a system</h2>
+    <h2>Installing a camera at a second home</h2>
+    <p>If the house sits empty between visits, check how you’ll get an alert while you’re away. Ask the installer about battery access, winter weather exposure and what happens to video when your home internet goes offline.</p>
+    <h2>Before you choose a monitored system</h2>
+    <p>Our partner’s offer is for new homeowner customers and allows one camera per household. You can ask for a doorbell camera or an outdoor camera. Installation and a monitoring agreement are required.</p>
     <p>Ask for the equipment price, installation charge, monthly monitoring fee and contract length in writing. The provider can confirm availability for your address.</p>
     <p>Renting? Check your lease before installing cameras or drilling into walls. The partner’s offer is for homeowners.</p>
   </section>
