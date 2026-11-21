@@ -9,6 +9,17 @@ export default async function quote(req, context) {
     return wantsJson ? json({ error: message }, status) : new Response(message + ' Use your browser’s Back button to return to the form.', {
       status, headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' } });
   }
+  if (req.method === 'HEAD') {
+    // Report only the deployed connection status. No lead data or CRM request is involved.
+    try {
+      const status = await quoteStore().get('integration/connection', { type: 'json' });
+      return new Response(null, { status: 200, headers: {
+        'Cache-Control': 'no-store', 'X-Quote-Delivery': status?.status || 'unchecked'
+      } });
+    } catch {
+      return new Response(null, { status: 503, headers: { 'Cache-Control': 'no-store' } });
+    }
+  }
   if (req.method !== 'POST') return error('Use the home security quote page to make a request.', 405);
   const origin = req.headers.get('origin');
   if (origin && origin !== new URL(req.url).origin) return error('Please submit your request on this site.', 403);
