@@ -1,0 +1,145 @@
+{
+  "AL": {
+    "fieldCheck": "Stand where a delivery driver leaves packages. Check that the camera shows the ground there as well as a visitor’s face.",
+    "searchDescription": "Considering a Google Nest Doorbell in Alabama? Check the porch view at midday and after dark, including a visitor’s face and packages left below the lens."
+  },
+  "AZ": {
+    "fieldCheck": "Take a photo of the entry in late afternoon and bring it to the installation visit. Glare can be easier to see in that photo than on a floor plan.",
+    "searchDescription": "Planning a Google Nest outdoor camera in Arizona? Compare shaded mounting positions and the effect of afternoon glare on your entry view."
+  },
+  "AR": {
+    "fieldCheck": "Test the connection with the garage door closed. Mark an outlet and a mounting point before deciding whether the camera belongs on the garage or on the house."
+  },
+  "CA": {
+    "fieldCheck": "If you already own cameras, list the models before the appointment. Ask which can stay in place and which require a new mount, power supply or app."
+  },
+  "CO": {
+    "fieldCheck": "Choose a mounting height you can reach from a cleared path and check that a storm door can swing past the camera.",
+    "searchDescription": "Planning a Google Nest Doorbell installation in Colorado? Compare battery access, snow clearance and the swing of a storm door before choosing the mount."
+  },
+  "CT": {
+    "fieldCheck": "Show the installer the indoor chime before the old button comes off. Ask to hear it ring and check the phone notification before the visit ends."
+  },
+  "DE": {
+    "fieldCheck": "At the end of the visit, test an alert on the phone you take when you travel and show a local contact how to report an equipment problem.",
+    "searchDescription": "Planning ADT monitoring for a second home in Delaware? Test remote alerts, choose a local contact and plan who can meet an installer."
+  },
+  "FL": {
+    "fieldCheck": "Have the installer show where exterior wiring enters the house. Keep a photo of the finished mount with the model number and service contact.",
+    "searchDescription": "Considering a Google Nest outdoor camera in Florida? Plan a sheltered mount, cable entry and weather protection before booking installation."
+  },
+  "GA": {
+    "fieldCheck": "Put a box where deliveries usually land and open the front door. Check whether the box stays in frame in both positions."
+  },
+  "ID": {
+    "fieldCheck": "Give the installer the service address and note any private road, detached entrance or gate that affects access to the property."
+  },
+  "IL": {
+    "fieldCheck": "Bring the building’s mounting guidelines to the visit. Ask to see the proposed view with your apartment door and the neighboring door both closed.",
+    "searchDescription": "Considering a Google Nest Doorbell for an Illinois condo? Review building mounting rules and check what the camera sees from your shared hallway."
+  },
+  "IN": {
+    "fieldCheck": "Trace your route from the car into the house. Check whether the alarm’s entry delay gives you time to disarm it from the door you normally use."
+  },
+  "IA": {
+    "fieldCheck": "Mark two distances along the drive. Review a test image from each before agreeing on the mounting position."
+  },
+  "KS": {
+    "fieldCheck": "List the panel, cameras and router separately. Have the installer explain which of those devices still works if the house loses power."
+  },
+  "KY": {
+    "fieldCheck": "Have someone walk toward the house from both ends of the slope while you watch on the phone. Look for a face, not just the top of a head."
+  },
+  "LA": {
+    "fieldCheck": "Check the proposed mount under the eave and look for a nearby gutter outlet. Ask how the finished cable will shed water.",
+    "searchDescription": "Compare outdoor camera mounting options for a Louisiana home. Ask how a Google Nest camera would be sheltered and where the installer would seal the cable."
+  },
+  "MD": {
+    "fieldCheck": "Test the camera with a package on the bottom step. If the steps turn, check the approach from the sidewalk as well."
+  },
+  "MA": {
+    "fieldCheck": "Show the installer any old keypad and door contacts. Label the doors before testing so you can tell which alerts belong to which entrance."
+  },
+  "MI": {
+    "fieldCheck": "Plan the charging route before mounting the camera. Check whether you can remove the battery without taking the bracket off the wall."
+  },
+  "MN": {
+    "fieldCheck": "Check how the doorbell comes off its bracket. If you wear gloves outside, try the release before choosing the final height."
+  },
+  "MS": {
+    "fieldCheck": "Walk past the camera with the porch light on and off. Review a saved clip in each setting to see what a moving visitor looks like."
+  },
+  "MO": {
+    "fieldCheck": "Give the basement door a name that differs from the upstairs back door, then check that the same name appears on the panel and phone."
+  },
+  "NE": {
+    "fieldCheck": "Test the proposed location inside the closed building as well as outside it. Keep the test results with the estimate for any additional network equipment."
+  },
+  "NV": {
+    "fieldCheck": "Compare the shade at the proposed spot in the morning and afternoon. Make sure the protected location still shows the approach to the door.",
+    "searchDescription": "Considering a Google Nest outdoor camera in Nevada? Compare shaded and sunny locations, then check the model’s rated temperature range."
+  },
+  "NH": {
+    "fieldCheck": "Practice changing the call list before you leave for the season. Confirm that the local contact knows which entrance a technician should use."
+  },
+  "NJ": {
+    "fieldCheck": "Test the camera feed using cellular data before leaving the house. This shows the view you will actually have when you are away from the home network."
+  },
+  "NM": {
+    "fieldCheck": "Ask the installer to mark the proposed cable entry before drilling. Photograph the wall finish and agree on where the wire will be visible."
+  },
+  "NY": {
+    "fieldCheck": "Check the building’s visitor-entry system with the installer. Decide whether you need an alert at your apartment door, the common entrance or both."
+  },
+  "NC": {
+    "fieldCheck": "Walk from the driveway through the carport to the house. Mark the point where a visitor would leave the front camera’s view."
+  },
+  "OH": {
+    "fieldCheck": "Test both garage entrances separately and ask the installer to use different names for them in the app."
+  },
+  "OK": {
+    "fieldCheck": "Before the technician leaves, ask for a supervised backup test and a demonstration of the notification that tells you the primary connection is back.",
+    "searchDescription": "Considering ADT monitoring in Oklahoma? Plan an installation check for cellular alarm backup, camera recording and phone alerts during an outage."
+  },
+  "OR": {
+    "fieldCheck": "Stand under the eave facing the street while someone checks the preview. Repeat from the steps so you can see how faces look as people move between light and shade.",
+    "searchDescription": "Planning a Google Nest Doorbell under a deep eave in Oregon? Test how a visitor appears between the shaded porch and bright street before installation."
+  },
+  "PA": {
+    "fieldCheck": "Identify the indoor end of a proposed cable run as well as the exterior mount. Check what trim or finish will be affected on each side."
+  },
+  "RI": {
+    "fieldCheck": "Ask the installer to point out each exposed connector. Keep the model’s cleaning instructions where you can find them before working on the lens."
+  },
+  "SC": {
+    "fieldCheck": "Test the screen in the frame after dark as well as during daylight. Turn the porch light on to check for glare.",
+    "searchDescription": "Could a Google Nest Doorbell see through your screened porch in South Carolina? Compare the two door positions and test for glare after dark."
+  },
+  "TN": {
+    "fieldCheck": "Walk through the front entry and lower landing separately. Check that you can tell from the notification which level someone entered."
+  },
+  "TX": {
+    "fieldCheck": "Measure the distance along the actual cable route, including turns. Check day and night views from the gate and from a location nearer the house.",
+    "searchDescription": "Planning a Google Nest outdoor camera for a Texas driveway or gate? Measure the route to power and Wi-Fi and compare views at both mounting points."
+  },
+  "UT": {
+    "fieldCheck": "Check whether the exterior basement door is visible from the upper entrance and whether the person opening it can reach the keypad in time."
+  },
+  "VA": {
+    "fieldCheck": "Set a package against the wall and another on the lowest step. Look at each in the app with the exterior door both open and closed."
+  },
+  "WA": {
+    "fieldCheck": "Check where water runs off the roof above the camera. Ask for a position you can reach to clean the lens between service visits.",
+    "searchDescription": "Planning a Google Nest camera at a Washington entry? Check roof runoff, lens cleaning access and the view from a sheltered mount."
+  },
+  "WV": {
+    "fieldCheck": "Walk up toward the camera and then down from the opposite direction. Save one frame from each test to compare the mounting angles."
+  },
+  "WI": {
+    "fieldCheck": "Open the storm door fully and set a box where deliveries land. Check that the hinge, frame and door sweep leave the view unobstructed."
+  },
+  "DC": {
+    "fieldCheck": "Walk both stairways from the sidewalk. Check which doorway the main camera actually shows before deciding whether a second view is worth adding.",
+    "searchDescription": "Plan a home security installation in Washington, DC. Compare the view of upper and lower rowhouse entrances from the sidewalk before adding a second camera."
+  }
+}

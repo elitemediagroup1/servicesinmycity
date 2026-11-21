@@ -1,0 +1,30 @@
+---
+interface Props {
+  area?: { name: string; slug: string };
+}
+const { area } = Astro.props;
+const trail = [
+  { name: 'Home', path: '/' },
+  { name: 'Services', path: '/services/' },
+  { name: 'Home security', path: '/services/home-security/' },
+];
+if (area) trail.push({ name: area.name, path: `/services/home-security/${area.slug}/` });
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: trail.map(({ name, path }, index) => ({
+    '@type': 'ListItem', position: index + 1, name, item: new URL(path, Astro.site).href,
+  })),
+};
+---
+<nav aria-label="Breadcrumb" class="security-breadcrumb">
+  {trail.map(({ name, path }, i) => (
+    i === trail.length - 1 ? <span aria-current="page">{name}</span> :
+    <><a href={path}>{name}</a><span aria-hidden="true"> / </span></>
+  ))}
+</nav>
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumb).replace(/</g, '\\u003c')} />
+<style>
+  .security-breadcrumb { font-size: .95rem; line-height: 1.6; }
+  .security-breadcrumb a { color: inherit; text-underline-offset: .18em; }
+</style>

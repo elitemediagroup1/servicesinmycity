@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
+import HomeSecurityBreadcrumbs from '../../components/HomeSecurityBreadcrumbs.astro';
 import HomeSecurityAnalytics from '../../components/HomeSecurityAnalytics.astro';
 import coverage from '../../data/home-security.json';
 import HomeSecurityOffers from '../../components/HomeSecurityOffers.astro';
@@ -36,7 +37,7 @@ const priorities = [
   <section class="security-intro">
     <div class="container security-layout">
       <div>
-        <a class="back" href="/services">All services</a>
+        <HomeSecurityBreadcrumbs />
         <h1>Video doorbell or outdoor security camera?</h1>
         <p class="intro">Start with the entrance you use most. A doorbell camera looks out from the porch. A separately mounted outdoor camera can cover a side gate or driveway beyond that view.</p>
         <div class="actions">
@@ -83,8 +84,7 @@ const priorities = [
   .security-intro { background: var(--navy-900); color: var(--white); padding: clamp(2rem, 5vw, 5rem) 0; }
   .security-layout { display: grid; grid-template-columns: 1.15fr 1fr; align-items: center; gap: clamp(2rem, 5vw, 4rem); }
   .security-layout img { width: 100%; height: auto; border-radius: var(--radius-lg); }
-  .back, .guide-link { color: var(--white); text-underline-offset: .22em; }
-  .back { font-size: 1rem; }
+  .guide-link { color: var(--white); text-underline-offset: .22em; }
   h1 { color: var(--white); margin: 1rem 0; font-size: var(--fs-display); line-height: 1.08; }
   .intro { color: var(--white); font-size: var(--fs-body-lg); }
   .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; margin: 1.5rem 0 .75rem; }

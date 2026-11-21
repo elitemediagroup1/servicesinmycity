@@ -2,24 +2,31 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import HomeSecurityOffers from '../../../components/HomeSecurityOffers.astro';
 import HomeSecurityAnalytics from '../../../components/HomeSecurityAnalytics.astro';
+import HomeSecurityBreadcrumbs from '../../../components/HomeSecurityBreadcrumbs.astro';
+import instructions from '../../../data/security-installation.json';
 import coverage from '../../../data/home-security.json';
 
 export function getStaticPaths() {
   return coverage.areas.map(area => ({ params: { state: area.slug }, props: { area } }));
 }
 const { area } = Astro.props;
+const plan = instructions[area.code as keyof typeof instructions];
+const summary = `${area.name} home security installation. ${area.tip.split(/(?<=\.) /)[0]}`;
+const searchDescription = 'searchDescription' in plan ? plan.searchDescription : summary;
 const canonical = new URL(`/services/home-security/${area.slug}/`, Astro.site).href;
 ---
-<BaseLayout title={`Home security in ${area.name}`} description={`Check home security coverage in ${area.name} and explore camera installation, equipment offers and monitored alarms.`} canonical={canonical} showRoccoWidget={false}>
+<BaseLayout title={`${area.name} Home Security Installation | ${area.topic}`} description={summary} searchDescription={searchDescription} canonical={canonical} showRoccoWidget={false}>
   <section class="hero">
     <div class="container">
-      <a href="/services/home-security/#coverage">Home security coverage</a>
-      <h1>Home security in {area.name}</h1>
+      <HomeSecurityBreadcrumbs area={area} />
+      <h1>Home security installation in {area.name}</h1>
       <p class="lede">If you own your home, you can ask a provider about camera placement, installation and professional alarm monitoring. Service is confirmed for your address.</p>
     </div>
   </section>
   <article class="container state-details">
-    <h2>{area.topic}</h2><p>{area.tip}</p>
+    <h2>{area.topic}</h2>
+    <p>{area.tip}</p>
+    <p>{plan.fieldCheck}</p>
     <HomeSecurityOffers />
     <section>
       <h2>Get a free home security quote in {area.name}</h2>
