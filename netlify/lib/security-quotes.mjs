@@ -43,14 +43,17 @@ export function connection() {
   return { key, secret, endpoint };
 }
 
-export async function sendQuote(request, credentials, transport = fetch, date = new Date()) {
-  const { key, secret, endpoint } = credentials;
-  const body = JSON.stringify({ APIKey: key, Method: 'lead-create', ...request.lead,
-    ReferenceNum: request.reference, Notes: 'Home security quote requested on ' + request.source + ' at ' + request.createdAt + '. Homeowner authorized a call (' + request.consentVersion + ').' });
+export async function postToCrm(body, { secret, endpoint }, transport = fetch, date = new Date()) {
   const minute = date.toISOString().slice(0,16).replace('T',' ');
   const signature = createHash('md5').update(minute).update(body).update(secret).digest('hex');
-  const response = await transport(endpoint, { method: 'POST', redirect: 'error', signal: AbortSignal.timeout(5000),
+  return transport(endpoint, { method: 'POST', redirect: 'error', signal: AbortSignal.timeout(5000),
     headers: { 'Content-Type': 'application/json', Signature: signature }, body });
+}
+
+export async function sendQuote(request, credentials, transport = fetch, date = new Date()) {
+  const body = JSON.stringify({ APIKey: credentials.key, Method: 'lead-create', ...request.lead,
+    ReferenceNum: request.reference, Notes: 'Home security quote requested on ' + request.source + ' at ' + request.createdAt + '. Homeowner authorized a call (' + request.consentVersion + ').' });
+  const response = await postToCrm(body, credentials, transport, date);
   const { ResultCode } = await response.json();
   const code = Number(ResultCode);
   if (response.ok && code === 200) return { status: 'delivered', code };
