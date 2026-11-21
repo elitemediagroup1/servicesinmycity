@@ -9,11 +9,12 @@ export default async function quote(req, context) {
     return wantsJson ? json({ error: message }, status) : new Response(message + ' Use your browser’s Back button to return to the form.', {
       status, headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' } });
   }
-  if (req.method === 'HEAD') {
+  if (['HEAD', 'GET'].includes(req.method) && new URL(req.url).searchParams.get('readiness') === '1') {
     // Report only the deployed connection status. No lead data or CRM request is involved.
     try {
       const status = await quoteStore().get('integration/connection', { type: 'json' });
-      return new Response(null, { status: 200, headers: {
+      return new Response(req.method === 'GET' ? JSON.stringify({ delivery: status?.status || 'unchecked' }) : null, { status: 200, headers: {
+        'Content-Type': 'application/json',
         'Cache-Control': 'no-store', 'X-Quote-Delivery': status?.status || 'unchecked'
       } });
     } catch {
