@@ -1,0 +1,37 @@
+---
+import coverage from '../../data/home-security.json';
+---
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Free home security quote | ServicesInMyCity</title><meta name="description" content="Request a free home security quote for equipment, installation and monitoring at your address."><link rel="canonical" href="https://servicesinmycity.com/home-security-quote/">
+<link rel="stylesheet" href="/home-security-quote/quote.css"></head><body>
+<header class="bar"><a href="/"><img src="/assets/brand/logo-servicesinmycity.png" alt="ServicesInMyCity" width="138" height="52"></a><a href="/services/home-security/">Home security guide</a></header>
+<main class="layout">
+  <section><h1>Get your free home security quote</h1>
+    <p class="intro">Tell us where you’d like a system installed. A home security specialist can call to walk you through equipment, installation and monthly pricing.</p>
+    <aside class="offer"><h2>Ask about homeowner offers</h2><ul><li>$1,200 in free security equipment</li><li>Free installation</li><li>A free video doorbell camera</li></ul>
+    <small>Paid monitoring required. A specialist will confirm which offers apply to your address.</small></aside>
+  </section>
+  <form id="quote" class="card" method="post" action="/.netlify/functions/home-security-quote">
+    <fieldset><legend>Where would you like service?</legend><div class="fields">
+      <label class="wide">Street address, including unit<input name="Address" autocomplete="street-address" maxlength="180" required></label>
+      <label class="wide">City<input name="City" autocomplete="address-level2" maxlength="100" required></label>
+      <label>State<select name="State" autocomplete="address-level1" required><option value="">Select state</option>
+          {coverage.areas.map(area => <option value={area.code}>{area.name}</option>)}
+      </select></label>
+      <label>ZIP code<input name="Zip" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5}(-[0-9]{4})?" maxlength="10" required></label>
+    </div></fieldset>
+    <fieldset><legend>Who should we call?</legend><div class="fields">
+      <label>First name<input name="FirstName" autocomplete="given-name" maxlength="80" required></label>
+      <label>Last name<input name="LastName" autocomplete="family-name" maxlength="80" required></label>
+      <label class="contact-line">Phone number<input type="tel" name="Phone" autocomplete="tel" maxlength="30" required></label>
+      <label class="contact-line">Email address<input type="email" name="Email" autocomplete="email" maxlength="254" required></label>
+    </div></fieldset>
+    <label hidden style="display:none">Leave this blank<input name="Website" autocomplete="off" tabindex="-1"></label>
+    <label class="consent"><input type="checkbox" name="Consent" value="quote-call-v1" required><span>I own this home and agree that Secure24 Alarm Systems may call me at the number above about my home security quote. Consent is optional to purchase.</span></label>
+    <button type="submit">Request my free quote</button>
+    <p id="feedback" role="alert"></p><p class="privacy"><a href="/legal/privacy">How we use your information</a></p>
+  </form>
+</main>
+<script is:inline src="/home-security-quote/quote.js" defer></script>
+</body></html>

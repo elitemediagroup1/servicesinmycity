@@ -5,7 +5,7 @@ import HomeSecurityAnalytics from '../../components/HomeSecurityAnalytics.astro'
 import coverage from '../../data/home-security.json';
 import HomeSecurityOffers from '../../components/HomeSecurityOffers.astro';
 
-const callbackUrl = '/go/home-security';
+const callbackUrl = '/home-security-quote/';
 const priorities = [
   {
     title: 'Video doorbell for visitors and deliveries',
@@ -40,11 +40,11 @@ const priorities = [
         <h1>Video doorbell or outdoor security camera?</h1>
         <p class="intro">Start with the entrance you use most. A doorbell camera looks out from the porch. A separately mounted outdoor camera can cover a side gate or driveway beyond that view.</p>
         <div class="actions">
-          <a class="btn callback" href={callbackUrl} rel="sponsored">Open the callback form</a>
+          <a class="btn callback" href={callbackUrl}>Get my free quote</a>
           <a class="guide-link" href="#coverage">Check state coverage</a>
           <a class="guide-link" href="#security-guide">Help me choose</a>
         </div>
-        <p class="handoff">The form opens on our partner’s website. If you own your home and submit your details, the provider may call or text you about equipment, monitoring and installation.</p>
+        <p class="handoff">Request a call from a home security specialist to discuss pricing and options for your home.</p>
       </div>
       <img src="/assets/home/living-home-hero.png" width="1536" height="1024" alt="Front porch and entrances of a two-story home at dusk" />
     </div>
@@ -53,7 +53,6 @@ const priorities = [
     <h2 id="coverage-heading">Find home security in your state</h2>
     <p>Home security coverage extends to 42 states and Washington, DC. Select the installation location for details.</p>
     <p><strong>Outside our service area</strong><br />{coverage.excluded.join(', ')}.</p>
-    <p>Idaho is in our program area, but the current partner form excludes Idaho addresses.</p>
     <nav class="state-grid" aria-label="State and district home security guides">
       {coverage.areas.map(area => <a href={`/services/home-security/${area.slug}/`}>{area.name}</a>)}
     </nav>
@@ -65,7 +64,7 @@ const priorities = [
       <details name="security-priority">
         <summary>{title}</summary>
         <p>{detail}</p>
-        <a href={callbackUrl} rel="sponsored">Continue to the partner’s callback form</a>
+        <a href={callbackUrl}>Get my free quote</a>
       </details>
     ))}
     <h2>Installing a camera at a second home</h2>
@@ -73,7 +72,7 @@ const priorities = [
     <HomeSecurityOffers />
     <h2>Before you choose a monitored system</h2>
     <p>Ask for the equipment price, installation charge, monthly monitoring fee and contract length in writing. The provider can confirm availability for your address.</p>
-    <p>Renting? Check your lease before installing cameras or drilling into walls. The partner’s offer is for homeowners.</p>
+    <p>Renting? Check your lease before installing cameras or drilling into walls. These offers are available to homeowners.</p>
   </section>
   <HomeSecurityAnalytics />
 </BaseLayout>

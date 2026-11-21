@@ -8,7 +8,6 @@ export function getStaticPaths() {
   return coverage.areas.map(area => ({ params: { state: area.slug }, props: { area } }));
 }
 const { area } = Astro.props;
-const formAvailable = !coverage.formExclusions.includes(area.slug);
 const canonical = new URL(`/services/home-security/${area.slug}/`, Astro.site).href;
 ---
 <BaseLayout title={`Home security in ${area.name}`} description={`Check home security coverage in ${area.name} and explore camera installation, equipment offers and monitored alarms.`} canonical={canonical} showRoccoWidget={false}>
@@ -16,17 +15,17 @@ const canonical = new URL(`/services/home-security/${area.slug}/`, Astro.site).h
     <div class="container">
       <a href="/services/home-security/#coverage">Home security coverage</a>
       <h1>Home security in {area.name}</h1>
-      <p class="lede">{formAvailable ? 'If you own your home, you can ask a provider about camera placement, installation and professional alarm monitoring. Service is confirmed for your address.' : 'Idaho is part of our program area. Online callback requests for Idaho are unavailable through the current partner form.'}</p>
+      <p class="lede">If you own your home, you can ask a provider about camera placement, installation and professional alarm monitoring. Service is confirmed for your address.</p>
     </div>
   </section>
   <article class="container state-details">
     <h2>{area.topic}</h2><p>{area.tip}</p>
     <HomeSecurityOffers />
-    {formAvailable && <section>
-      <h2>Request a callback in {area.name}</h2>
-      <p>Enter your details on the partner’s website to request a call. The provider may call or text you about home security after you submit.</p>
-      <a class="btn callback" href="/go/home-security" rel="sponsored">Open the partner’s callback form</a>
-    </section>}
+    <section>
+      <h2>Get a free home security quote in {area.name}</h2>
+      <p>Request a call from a home security specialist to discuss pricing and options for your home.</p>
+      <a class="btn callback" href={`/home-security-quote/?state=${area.code}`}>Get my free quote</a>
+    </section>
     <p><a href="/services/home-security/#security-guide">Compare camera and monitoring options</a></p>
   </article>
   <HomeSecurityAnalytics />
