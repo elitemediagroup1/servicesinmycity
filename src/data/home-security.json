@@ -1,0 +1,275 @@
+{
+  "areas": [
+    {
+      "name": "Alabama",
+      "slug": "alabama",
+      "topic": "Porch cameras",
+      "tip": "If a deep porch keeps the door in shadow, ask to see the camera view both at noon and after the porch light comes on."
+    },
+    {
+      "name": "Arizona",
+      "slug": "arizona",
+      "topic": "Sun and camera placement",
+      "tip": "For a west-facing entry, ask the installer to check the afternoon view and the camera’s operating temperature at the planned mounting spot."
+    },
+    {
+      "name": "Arkansas",
+      "slug": "arkansas",
+      "topic": "Detached buildings",
+      "tip": "If you want to see a detached workshop, check the wireless signal at the workshop door before choosing the camera position."
+    },
+    {
+      "name": "California",
+      "slug": "california",
+      "topic": "Monitoring agreement",
+      "tip": "The linked offer lists a 24-month monitoring agreement for California. Ask for the total over the full term, installation charges and cancellation terms in writing."
+    },
+    {
+      "name": "Colorado",
+      "slug": "colorado",
+      "topic": "Winter access",
+      "tip": "For a battery-powered doorbell, choose a position you can reach for charging even when snow banks or a storm door restrict access."
+    },
+    {
+      "name": "Connecticut",
+      "slug": "connecticut",
+      "topic": "Older doorbell wiring",
+      "tip": "If you plan to use an existing chime, ask the installer to check the transformer and show how the chime will work after installation."
+    },
+    {
+      "name": "Delaware",
+      "slug": "delaware",
+      "topic": "Second homes",
+      "tip": "If the property sits empty between visits, decide who can meet a technician or respond to a low-battery alert while you are away."
+    },
+    {
+      "name": "Florida",
+      "slug": "florida",
+      "topic": "Weather-exposed entrances",
+      "tip": "For an exposed porch, ask about the mounting hardware and how the camera and alarm communicate when power or home internet is interrupted."
+    },
+    {
+      "name": "Georgia",
+      "slug": "georgia",
+      "topic": "Porches and deliveries",
+      "tip": "Check that columns or porch furniture will not hide a package placed directly below the doorbell."
+    },
+    {
+      "name": "Idaho",
+      "slug": "idaho",
+      "topic": "Address availability",
+      "tip": "The program coverage list includes Idaho. The current partner form still excludes Idaho, so online requests through that form are unavailable for Idaho addresses."
+    },
+    {
+      "name": "Illinois",
+      "slug": "illinois",
+      "topic": "Shared entrances",
+      "tip": "If you own a condo, check with the association before mounting equipment in a shared hallway, and request a view limited to your own entrance."
+    },
+    {
+      "name": "Indiana",
+      "slug": "indiana",
+      "topic": "Side entries",
+      "tip": "If your family normally enters from the garage, ask whether a sensor or camera there would cover more daily activity than one at the front door."
+    },
+    {
+      "name": "Iowa",
+      "slug": "iowa",
+      "topic": "Long driveways",
+      "tip": "For a driveway camera, ask for a sample view of a vehicle at the distance you intend to monitor, both in daylight and after dark."
+    },
+    {
+      "name": "Kansas",
+      "slug": "kansas",
+      "topic": "Power interruptions",
+      "tip": "Ask which alarm functions have battery backup and whether video or notifications still work when the router loses power."
+    },
+    {
+      "name": "Kentucky",
+      "slug": "kentucky",
+      "topic": "Changes in elevation",
+      "tip": "At a home with a sloping driveway, check the proposed camera angle from the road and from the front steps before drilling."
+    },
+    {
+      "name": "Louisiana",
+      "slug": "louisiana",
+      "topic": "Sheltered mounting",
+      "tip": "If your entrance is exposed to wind-driven rain, have the installer check the camera’s rating and how the cable opening will be sealed."
+    },
+    {
+      "name": "Maryland",
+      "slug": "maryland",
+      "topic": "Townhouse entrances",
+      "tip": "For a narrow townhouse entry, test whether the door, steps and package drop are visible without including the neighboring doorway."
+    },
+    {
+      "name": "Massachusetts",
+      "slug": "massachusetts",
+      "topic": "Installation in older homes",
+      "tip": "Before a wired installation, ask how the installer will test the existing chime and route cable without damaging original trim."
+    },
+    {
+      "name": "Michigan",
+      "slug": "michigan",
+      "topic": "Cold-weather operation",
+      "tip": "Ask about cold-weather battery performance and pick a location you can reach to charge the doorbell during winter."
+    },
+    {
+      "name": "Minnesota",
+      "slug": "minnesota",
+      "topic": "Ice and winter access",
+      "tip": "If snow or ice builds up along the entry path, ask whether the lens and battery will remain accessible for cleaning and charging."
+    },
+    {
+      "name": "Mississippi",
+      "slug": "mississippi",
+      "topic": "Evening visibility",
+      "tip": "Test the view with the porch light on. A nearby wall or column can reflect light into the lens and hide the approach."
+    },
+    {
+      "name": "Missouri",
+      "slug": "missouri",
+      "topic": "Walkout entrances",
+      "tip": "If there is a walkout basement, include that doorway when counting entry sensors and ask how it will appear in the alarm app."
+    },
+    {
+      "name": "Nebraska",
+      "slug": "nebraska",
+      "topic": "Outbuildings and signal",
+      "tip": "A detached garage may be outside the home network’s range. Ask the installer to test the signal at the mount before quoting equipment."
+    },
+    {
+      "name": "Nevada",
+      "slug": "nevada",
+      "topic": "Desert heat",
+      "tip": "For a sunny entry, ask for the equipment’s operating temperature range and compare a shaded mount with the proposed exposed position."
+    },
+    {
+      "name": "New Hampshire",
+      "slug": "new-hampshire",
+      "topic": "Seasonal occupancy",
+      "tip": "If you leave the property between seasons, arrange a local contact and ask how to update the monitoring call list from away."
+    },
+    {
+      "name": "New Jersey",
+      "slug": "new-jersey",
+      "topic": "Seasonal shore homes",
+      "tip": "If the house sits empty during winter, ask how to check camera power remotely and who receives the first alarm notification."
+    },
+    {
+      "name": "New Mexico",
+      "slug": "new-mexico",
+      "topic": "Exterior wall materials",
+      "tip": "For stucco or adobe walls, ask the installer how the mount will attach and how the surface will be sealed around the wiring."
+    },
+    {
+      "name": "New York",
+      "slug": "new-york",
+      "topic": "Apartment and condo doors",
+      "tip": "For an owner-occupied apartment, check building rules for shared entries before choosing a doorbell camera or changing an existing chime."
+    },
+    {
+      "name": "North Carolina",
+      "slug": "north-carolina",
+      "topic": "Multiple entrances",
+      "tip": "Walk the route from a side drive or carport to the house and note which approaches a front-door camera would miss."
+    },
+    {
+      "name": "Ohio",
+      "slug": "ohio",
+      "topic": "Garage entry coverage",
+      "tip": "If most arrivals come through an attached garage, include the interior entry door in the sensor quote and ask how it will be labeled."
+    },
+    {
+      "name": "Oklahoma",
+      "slug": "oklahoma",
+      "topic": "Backup communication",
+      "tip": "Ask the provider to explain what happens during a power outage and to distinguish alarm backup from camera recording and phone alerts."
+    },
+    {
+      "name": "Oregon",
+      "slug": "oregon",
+      "topic": "Covered entrances",
+      "tip": "At an entry below a deep eave, ask the installer to test the view on a bright day when the porch itself stays dark."
+    },
+    {
+      "name": "Pennsylvania",
+      "slug": "pennsylvania",
+      "topic": "Masonry installation",
+      "tip": "If the entrance has brick or stone trim, ask where the installer plans to anchor the camera and route its power cable."
+    },
+    {
+      "name": "Rhode Island",
+      "slug": "rhode-island",
+      "topic": "Coastal exposure",
+      "tip": "For a home near salt water, ask how the exterior mount and connectors should be protected and maintained."
+    },
+    {
+      "name": "South Carolina",
+      "slug": "south-carolina",
+      "topic": "Screened porches",
+      "tip": "If there is a screened porch, compare mounting at the outer door with mounting at the house door so you can see visitors before they enter."
+    },
+    {
+      "name": "Tennessee",
+      "slug": "tennessee",
+      "topic": "Separate levels",
+      "tip": "For a split-level home, mark which entrance a visitor uses and ask the installer to test the view from both landings."
+    },
+    {
+      "name": "Texas",
+      "slug": "texas",
+      "topic": "Driveway and gate distance",
+      "tip": "For a gate set back from the house, measure the distance to power and the router before choosing an outdoor camera location."
+    },
+    {
+      "name": "Utah",
+      "slug": "utah",
+      "topic": "Basement access",
+      "tip": "If your home has an exterior basement door, ask how to distinguish that sensor from the main entry when an alarm comes in."
+    },
+    {
+      "name": "Virginia",
+      "slug": "virginia",
+      "topic": "Front steps and deliveries",
+      "tip": "Test whether a doorbell camera shows the lowest step and a delivery placed against the wall, especially at a narrow townhouse entrance."
+    },
+    {
+      "name": "Washington",
+      "slug": "washington",
+      "topic": "Rain on the lens",
+      "tip": "At an exposed entry, ask whether a sheltered mounting point keeps the approach visible and how to clean the lens safely."
+    },
+    {
+      "name": "West Virginia",
+      "slug": "west-virginia",
+      "topic": "Hillside approaches",
+      "tip": "On a sloped approach, ask for a test view of a visitor walking uphill and downhill before settling on the camera height."
+    },
+    {
+      "name": "Wisconsin",
+      "slug": "wisconsin",
+      "topic": "Winter deliveries",
+      "tip": "Check the view with the storm door open and closed, and consider where packages are left when the porch is covered in snow."
+    },
+    {
+      "name": "Washington, DC",
+      "slug": "washington-dc",
+      "topic": "Rowhouse entrances",
+      "tip": "If a rowhouse has a separate lower-level entrance, decide whether you want the street steps, the upper door or the lower door in the primary camera view."
+    }
+  ],
+  "excluded": [
+    "Alaska",
+    "Hawaii",
+    "Maine",
+    "Montana",
+    "North Dakota",
+    "South Dakota",
+    "Vermont",
+    "Wyoming"
+  ],
+  "formExclusions": [
+    "idaho"
+  ]
+}

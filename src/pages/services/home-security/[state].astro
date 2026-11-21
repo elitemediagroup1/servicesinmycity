@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import HomeSecurityOffers from '../../../components/HomeSecurityOffers.astro';
+import HomeSecurityAnalytics from '../../../components/HomeSecurityAnalytics.astro';
+import coverage from '../../../data/home-security.json';
+
+export function getStaticPaths() {
+  return coverage.areas.map(area => ({ params: { state: area.slug }, props: { area } }));
+}
+const { area } = Astro.props;
+const formAvailable = !coverage.formExclusions.includes(area.slug);
+const canonical = new URL(`/services/home-security/${area.slug}/`, Astro.site).href;
+---
+<BaseLayout title={`Home security in ${area.name}`} description={`Check home security coverage in ${area.name} and explore camera installation, equipment offers and monitored alarms.`} canonical={canonical} showRoccoWidget={false}>
+  <section class="hero">
+    <div class="container">
+      <a href="/services/home-security/#coverage">Home security coverage</a>
+      <h1>Home security in {area.name}</h1>
+      <p class="lede">{formAvailable ? 'If you own your home, you can ask a provider about camera placement, installation and professional alarm monitoring. Service is confirmed for your address.' : 'Idaho is part of our program area. Online callback requests for Idaho are unavailable through the current partner form.'}</p>
+    </div>
+  </section>
+  <article class="container state-details">
+    <h2>{area.topic}</h2><p>{area.tip}</p>
+    <HomeSecurityOffers />
+    {formAvailable && <section>
+      <h2>Request a callback in {area.name}</h2>
+      <p>Enter your details on the partner’s website to request a call. The provider may call or text you about home security after you submit.</p>
+      <a class="btn callback" href="/go/home-security" rel="sponsored">Open the partner’s callback form</a>
+    </section>}
+    <p><a href="/services/home-security/#security-guide">Compare camera and monitoring options</a></p>
+  </article>
+  <HomeSecurityAnalytics />
+</BaseLayout>
+<style>
+  .hero { padding-block: clamp(2.5rem, 6vw, 5rem); }
+  .hero h1 { margin-top: 1rem; }
+  .state-details { max-width: 800px; padding-block: 2.5rem; }
+  .callback { background: var(--orange-500); color: var(--navy-900); }
+</style>

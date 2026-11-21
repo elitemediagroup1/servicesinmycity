@@ -1,6 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
+import HomeSecurityAnalytics from '../../components/HomeSecurityAnalytics.astro';
+import coverage from '../../data/home-security.json';
+import HomeSecurityOffers from '../../components/HomeSecurityOffers.astro';
+
 const callbackUrl = '/go/home-security';
 const priorities = [
   {
@@ -23,9 +27,9 @@ const priorities = [
 ---
 <BaseLayout
   title="Video doorbells and outdoor security cameras"
-  description="Explore camera placement, installation and alarm monitoring for your Jersey Shore home."
+  description="Explore camera placement, installation, alarm monitoring and homeowner coverage by state."
   searchTitle="Google Nest Doorbell or Outdoor Cam for ADT Monitoring?"
-  searchDescription="Comparing a Google Nest Doorbell with an outdoor Nest Cam for a Jersey Shore home? Explore placement, installation and an ADT-monitored home security option."
+  searchDescription="Compare a Google Nest Doorbell with an outdoor Nest Cam for ADT-monitored home security. Check state coverage, installation options and homeowner promotions."
   canonical={new URL('/services/home-security/', Astro.site).href}
   showRoccoWidget={false}
 >
@@ -34,15 +38,25 @@ const priorities = [
       <div>
         <a class="back" href="/services">All services</a>
         <h1>Video doorbell or outdoor security camera?</h1>
-        <p class="intro">For a Jersey Shore home, start with the entrance you use most. A doorbell camera looks out from the porch. A separately mounted outdoor camera can cover a side gate or driveway beyond that view.</p>
+        <p class="intro">Start with the entrance you use most. A doorbell camera looks out from the porch. A separately mounted outdoor camera can cover a side gate or driveway beyond that view.</p>
         <div class="actions">
           <a class="btn callback" href={callbackUrl} rel="sponsored">Open the callback form</a>
+          <a class="guide-link" href="#coverage">Check state coverage</a>
           <a class="guide-link" href="#security-guide">Help me choose</a>
         </div>
         <p class="handoff">The form opens on our partner’s website. If you own your home and submit your details, the provider may call or text you about equipment, monitoring and installation.</p>
       </div>
       <img src="/assets/home/living-home-hero.png" width="1536" height="1024" alt="Front porch and entrances of a two-story home at dusk" />
     </div>
+  </section>
+  <section id="coverage" class="container planning" aria-labelledby="coverage-heading">
+    <h2 id="coverage-heading">Find home security in your state</h2>
+    <p>Home security coverage extends to 42 states and Washington, DC. Select the installation location for details.</p>
+    <p><strong>Outside our service area</strong><br />{coverage.excluded.join(', ')}.</p>
+    <p>Idaho is in our program area, but the current partner form excludes Idaho addresses.</p>
+    <nav class="state-grid" aria-label="State and district home security guides">
+      {coverage.areas.map(area => <a href={`/services/home-security/${area.slug}/`}>{area.name}</a>)}
+    </nav>
   </section>
   <section id="security-guide" class="container planning" aria-labelledby="priority-title">
     <h2 id="priority-title">What matters most at your home?</h2>
@@ -56,23 +70,15 @@ const priorities = [
     ))}
     <h2>Installing a camera at a second home</h2>
     <p>If the house sits empty between visits, check how you’ll get an alert while you’re away. Ask the installer about battery access, winter weather exposure and what happens to video when your home internet goes offline.</p>
+    <HomeSecurityOffers />
     <h2>Before you choose a monitored system</h2>
-    <p>Our partner’s offer is for new homeowner customers and allows one camera per household. You can ask for a doorbell camera or an outdoor camera. Installation and a monitoring agreement are required.</p>
     <p>Ask for the equipment price, installation charge, monthly monitoring fee and contract length in writing. The provider can confirm availability for your address.</p>
     <p>Renting? Check your lease before installing cameras or drilling into walls. The partner’s offer is for homeowners.</p>
   </section>
+  <HomeSecurityAnalytics />
 </BaseLayout>
 
-<script is:inline>
-  document.addEventListener('click', function (event) {
-    const link = event.target.closest('a[href="/go/home-security"]');
-    if (link && typeof window.__sicTrack === 'function') {
-      window.__sicTrack('home_security_callback_click', {
-        placement: link.closest('details') ? 'guide' : 'direct'
-      });
-    }
-  });
-</script>
+
 
 <style>
   .security-intro { background: var(--navy-900); color: var(--white); padding: clamp(2rem, 5vw, 5rem) 0; }
@@ -87,6 +93,8 @@ const priorities = [
   .callback:hover { background: var(--orange-300); }
   .handoff { max-width: 55ch; color: var(--stone-200); font-size: 1rem; }
   .planning { max-width: 800px; padding-block: clamp(2rem, 5vw, 4.5rem); }
+  .state-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: .45rem 1rem; }
+  .state-grid a { padding-block: .4rem; }
   .planning h2 { margin: 0 0 .5rem; }
   .planning details + h2 { margin-top: 2.5rem; }
   .planning details { margin: .65rem 0; padding: 0 1.25rem; border: 1px solid var(--color-border-strong); border-radius: var(--radius-md); background: var(--white); }
